@@ -1,6 +1,6 @@
 
 ## update this everytime new data is uploaded
-latest_date = "2018-09-19"
+latest_date = "2020-08-31"
 cacheEnv <- new.env()
 
 .sesameDataGet <- function(title, dateAdded = latest_date) {
@@ -41,7 +41,7 @@ cacheEnv <- new.env()
 #' 
 #' result <- sesameDataGet('genomeInfo.hg38')
 #' @export
-sesameDataGet <- function(title, verbose=FALSE, dateAdded = "2018-09-19") {
+sesameDataGet <- function(title, verbose=FALSE, dateAdded = latest_date) {
     if (verbose) {
         .sesameDataGet(title, dateAdded = dateAdded)
     } else {
