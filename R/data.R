@@ -1,6 +1,7 @@
 
 ## update this everytime new data is uploaded
-latest_date = "2020-08-31"
+## use sesameDataListDates to check 
+latest_date = "2020-08-24"
 cacheEnv <- new.env()
 
 .sesameDataGet <- function(title, dateAdded = latest_date) {
