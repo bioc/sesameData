@@ -2,7 +2,7 @@ Package: sesameData
 Type: Package
 Title: Supporting Data for SeSAMe Package
 Description: Provides supporting annotation and test data for SeSAMe package.
-Version: 1.7.5
+Version: 1.7.6
 Authors@R: c(person("Wanding", "Zhou", role = c("aut","cre"),
              email = "zhouwanding@gmail.com"),
              person("Hui", "Shen", role = c("aut"),

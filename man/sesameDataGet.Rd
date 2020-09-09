@@ -4,7 +4,7 @@
 \alias{sesameDataGet}
 \title{Get SeSAMe data}
 \usage{
-sesameDataGet(title, verbose = FALSE, dateAdded = "2018-09-19")
+sesameDataGet(title, verbose = FALSE, dateAdded = latest_date)
 }
 \arguments{
 \item{title}{title of the data}
