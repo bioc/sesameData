@@ -169,9 +169,11 @@ sesameDataPullManifest <- function(
         
     download_path <-
         sprintf(
-            'http://zwdzwd.io/InfiniumAnnotation/%s/%s/%s.%s.manifest.rds',
+            paste0(
+                'https://zwdzwd.s3.amazonaws.com/InfiniumAnnotation/',
+                '%s/%s/%s.%s.manifest.rds'),
             version, platform, platform, refversion)
-
+    
     cat("Retrieving manifest from ",download_path, "... ")
     mft <- readRDS(url(download_path))
     cat("Done.\n")
@@ -208,7 +210,7 @@ sesameDataPullVariantAnno_SNP <- function(
     download_path <-
         sprintf(
             paste0(
-                'http://zwdzwd.io/InfiniumAnnotation/',
+                'https://zwdzwd.s3.amazonaws.com/InfiniumAnnotation/',
                 '%s/%s/%s.%s.snp_overlap_b151.rds'),
             version, platform, platform, refversion)
 
@@ -243,7 +245,7 @@ sesameDataPullVariantAnno_InfiniumI <- function(
     download_path <-
         sprintf(
             paste0(
-                'http://zwdzwd.io/InfiniumAnnotation/',
+                'https://zwdzwd.s3.amazonaws.com/InfiniumAnnotation/',
                 '%s/%s/%s.%s.typeI_overlap_b151.rds'),
             version, platform, platform, refversion)
 
