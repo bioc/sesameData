@@ -143,6 +143,7 @@ sesameDataCacheAll <- function(dateAdded = latest_date, showProgress = FALSE) {
 
 #' Retrieve manifest file from the supporting website
 #' at http://zwdzwd.github.io/InfiniumAnnotation
+#' and https://github.com/zhou-lab/InfiniumAnnotation
 #'
 #' @param platform Infinium platform
 #' @param refversion human reference version, irrelevant for mouse array
@@ -156,8 +157,8 @@ sesameDataCacheAll <- function(dateAdded = latest_date, showProgress = FALSE) {
 #' 
 #' @export
 sesameDataPullManifest <- function(
-    platform=c('EPIC','HM450','HM27'),
-    refversion=c('hg19','hg38'),
+    platform=c('EPIC','HM450','HM27','MM285'),
+    refversion=c('hg19','hg38','mm10'),
     version="current",
     probeType=c('all','cg','ch','rs'),
     designType=c('all','I','II')) {
@@ -166,7 +167,10 @@ sesameDataPullManifest <- function(
     refversion <- match.arg(refversion)
     probeType <- match.arg(probeType)
     designType <- match.arg(designType)
-        
+
+    if (platform == 'EPIC') { stopifnot(refversion %in% c('hg19','hg38')); }
+    if (platform == 'MM285') { stopifnot(refversion == 'mm10'); }
+    
     download_path <-
         sprintf(
             paste0(

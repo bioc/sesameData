@@ -3,11 +3,12 @@
 \name{sesameDataPullManifest}
 \alias{sesameDataPullManifest}
 \title{Retrieve manifest file from the supporting website
-at http://zwdzwd.github.io/InfiniumAnnotation}
+at http://zwdzwd.github.io/InfiniumAnnotation
+and https://github.com/zhou-lab/InfiniumAnnotation}
 \usage{
 sesameDataPullManifest(
-  platform = c("EPIC", "HM450", "HM27"),
-  refversion = c("hg19", "hg38"),
+  platform = c("EPIC", "HM450", "HM27", "MM285"),
+  refversion = c("hg19", "hg38", "mm10"),
   version = "current",
   probeType = c("all", "cg", "ch", "rs"),
   designType = c("all", "I", "II")
@@ -30,6 +31,7 @@ manifest file of requested probes
 \description{
 Retrieve manifest file from the supporting website
 at http://zwdzwd.github.io/InfiniumAnnotation
+and https://github.com/zhou-lab/InfiniumAnnotation
 }
 \examples{
 
