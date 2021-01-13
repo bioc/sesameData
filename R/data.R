@@ -1,33 +1,40 @@
 
 ## update this everytime new data is uploaded
-## use sesameDataListDates to check 
-latest_date = "2020-08-24"
+## use sesameDataListDates to check
+## checking multiple dates are not very efficient,
+## should consider a lookup table
+latest_date = c("2020-08-24", "2020-10-27")
 cacheEnv <- new.env()
 
 .sesameDataGet <- function(title, dateAdded = latest_date) {
-    key <- paste0(title,'|',dateAdded)
-    if (!exists(key, envir=cacheEnv, inherits=FALSE)) {
-        eh <- query(ExperimentHub(localHub=TRUE), 'sesameData')
-        obj_id <- which(eh$title == title & eh$rdatadateadded == dateAdded)
-        if (length(obj_id)==1) {
-            assign(key, eh[[obj_id]], envir=cacheEnv)
-        } else {
-            # maybe it's older version, try cache that file
-            # it doesn't work properly under parallel
-            # one can sesameDataCacheAll(prev_date) to avoid issue
-            eh <- query(ExperimentHub(localHub=FALSE), 'sesameData')
-            obj_id <- which(eh$title == title & eh$rdatadateadded == dateAdded)
+    for (dateAdded1 in dateAdded) {
+        key <- paste0(title,'|',dateAdded1)
+        ## only reload if not in existing environment
+        if (!exists(title, envir=cacheEnv, inherits=FALSE)) {
+            eh <- query(ExperimentHub(localHub=TRUE), 'sesameData')
+            obj_id <- which(eh$title == title & eh$rdatadateadded == dateAdded1)
             if (length(obj_id)==1) {
-                cache(eh[obj_id])
-                assign(key, eh[[obj_id]], envir=cacheEnv)
+                assign(title, eh[[obj_id]], envir=cacheEnv)
             } else {
-                stop(
-                    sprintf("%s doesn't exist. Try: sesameDataCacheAll(\"%s\")",
-                    key, dateAdded))
+                ## maybe it's older version, try cache that file
+                ## it doesn't work properly under parallel
+                ## one can sesameDataCacheAll(prev_date) to avoid issue
+                eh <- query(ExperimentHub(localHub=FALSE), 'sesameData')
+                obj_id <- which(
+                    eh$title == title & eh$rdatadateadded == dateAdded1)
+                if (length(obj_id)==1) {
+                    cache(eh[obj_id])
+                    assign(title, eh[[obj_id]], envir=cacheEnv)
+                }
             }
         }
     }
-    return(get(key, envir=cacheEnv, inherits=FALSE))
+    if (!exists(title, envir=cacheEnv, inherits=FALSE)) {
+        stop(sprintf(
+            "%s doesn't exist. Try: sesameDataCacheAll(\"%s\")",
+            title, dateAdded1))
+    }
+    return(get(title, envir=cacheEnv, inherits=FALSE))
 }
 
 #' Get SeSAMe data
@@ -71,10 +78,10 @@ sesameDataList <- function(dateAdded = latest_date) {
     } else {
         eh <- query(ExperimentHub(localHub = TRUE), 'sesameData')
     }
-    if (dateAdded == "all") {
+    if (dateAdded[1] == "all") {
         eh$title
     } else {
-        eh$title[eh$rdatadateadded == dateAdded]
+        eh$title[eh$rdatadateadded %in% dateAdded]
     }
 }
 
@@ -116,8 +123,8 @@ sesameDataCacheAll <- function(dateAdded = latest_date, showProgress = FALSE) {
             }
             
             ## restrict to specified date
-            if (dateAdded != "all") {
-                eh <- eh[eh$rdatadateadded == dateAdded]
+            if (dateAdded[1] != "all") {
+                eh <- eh[eh$rdatadateadded %in% dateAdded]
             }
             
             ## load actual data
@@ -181,10 +188,10 @@ sesameDataPullManifest <- function(
     cat("Retrieving manifest from ",download_path, "... ")
     mft <- readRDS(url(download_path))
     cat("Done.\n")
-    if (probeType != 'all')
+    if (probeType[1] != 'all')
         mft <- mft[mft$probeType == probeType]
 
-    if (designType != 'all')
+    if (designType[1] != 'all')
         mft <- mft[mft$designType == designType]
     
     mft
