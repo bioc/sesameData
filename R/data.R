@@ -21,6 +21,7 @@ alt_base = 'https://zwdzwd.s3.amazonaws.com/sesameData'
             message(cond, appendLF = TRUE)
             return(FALSE)
         })
+    TRUE
 }
 
 .sesameDataGet <- function(title, dateAdded = latest_date) {
