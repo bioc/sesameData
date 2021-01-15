@@ -5,6 +5,23 @@
 ## should consider a lookup table
 latest_date = c("2020-08-24", "2020-10-27")
 cacheEnv <- new.env()
+alt_base = 'https://zwdzwd.s3.amazonaws.com/sesameData'
+
+## fall back data retrieval in case ExperimentHub is down
+.sesameDataGet2 <- function(title) {
+    tryCatch(
+        load(url(sprintf('%s/%s.rda', alt_base, title)), envir=cacheEnv),
+        error = function(cond) {
+            message("sesameDataGet2 fails:")
+            message(cond, appendLF = TRUE)
+            return(FALSE)
+        },
+        warning = function(cond) {
+            message("sesameDataGet2 causes a warning:")
+            message(cond, appendLF = TRUE)
+            return(FALSE)
+        })
+}
 
 .sesameDataGet <- function(title, dateAdded = latest_date) {
     for (dateAdded1 in dateAdded) {
@@ -29,7 +46,8 @@ cacheEnv <- new.env()
             }
         }
     }
-    if (!exists(title, envir=cacheEnv, inherits=FALSE)) {
+    if (!exists(title, envir=cacheEnv, inherits=FALSE) &&
+            !.sesameDataGet2(title)) {
         stop(sprintf(
             "%s doesn't exist. Try: sesameDataCacheAll(\"%s\")",
             title, dateAdded1))
