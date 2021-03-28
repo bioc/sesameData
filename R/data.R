@@ -296,6 +296,7 @@ sesameDataPullVariantAnno_InfiniumI <- function(
 #' \donttest{
 #' sesameDataDownload("3999492009_R01C01_Grn.idat")
 #' }
+#' @export
 sesameDataDownload = function(file_name, dest_dir=NULL) {
     if (is.null(dest_dir)) {
         dest_dir = tempdir()
