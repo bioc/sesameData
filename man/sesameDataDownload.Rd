@@ -19,7 +19,7 @@ a list with url, dest_dir, dest_file and file_name
 Download auxiliary data for sesame function and documentation
 }
 \examples{
-\dontrun{
+\donttest{
 sesameDataDownload("3999492009_R01C01_Grn.idat")
 }
 }
