@@ -285,3 +285,28 @@ sesameDataPullVariantAnno_InfiniumI <- function(
     
     anno
 }
+
+#' Download auxiliary data for sesame function and documentation
+#'
+#' @param file_name name of file to download
+#' @param dest_dir directory to hold downloaded file.
+#' use the temporary directory if not given
+#' @return a list with url, dest_dir, dest_file and file_name
+#' @examples
+#' \dontrun{
+#' sesameDataDownload("3999492009_R01C01_Grn.idat")
+#' }
+sesameDataDownload = function(file_name, dest_dir=NULL) {
+    if (is.null(dest_dir)) {
+        dest_dir = tempdir()
+    }
+    dest_file = sprintf("%s/%s", tempdir(), file_name)
+    url = sprintf("https://zwdzwd.s3.amazonaws.com/sesameData/raw/%s", file_name)
+    download.file(url, dest_file)
+    list(
+        url = url,
+        dest_dir = dest_dir,
+        dest_file = dest_file,
+        file_name = file_name)
+}
+
