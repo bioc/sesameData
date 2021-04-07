@@ -4,14 +4,12 @@
 \alias{sesameDataGet}
 \title{Get SeSAMe data}
 \usage{
-sesameDataGet(title, verbose = FALSE, dateAdded = latest_date)
+sesameDataGet(title, verbose = FALSE)
 }
 \arguments{
 \item{title}{title of the data}
 
 \item{verbose}{whether to output ExperimentHub message}
-
-\item{dateAdded}{version of the data by date added}
 }
 \value{
 data object
