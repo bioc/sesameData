@@ -47,12 +47,12 @@ cacheEnv <- new.env()
             envir=cacheEnv)),
         error = function(cond) {
             message("sesameDataGet2 fails:")
-            ## message(cond, appendLF = TRUE)
+            message(cond)
             return(FALSE)
         },
         warning = function(cond) {
             message("sesameDataGet2 causes a warning:")
-            ## message(cond, appendLF = TRUE)
+            message(cond)
             return(FALSE)
         })
     TRUE
@@ -128,7 +128,7 @@ sesameDataCacheAll <- function(showProgress = FALSE) {
             eh = query(ExperimentHub(), "sesameData")[eh_id_lookup]
         } else {
             suppressMessages(log <- capture.output(
-                eh = query(ExperimentHub(), "sesameData")[eh_id_lookup]))
+                eh <- query(ExperimentHub(), "sesameData")[eh_id_lookup]))
         }
         
         ## load actual data
