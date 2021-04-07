@@ -41,6 +41,7 @@ cacheEnv <- new.env()
 ## fall back data retrieval in case ExperimentHub is down
 .sesameDataGet2 <- function(title) {
     eh_id = eh_id_lookup[title]
+    message("ExperimentHub not responding. Using backup.")
     alt_base = 'https://zwdzwd.s3.amazonaws.com/sesameData'
     tryCatch(
         assign(eh_id, get(load(url(sprintf('%s/%s.rda', alt_base, title))),
