@@ -135,7 +135,7 @@ test_that("test='EPIC.1.LNCaP' gives correct data", {
 })
 
 test_that("test='EPIC.probeInfo' gives correct data", {
-    dt <- sesameDataGet('EPIC.probeInfo', dateAdded="2018-05-02")
+    dt <- sesameDataGet('EPIC.probeInfo')
     
     expect_equal(length(dt), 8)
     expect_is(dt$probe2chr.hg19, "character")
@@ -149,7 +149,7 @@ test_that("test='EPIC.probeInfo' gives correct data", {
 })
 
 test_that("test='HM450.probeInfo' gives correct data", {
-    dt <- sesameDataGet('HM450.probeInfo', dateAdded="2018-05-02")
+    dt <- sesameDataGet('HM450.probeInfo')
     
     expect_equal(length(dt), 9)
     expect_is(dt$probe2chr.hg19, "character")
@@ -164,7 +164,7 @@ test_that("test='HM450.probeInfo' gives correct data", {
 })
 
 test_that("test='HM27.probeInfo' gives correct data", {
-    dt <- sesameDataGet('HM27.probeInfo', dateAdded="2018-05-02")
+    dt <- sesameDataGet('HM27.probeInfo')
     
     expect_equal(length(dt), 2)
     expect_is(dt$probe2chr.hg19, "character")
@@ -190,7 +190,7 @@ test_that("test='ref.methylation' gives correct data", {
 })
 
 test_that("test='age.inference' gives correct data", {
-    dt <- sesameDataGet('age.inference', dateAdded="2018-05-02")
+    dt <- sesameDataGet('age.inference')
     expect_equal(length(dt), 1)
     expect_is(dt, "list")
     expect_is(dt$Horvath353, "data.frame")
