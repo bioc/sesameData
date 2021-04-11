@@ -124,9 +124,7 @@ sesameDataPullVariantAnno_InfiniumI <- function(
 #' use the temporary directory if not given
 #' @return a list with url, dest_dir, dest_file and file_name
 #' @examples
-#' \donttest{
-#' sesameDataDownload("3999492009_R01C01_Grn.idat")
-#' }
+#' if(FALSE) { sesameDataDownload("3999492009_R01C01_Grn.idat") }
 #' @export
 sesameDataDownload = function(file_name, dest_dir=NULL) {
     if (is.null(dest_dir)) {

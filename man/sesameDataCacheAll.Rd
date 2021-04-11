@@ -16,5 +16,5 @@ TRUE
 Cache all SeSAMe data
 }
 \examples{
-sesameDataCacheAll()
+if(FALSE) { sesameDataCacheAll() }
 }

@@ -130,7 +130,7 @@ sesameDataList <- function() {
 #' @import ExperimentHub
 #' @import AnnotationHub
 #' @examples
-#' sesameDataCacheAll()
+#' if(FALSE) { sesameDataCacheAll() }
 #' @export
 sesameDataCacheAll <- function(showProgress = FALSE) {
     setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
