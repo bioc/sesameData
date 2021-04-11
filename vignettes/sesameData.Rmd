@@ -43,12 +43,5 @@ Titles of all the available data can be shown with:
 ```{r}
 sesameDataList()
 ```
-List all versions
-```{r}
-sesameDataListDates()
-```
 
-Retrieve an old version
-```{r}
-probeInfo.oldversion = sesameDataGet('HM27.probeInfo', dateAdded='2018-05-02')
-```
+
