@@ -59,8 +59,8 @@ cacheEnv <- new.env()
     message("ExperimentHub not responding. Using backup.")
     alt_base = 'https://zwdzwd.s3.amazonaws.com/sesameData'
     tryCatch(
-        assign(eh_id, get(load(url(sprintf('%s/%s.rda', alt_base, title))),
-            envir=cacheEnv)),
+        assign(eh_id, get(load(url(sprintf('%s/%s.rda', alt_base, title)))),
+            envir=cacheEnv),
         error = function(cond) {
             message("sesameDataGet2 fails:")
             message(cond)
@@ -78,13 +78,14 @@ cacheEnv <- new.env()
     eh_id = eh_id_lookup[title]
     if (is.na(eh_id)) { # missing from lookup table
         eh_id = title   # use title itself
+    } else {            # present in lookup table
+        ## try ExperimentHub
+        if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
+            eh = query(ExperimentHub(localHub=TRUE), 'sesameData')
+            assign(eh_id, eh[[eh_id]], envir=cacheEnv)
+        }
     }
 
-    ## try ExperimentHub
-    if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
-        eh = query(ExperimentHub(localHub=TRUE), 'sesameData')
-        assign(eh_id, eh[[eh_id]], envir=cacheEnv)
-    }
     ## try backup
     if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
         if (!.sesameDataGet2(title)) {
@@ -107,6 +108,7 @@ cacheEnv <- new.env()
 #' result <- sesameDataGet('genomeInfo.hg38')
 #' @export
 sesameDataGet <- function(title, verbose=FALSE) {
+    
     if (verbose) {
         .sesameDataGet(title)
     } else {
