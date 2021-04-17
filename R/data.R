@@ -53,6 +53,9 @@ cacheEnv <- new.env()
 ## fall back data retrieval in case ExperimentHub is down
 .sesameDataGet2 <- function(title) {
     eh_id = eh_id_lookup[title]
+    if (is.na(eh_id)) {
+        eh_id = title
+    }
     message("ExperimentHub not responding. Using backup.")
     alt_base = 'https://zwdzwd.s3.amazonaws.com/sesameData'
     tryCatch(
@@ -73,15 +76,21 @@ cacheEnv <- new.env()
 
 .sesameDataGet <- function(title) {
     eh_id = eh_id_lookup[title]
-    ## only reload if not in existing environment
+    if (is.na(eh_id)) { # missing from lookup table
+        eh_id = title   # use title itself
+    }
+
+    ## try ExperimentHub
     if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
         eh = query(ExperimentHub(localHub=TRUE), 'sesameData')
         assign(eh_id, eh[[eh_id]], envir=cacheEnv)
     }
-    if (!exists(eh_id, envir=cacheEnv, inherits=FALSE) &&
-            !.sesameDataGet2(title)) {
-        stop(sprintf(
-            "%s doesn't exist. Try: sesameDataCacheAll(\"%s\")", title))
+    ## try backup
+    if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
+        if (!.sesameDataGet2(title)) {
+            stop(sprintf(
+                "%s doesn't exist. Try: sesameDataCacheAll(\"%s\")", title))
+        }
     }
     return(get(eh_id, envir=cacheEnv, inherits=FALSE))
 }
