@@ -4,11 +4,9 @@
 \alias{sesameDataCacheAll}
 \title{Cache all SeSAMe data}
 \usage{
-sesameDataCacheAll(dateAdded = latest_date, showProgress = FALSE)
+sesameDataCacheAll(showProgress = FALSE)
 }
 \arguments{
-\item{dateAdded}{version of the data by date added, if "all", cache all dates}
-
 \item{showProgress}{whether to show progress of download}
 }
 \value{
@@ -18,5 +16,5 @@ TRUE
 Cache all SeSAMe data
 }
 \examples{
-sesameDataCacheAll()
+if(FALSE) { sesameDataCacheAll() }
 }

@@ -4,7 +4,6 @@ test_that("test='EPIC.1.LNCaP' gives correct data", {
     dt <- sesameDataGet('EPIC.1.LNCaP')
     expect_equal(length(dt), 2)
     expect_is(dt$seg, "CNSegment")
-    # expect_is cause dependency cycle issue
     expect_equal(class(dt$sset)[1], 'SigSet')
 })
 
@@ -135,21 +134,7 @@ test_that("test='EPIC.1.LNCaP' gives correct data", {
 })
 
 test_that("test='EPIC.probeInfo' gives correct data", {
-    dt <- sesameDataGet('EPIC.probeInfo', dateAdded="2018-05-02")
-    
-    expect_equal(length(dt), 8)
-    expect_is(dt$probe2chr.hg19, "character")
-    expect_is(dt$mapped.probes.hg19, "GRanges")
-    expect_is(dt$mapped.probes.hg38, "GRanges")
-    expect_is(dt$typeI.extC, "character")
-    expect_is(dt$typeI.extT, "character")
-    expect_is(dt$mask, "character")
-    expect_is(dt$chrY.clean, "character")
-    expect_is(dt$chrX.xlinked, "character")
-})
-
-test_that("test='HM450.probeInfo' gives correct data", {
-    dt <- sesameDataGet('HM450.probeInfo', dateAdded="2018-05-02")
+    dt <- sesameDataGet('EPIC.probeInfo')
     
     expect_equal(length(dt), 9)
     expect_is(dt$probe2chr.hg19, "character")
@@ -158,17 +143,34 @@ test_that("test='HM450.probeInfo' gives correct data", {
     expect_is(dt$typeI.extC, "character")
     expect_is(dt$typeI.extT, "character")
     expect_is(dt$mask, "character")
+    expect_is(dt$mask.hg19, "character")
+    expect_is(dt$chrY.clean, "character")
+    expect_is(dt$chrX.xlinked, "character")
+})
+
+test_that("test='HM450.probeInfo' gives correct data", {
+    dt <- sesameDataGet('HM450.probeInfo')
+    
+    expect_equal(length(dt), 10)
+    expect_is(dt$probe2chr.hg19, "character")
+    expect_is(dt$mapped.probes.hg19, "GRanges")
+    expect_is(dt$mapped.probes.hg38, "GRanges")
+    expect_is(dt$typeI.extC, "character")
+    expect_is(dt$typeI.extT, "character")
+    expect_is(dt$mask, "character")
+    expect_is(dt$mask.hg19, "character")
     expect_is(dt$mask.tcga, "character")
     expect_is(dt$chrY.clean, "character")
     expect_is(dt$chrX.xlinked, "character")
 })
 
 test_that("test='HM27.probeInfo' gives correct data", {
-    dt <- sesameDataGet('HM27.probeInfo', dateAdded="2018-05-02")
+    dt <- sesameDataGet('HM27.probeInfo')
     
-    expect_equal(length(dt), 2)
+    expect_equal(length(dt), 3)
     expect_is(dt$probe2chr.hg19, "character")
     expect_is(dt$mask, "character")
+    expect_is(dt$mask.hg19, "character")
 })
 
 test_that("test='leukocyte.betas' gives correct data", {
@@ -190,10 +192,12 @@ test_that("test='ref.methylation' gives correct data", {
 })
 
 test_that("test='age.inference' gives correct data", {
-    dt <- sesameDataGet('age.inference', dateAdded="2018-05-02")
-    expect_equal(length(dt), 1)
+    dt <- sesameDataGet('age.inference')
+    expect_equal(length(dt), 3)
     expect_is(dt, "list")
     expect_is(dt$Horvath353, "data.frame")
+    expect_is(dt$SkinBlood, "data.frame")
+    expect_is(dt$PhenoAge, "data.frame")
 })
 
 test_that("test='ethnicity.inference' gives correct data", {
