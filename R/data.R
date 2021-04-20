@@ -28,24 +28,24 @@ eh_id_lookup = c(
     "age.inference"="EH3681",
     "ethnicity.inference"="EH3682",
     "sex.inference"="EH3683",
-    "detection.stats"="EH3684",
+    "detection.stats"="EH3684"
+    ## "MM285.address"="EH4678",
     ## eh = query(ExperimentHub(localHub=TRUE), c("sesameData", "v1.9.1"))
     ## data.frame(name=eh$title, eh=names(eh))
-    ## "MM285.address"="EH4678",
     ## "Mammal40.address"="EH4679",
-    "MM285.mm10.manifest"="EH4680",
-    "EPIC.address"="EH5963",
-    "HM27.address"="EH5964",
-    "HM450.1.TCGA.PAAD"="EH5965",
-    "HM450.address"="EH5966",
-    "Mammal40.address"="EH5967",
-    "MM285.1.NOD.FrontalLobe"="EH5968",
-    "MM285.10.tissue"="EH5969",
-    "MM285.address"="EH5970",
-    "MM285.clock347"="EH5971",
-    "MM285.mm10.manifest"="EH5972",
-    "MM285.strain.snp.table"="EH5973",
-    "MM285.tissueSignature"="EH5974"
+    ## "MM285.mm10.manifest"="EH4680",
+    ## "EPIC.address"="EH5963",
+    ## "HM27.address"="EH5964",
+    ## "HM450.1.TCGA.PAAD"="EH5965",
+    ## "HM450.address"="EH5966",
+    ## "Mammal40.address"="EH5967",
+    ## "MM285.1.NOD.FrontalLobe"="EH5968",
+    ## "MM285.10.tissue"="EH5969",
+    ## "MM285.address"="EH5970",
+    ## "MM285.clock347"="EH5971",
+    ## "MM285.mm10.manifest"="EH5972",
+    ## "MM285.strain.snp.table"="EH5973",
+    ## "MM285.tissueSignature"="EH5974"
 )
 
 cacheEnv <- new.env()
@@ -57,7 +57,8 @@ cacheEnv <- new.env()
         eh_id = title
     }
     message("ExperimentHub not responding. Using backup.")
-    alt_base = 'https://zwdzwd.s3.amazonaws.com/sesameData'
+    ## alt_base = 'https://zwdzwd.s3.amazonaws.com/sesameData'
+    alt_base = 'https://zhouserver.research.chop.edu/sesameData/'
     tryCatch(
         assign(eh_id, get(load(url(sprintf('%s/%s.rda', alt_base, title)))),
             envir=cacheEnv),
