@@ -57,7 +57,7 @@ cacheEnv <- new.env()
         eh_id = title
     }
     message("ExperimentHub not responding. Using backup.")
-    alt_base = 'https://zwdzwd.s3.amazonaws.com/sesameData'
+    alt_base = 'http://zhouserver.research.chop.edu/sesameData'
     tryCatch(
         assign(eh_id, get(load(url(sprintf('%s/%s.rda', alt_base, title)))),
             envir=cacheEnv),
