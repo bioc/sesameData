@@ -154,7 +154,7 @@ sesameDataCacheAll <- function(showProgress = FALSE) {
             suppressMessages(log <- capture.output(
                 eh <- query(ExperimentHub(), "sesameData")[eh_id_lookup]))
         }
-        
+
         ## load actual data
         if (showProgress) {
             cache(eh)
