@@ -43,7 +43,9 @@ platform2eh_ids = list(
         ## "HM27.address"="EH5964",           # 1.9.1
         "HM27.hg19.manifest"="EH3672",        # 1.7.2
         "HM27.hg38.manifest"="EH3673",        # 1.7.2
-        "HM27.probeInfo"="EH3678"),           # 1.7.2
+        "HM27.probeInfo"="EH3678",            # 1.7.2
+        "genomeInfo.hg19"="EH3665",           # 1.7.2
+        "genomeInfo.hg38"="EH3666"),          # 1.7.2
     "MM285" = c(
         ## "MM285.address"="EH4678",           # 1.9.1 obsolete
         ## "MM285.address"="EH5970",           # 1.9.1
@@ -89,6 +91,15 @@ alt_base = 'http://zhouserver.research.chop.edu/'
     TRUE
 }
 
+stopAndCache <- function() {
+    stop('
+Please run
+sesameDataCache(<platform>)
+<platform> == "EPIC", "HM450", "MM285", "Mammal40" etc. or
+sesameDataCacheAll()
+to retrieve and cache needed sesame data.')
+}
+
 .sesameDataGet <- function(title) {
     eh_id = eh_id_lookup[title]
     if (is.na(eh_id)) { # missing from lookup table
@@ -96,7 +107,14 @@ alt_base = 'http://zhouserver.research.chop.edu/'
     } else {            # present in lookup table
         ## try ExperimentHub
         if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
-            eh = query(ExperimentHub(localHub=TRUE), 'sesameData')
+            tryCatch({
+                eh = query(ExperimentHub(localHub=TRUE), 'sesameData')
+            }, error = function(cond) {
+                stopAndCache()
+            })
+            if (!(eh_id %in% names(eh))) {
+                stopAndCache()
+            }
             assign(eh_id, eh[[eh_id]], envir=cacheEnv)
         }
     }
@@ -120,8 +138,9 @@ alt_base = 'http://zhouserver.research.chop.edu/'
 #' @import AnnotationHub
 #' @import rmarkdown
 #' @examples
-#' 
-#' result <- sesameDataGet('genomeInfo.hg38')
+#'
+#' sesameDataCache("HM27")
+#' genomeInfo.hg38 <- sesameDataGet('genomeInfo.hg38')
 #' @export
 sesameDataGet <- function(title, verbose=FALSE) {
     
