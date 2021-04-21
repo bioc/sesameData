@@ -71,9 +71,9 @@ sesameDataPullVariantAnno_SNP <- function(
     download_path <-
         sprintf(
             paste0(
-                'https://zwdzwd.s3.amazonaws.com/InfiniumAnnotation/',
+                '%s/InfiniumAnnotation/',
                 '%s/%s/%s.%s.snp_overlap_b151.rds'),
-            version, platform, platform, refversion)
+            alt_base, version, platform, platform, refversion)
 
     cat("Retrieving SNP annotation from ",download_path, "... ")
     anno <- readRDS(url(download_path))
@@ -106,9 +106,9 @@ sesameDataPullVariantAnno_InfiniumI <- function(
     download_path <-
         sprintf(
             paste0(
-                'https://zwdzwd.s3.amazonaws.com/InfiniumAnnotation/',
+                '%s/InfiniumAnnotation/',
                 '%s/%s/%s.%s.typeI_overlap_b151.rds'),
-            version, platform, platform, refversion)
+            alt_base, version, platform, platform, refversion)
 
     cat("Retrieving SNP annotation from ",download_path, "... ")
     anno <- readRDS(url(download_path))
@@ -133,8 +133,7 @@ sesameDataDownload = function(file_name, dest_dir=NULL) {
     dest_file = sprintf("%s/%s", tempdir(), file_name)
 
     url = sprintf(
-        "https://zwdzwd.s3.amazonaws.com/sesameData/raw/%s",
-        file_name)
+        "%s/sesameData/raw/%s", alt_base, file_name)
     
     download.file(url, dest_file)
     list(
