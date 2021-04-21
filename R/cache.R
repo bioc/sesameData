@@ -18,9 +18,11 @@ sesameDataCache <- function(platform, showProgress = FALSE) {
             "%s not supported for this version. Nothing to cache.", platform))
     }
     ## platform is supported but no data added for the snapshot
+    try({
+        eh_ids = eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
+    }, silent = TRUE)
     if (length(eh_ids) == 0) return(TRUE);
-    tryCatch(
-    {
+    tryCatch({
         ## load meta data
         if (showProgress) {
             eh = query(ExperimentHub(), "sesameData")[eh_ids]
@@ -38,11 +40,6 @@ sesameDataCache <- function(platform, showProgress = FALSE) {
     },
     error = function(cond) {
         message("ExperimentHub Caching fails:")
-        message(cond)
-        return(FALSE)
-    },
-    warning = function(cond) {
-        message("ExperimentHub Caching causes a warning:")
         message(cond)
         return(FALSE)
     })
@@ -65,6 +62,10 @@ sesameDataCacheAll <- function(showProgress = FALSE) {
     dir.create(getExperimentHubOption("CACHE"), showWarnings = FALSE)
         
     eh_ids = unique(eh_id_lookup)
+    try({
+        eh_ids = eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
+    }, silent = TRUE)
+    if (length(eh_ids) == 0) return(TRUE);
     tryCatch(
     {
         ## load meta data
