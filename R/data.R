@@ -104,6 +104,7 @@ alt_base = 'http://zhouserver.research.chop.edu/'
 #' @return data object
 #' @import ExperimentHub
 #' @import AnnotationHub
+#' @import rmarkdown
 #' @examples
 #' 
 #' result <- sesameDataGet('genomeInfo.hg38')
