@@ -59,8 +59,7 @@ platform2eh_ids = list(
     ),
     "Mammal40" = c(
         ## "Mammal40.address"="EH5967",       # 1.9.1 obsolete
-        "Mammal40.address"="EH4679",          # 1.9.1
-    )
+        "Mammal40.address"="EH4679")          # 1.9.1
 )
 
 eh_id_lookup = do.call(c, unname(platform2eh_ids))
