@@ -18,6 +18,7 @@ sesameDataCache <- function(platform, showProgress = FALSE) {
             "%s not supported for this version. Nothing to cache.", platform))
     }
     ## platform is supported but no data added for the snapshot
+    eh_ids = eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
     if (length(eh_ids) == 0) return(TRUE);
     tryCatch(
     {
@@ -40,18 +41,7 @@ sesameDataCache <- function(platform, showProgress = FALSE) {
         message("ExperimentHub Caching fails:")
         message(cond)
         return(FALSE)
-    },
-    warning = function(cond) {
-        message("ExperimentHub Caching causes a warning:")
-        message("
-Usually it is caused by having both old and new versions
-of ExperimentHub on your system. You can consider deleting
-the old caching at the location above, as suggested.
-")
-        message(cond)
-        return(FALSE)
     })
-    
     TRUE
 }
 
