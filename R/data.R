@@ -90,13 +90,18 @@ alt_base = 'http://zhouserver.research.chop.edu/'
     TRUE
 }
 
-stopAndCache <- function() {
-    stop('
+stopAndCache <- function(title) {
+
+    platforms = names(which(vapply(
+        platform2eh_ids, function(x) title %in% names(x), logical(1))))
+    
+    stop(sprintf('
+File needs to be cached to be used in sesame.
 Please run
-sesameDataCache(<platform>)
-<platform> == "EPIC", "HM450", "MM285", "Mammal40" etc. or
-sesameDataCacheAll()
-to retrieve and cache needed sesame data.')
+> sesameDataCache("%s")
+or cache all platforms by
+> sesameDataCacheAll()
+to retrieve and cache needed sesame data.', platforms[[1]]))
 }
 
 .sesameDataGet <- function(title) {
@@ -106,13 +111,16 @@ to retrieve and cache needed sesame data.')
     } else {            # present in lookup table
         ## try ExperimentHub
         if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
+            if (!file.exists(getExperimentHubOption("CACHE"))) {
+                stopAndCache(title)
+            }
             tryCatch({
                 eh = query(ExperimentHub(localHub=TRUE), 'sesameData')
             }, error = function(cond) {
-                stopAndCache()
+                stopAndCache(title)
             })
             if (!(eh_id %in% names(eh))) {
-                stopAndCache()
+                stopAndCache(title)
             }
             assign(eh_id, eh[[eh_id]], envir=cacheEnv)
         }
@@ -167,9 +175,5 @@ has_internet <- function(){
 sesameDataList <- function() {
     eh_id_lookup
 }
-
-## if (has_internet()) {
-##     sesameDataCacheAll(showProgress = FALSE)
-## }
 
 
