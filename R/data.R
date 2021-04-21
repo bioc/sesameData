@@ -29,10 +29,10 @@ eh_id_lookup = c(
     "ethnicity.inference"="EH3682",
     "sex.inference"="EH3683",
     "detection.stats"="EH3684",
-    ## eh = query(ExperimentHub(localHub=TRUE), c("sesameData", "v1.9.1"))
-    ## data.frame(name=eh$title, eh=names(eh))
     ## "MM285.address"="EH4678",
     ## "Mammal40.address"="EH4679",
+    ## eh = query(ExperimentHub(localHub=TRUE), c("sesameData", "v1.9.1"))
+    ## data.frame(name=eh$title, eh=names(eh))
     "MM285.mm10.manifest"="EH4680",
     "EPIC.address"="EH5963",
     "HM27.address"="EH5964",
@@ -49,6 +49,7 @@ eh_id_lookup = c(
 )
 
 cacheEnv <- new.env()
+alt_base = 'http://zhouserver.research.chop.edu/'
 
 ## fall back data retrieval in case ExperimentHub is down
 .sesameDataGet2 <- function(title) {
@@ -57,9 +58,9 @@ cacheEnv <- new.env()
         eh_id = title
     }
     message("ExperimentHub not responding. Using backup.")
-    alt_base = 'http://zhouserver.research.chop.edu/sesameData'
     tryCatch(
-        assign(eh_id, get(load(url(sprintf('%s/%s.rda', alt_base, title)))),
+        assign(eh_id, get(load(url(sprintf('%s/sesameData/%s.rda',
+            alt_base, title)))),
             envir=cacheEnv),
         error = function(cond) {
             message("sesameDataGet2 fails:")
@@ -154,7 +155,7 @@ sesameDataCacheAll <- function(showProgress = FALSE) {
             suppressMessages(log <- capture.output(
                 eh <- query(ExperimentHub(), "sesameData")[eh_id_lookup]))
         }
-        
+
         ## load actual data
         if (showProgress) {
             cache(eh)

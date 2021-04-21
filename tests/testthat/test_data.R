@@ -15,14 +15,6 @@ test_that("test='EPIC.5.normal' gives correct data", {
     }
 })
 
-test_that("test='HM450.1.TCGA.PAAD' gives correct data", {
-    dt <- sesameDataGet('HM450.1.TCGA.PAAD')
-    
-    expect_equal(length(dt), 2)
-    expect_is(dt$betas, "numeric")
-    expect_equal(class(dt$sset)[1], "SigSet")
-})
-
 test_that("test='HM450.10.TCGA.PAAD.normal' gives correct data", {
     dt <- sesameDataGet('HM450.10.TCGA.PAAD.normal')
     
@@ -69,30 +61,6 @@ test_that("test='genomeInfo.hg38' gives correct data", {
     expect_is(dt$gene2txn, 'list')
     expect_is(dt$txn2gene, 'list')
     expect_is(dt$txns, 'CompressedGRangesList')
-})
-
-test_that("test='EPIC.address' gives correct data", {
-    dt <- sesameDataGet('EPIC.address')
-    
-    expect_equal(length(dt), 2)
-    expect_is(dt$ordering, "data.frame")
-    expect_is(dt$controls, "data.frame")
-})
-
-test_that("test='HM450.address' gives correct data", {
-    dt <- sesameDataGet('HM450.address')
-    
-    expect_equal(length(dt), 2)
-    expect_is(dt$ordering, "data.frame")
-    expect_is(dt$controls, "data.frame")
-})
-
-test_that("test='HM27.address' gives correct data", {
-    dt <- sesameDataGet('HM27.address')
-    
-    expect_equal(length(dt), 2)
-    expect_is(dt$ordering, "data.frame")
-    expect_is(dt$controls, "data.frame")
 })
 
 test_that("test='EPIC.hg19.manifest' gives correct data", {
