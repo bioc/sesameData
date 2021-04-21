@@ -19,5 +19,6 @@ Get SeSAMe data
 }
 \examples{
 
-result <- sesameDataGet('genomeInfo.hg38')
+sesameDataCache("HM27")
+genomeInfo.hg38 <- sesameDataGet('genomeInfo.hg38')
 }

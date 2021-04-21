@@ -31,13 +31,36 @@ install_github('zwdzwd/sesameData')
 `sesameData` package provides associated data for sesame package. It also 
 maintains probe annotation for different Infinium platforms.
 
-Each datum is accessible through the `sesameDataGet` interface which allows
-package level in-memory caching. For example, data can be retrieved with the
-title: 
-```{r}
+## Load sesameData
+```{r, message=FALSE, warning=FALSE}
 library(sesameData)
-EPIC.hg38.manifest = sesameDataGet('EPIC.hg38.manifest')
 ```
+
+## Caching data on local disk
+
+Each datum is accessible through the `sesameDataGet` interface which allows
+package level in-memory caching. It should be noted that all data must be
+pre-cached to local disk before they can be used. This design is to prevent
+conflict in annotation data caching and remove internet dependency. Caching
+needs only be done once per sesame/sesameData installation. One can cache
+data for a specific assay platform, say HM27 by
+```{r}
+sesameDataCache("HM27")
+```
+or choose to cache all sesame data, by
+```{r, eval=FALSE}
+sesameDataCacheAll()
+```
+
+## Retrieval data
+
+Then data can be retrieved with the title: 
+```{r}
+HM27.hg38.manifest = sesameDataGet('HM27.hg38.manifest')
+```
+
+## List available data
+
 
 Titles of all the available data can be shown with:
 ```{r}
