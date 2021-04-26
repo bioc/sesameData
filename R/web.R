@@ -1,50 +1,27 @@
+
 #' Retrieve manifest file from the supporting website
 #' at http://zwdzwd.github.io/InfiniumAnnotation
 #' and https://github.com/zhou-lab/InfiniumAnnotation
 #'
-#' @param platform Infinium platform
-#' @param refversion human reference version, irrelevant for mouse array
-#' @param version manifest version, default to the latest/current.
-#' @param probeType cg, ch or rs, default to all probes
-#' @param designType I (Infinium-I) or II (Infinium-II), default to both
-#' @return manifest file of requested probes
+#' @param title title of the annotation file
+#' @return annotation file
 #' @examples
 #'
-#' mft <- sesameDataPullManifest('HM27', 'hg38')
+#' mft <- sesameDataDownloadAnno("HM450/HM450.hg19.manifest")
 #' 
 #' @export
-sesameDataPullManifest <- function(
-    platform=c('EPIC','HM450','HM27','MM285'),
-    refversion=c('hg19','hg38','mm10'),
-    version="current",
-    probeType=c('all','cg','ch','rs'),
-    designType=c('all','I','II')) {
-
-    platform <- match.arg(platform)
-    refversion <- match.arg(refversion)
-    probeType <- match.arg(probeType)
-    designType <- match.arg(designType)
-
-    if (platform == 'EPIC') { stopifnot(refversion %in% c('hg19','hg38')); }
-    if (platform == 'MM285') { stopifnot(refversion == 'mm10'); }
-    
+sesameDataDownloadAnno <- function(title) {
     download_path <-
-        sprintf(
-            paste0(
-                'https://zwdzwd.s3.amazonaws.com/InfiniumAnnotation/',
-                '%s/%s/%s.%s.manifest.rds'),
-            version, platform, platform, refversion)
-    
+        sprintf('%s/InfiniumAnnotation/current/%s.tsv.gz', alt_base, title)
+    z <- gzcon(url(download_path))
+    raw <- textConnection(readLines(z))
+    close(z)
     cat("Retrieving manifest from ",download_path, "... ")
-    mft <- readRDS(url(download_path))
+    anno <- read.table(raw, header=TRUE)
+    close(raw)
     cat("Done.\n")
-    if (probeType[1] != 'all')
-        mft <- mft[mft$probeType == probeType]
-
-    if (designType[1] != 'all')
-        mft <- mft[mft$designType == designType]
     
-    mft
+    anno
 }
 
 #' Retrieve variant annotation file for explicit rs probes

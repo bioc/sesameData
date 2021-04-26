@@ -67,4 +67,7 @@ Titles of all the available data can be shown with:
 sesameDataList()
 ```
 
-
+## Download from the annotation website
+```{r}
+mft <- sesameDataDownloadAnno("HM27/HM27.hg19.manifest")
+```
