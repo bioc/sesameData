@@ -43,7 +43,6 @@ sesameDataCache <- function(platform, showProgress = FALSE) {
         message(cond)
         return(FALSE)
     })
-    
     TRUE
 }
 
