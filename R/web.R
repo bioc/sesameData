@@ -7,19 +7,27 @@
 #' @return annotation file
 #' @examples
 #'
-#' mft <- sesameDataDownloadAnno("HM450/HM450.hg19.manifest")
+#' mft <- sesameDataGetAnno("HM27/HM27.hg19.manifest.tsv.gz")
+#' annoS <- sesameDataGetAnno("EPIC/EPIC.hg19.typeI_overlap_b151.rds")
 #' 
 #' @export
-sesameDataDownloadAnno <- function(title) {
+sesameDataGetAnno <- function(title) {
     download_path <-
-        sprintf('%s/InfiniumAnnotation/current/%s.tsv.gz', alt_base, title)
-    z <- gzcon(url(download_path))
-    raw <- textConnection(readLines(z))
-    close(z)
-    cat("Retrieving manifest from ",download_path, "... ")
-    anno <- read.table(raw, header=TRUE)
-    close(raw)
-    cat("Done.\n")
+        sprintf('%s/InfiniumAnnotation/current/%s', alt_base, title)
+
+    if (endsWith(title, ".tsv.gz")) {
+        z <- gzcon(url(download_path))
+        raw <- textConnection(readLines(z))
+        close(z)
+        cat("Retrieving manifest from ",download_path, "... ")
+        anno <- read.table(raw, header=TRUE, sep="\t")
+        close(raw)
+        cat("Done.\n")
+    } else if (endsWith(title, ".rds")) {
+        cat("Retrieving manifest from ",download_path, "... ")
+        anno <- readRDS(url(download_path))
+        cat("Done.\n")
+    }
     
     anno
 }
