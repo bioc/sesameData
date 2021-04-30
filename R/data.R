@@ -64,7 +64,8 @@ platform2eh_ids = list(
 
 eh_id_lookup = do.call(c, unname(platform2eh_ids))
 cacheEnv <- new.env()
-alt_base = 'http://zhouserver.research.chop.edu/'
+alt_base = "http://zhouserver.research.chop.edu"
+alt_base2 = "https://zwdzwd.s3.amazonaws.com"
 
 ## fall back data retrieval in case ExperimentHub is down
 .sesameDataGet2 <- function(title) {
@@ -78,8 +79,15 @@ alt_base = 'http://zhouserver.research.chop.edu/'
             alt_base, title)))),
             envir=cacheEnv),
         error = function(cond) {
-            message("sesameDataGet2 fails:")
-            message(cond)
+            message("%s doesn't respond. Try alternative backup")
+            tryCatch(
+                assign(eh_id, get(load(url(sprintf("%s/sesameData/%s.rda",
+                    alt_base2, title)))),
+                    envir=cacheEnv),
+                error = function(cond) {
+                    message("sesameDataGet2 fails:")
+                    message(cond)
+                })
             return(FALSE)
         },
         warning = function(cond) {
