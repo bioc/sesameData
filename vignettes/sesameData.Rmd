@@ -28,8 +28,9 @@ install_github('zwdzwd/sesameData')
 
 # Usage
 
-`sesameData` package provides associated data for sesame package. It also 
-maintains probe annotation for different Infinium platforms.
+`sesameData` package provides associated data for sesame package. This includes
+example data for testing and instructional purpose, as we ll as probe annotation
+for different Infinium platforms.
 
 ## Load sesameData
 ```{r, message=FALSE, warning=FALSE}
@@ -38,12 +39,11 @@ library(sesameData)
 
 ## Caching data on local disk
 
-Each datum is accessible through the `sesameDataGet` interface which allows
-package level in-memory caching. It should be noted that all data must be
-pre-cached to local disk before they can be used. This design is to prevent
-conflict in annotation data caching and remove internet dependency. Caching
-needs only be done once per sesame/sesameData installation. One can cache
-data for a specific assay platform, say HM27 by
+Each datum is accessible through the `sesameDataGet` interface. It should be
+noted that all data must be pre-cached to local disk before they can be used.
+This design is to prevent conflict in annotation data caching and remove
+internet dependency. Caching needs only be done once per sesame/sesameData
+installation. One can cache data for a specific assay platform, say HM27 by
 ```{r}
 sesameDataCache("HM27")
 ```
@@ -52,15 +52,18 @@ or choose to cache all sesame data, by
 sesameDataCacheAll()
 ```
 
+Once a data object is loaded, it is stored to a tempoary cache, so that the data
+doesn't need to be retrieved again next time we call `sesameDataGet`. This
+design is meant to speeed up the run time.
+
 ## Retrieval data
 
-Then data can be retrieved with the title: 
+For example, the annotation for HM27 can be retrieved with the title: 
 ```{r}
 HM27.hg38.manifest = sesameDataGet('HM27.hg38.manifest')
 ```
 
 ## List available data
-
 
 Titles of all the available data can be shown with:
 ```{r}
@@ -75,4 +78,9 @@ mft <- sesameDataGetAnno("HM27/HM27.hg19.manifest.tsv.gz")
 ## Download RDS files from the annotation website
 ```{r}
 annoS <- sesameDataGetAnno("EPIC/EPIC.hg19.typeI_overlap_b151.rds")
+```
+
+## Download annotation file to disk
+```{r}
+sesameDataDownload("3999492009_R01C01_Grn.idat", dest_dir = tempdir())
 ```
