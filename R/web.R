@@ -56,7 +56,7 @@ sesameDataDownloadFile = function(file_name, dest_file, base = alt_base) {
     url = sprintf(
         "%s/sesameData/raw/%s", base, file_name)
     tryCatch(
-        download.file(url, dest_file),
+        download.file(url, dest_file, mode="wb"),
         error = function(cond) {
             message(".sesameDataDownloadFile causes a error:")
             message(cond, "\n")
