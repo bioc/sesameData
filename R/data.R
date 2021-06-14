@@ -120,12 +120,12 @@ stopAndCache <- function(title) {
         platform2eh_ids, function(x) title %in% names(x), logical(1))))
     
     stop(sprintf('
-File needs to be cached to be used in sesame.
-Please run
-> sesameDataCache("%s")
-or cache all platforms by
-> sesameDataCacheAll()
-to retrieve and cache needed sesame data.', platforms[[1]]))
+| File needs to be cached to be used in sesame.
+| Please run
+| > sesameDataCache("%s")
+| or cache all platforms by
+| > sesameDataCacheAll()
+| to retrieve and cache needed sesame data.', platforms[[1]]))
 }
 
 .sesameDataGet <- function(title) {
