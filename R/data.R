@@ -129,7 +129,6 @@ stopAndCache <- function(title) {
 }
 
 .sesameDataGet <- function(title, use_alternative = FALSE) {
-    browser()
     eh_id = eh_id_lookup[title]
     if (is.na(eh_id)) {            # missing from lookup table
         eh_id = title              # use title itself

@@ -2,7 +2,7 @@ Package: sesameData
 Type: Package
 Title: Supporting Data for SeSAMe Package
 Description: Provides supporting annotation and test data for SeSAMe package. This includes chip tango addresses, mapping information, performance annotation, and trained predictor for Infinium array data. This package provides user access to essential annotation data for working with many generations of the Infinium DNA methylation array. Current we support human array (HM27, HM450, EPIC), mouse array (MM285) and the HorvathMethylChip40 (Mammal40) array.
-Version: 1.11.1
+Version: 1.11.2
 Authors@R: c(person("Wanding", "Zhou", role = c("aut","cre"),
              email = "zhouwanding@gmail.com"),
              person("Hui", "Shen", role = c("aut"),
