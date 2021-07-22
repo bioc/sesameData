@@ -88,7 +88,7 @@ sesameDataCacheAll <- function(showProgress = FALSE) {
         return(FALSE)
     },
     warning = function(cond) {
-        message("ExperimentHub Caching causes a warning:")
+        message("ExperimentHub Caching causes an issue:")
         message(cond)
         return(FALSE)
     })

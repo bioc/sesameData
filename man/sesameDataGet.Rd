@@ -4,10 +4,12 @@
 \alias{sesameDataGet}
 \title{Get SeSAMe data}
 \usage{
-sesameDataGet(title, verbose = FALSE)
+sesameDataGet(title, use_alternative = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{title}{title of the data}
+
+\item{use_alternative}{retrieve from the alternative site}
 
 \item{verbose}{whether to output ExperimentHub message}
 }

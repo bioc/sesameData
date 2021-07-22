@@ -19,12 +19,12 @@ sesameDataGetAnno1 = function(title, base = alt_base) {
             cat("Done.\n")
         },
         error = function(cond) {
-            message("Networking Error. Please report.")
+            message("Networking failure. Please report.")
             message(cond)
             return(NULL)
         },
         warning = function(cond) {
-            message("sesameDataGetAnno causes a warning:")
+            message("sesameDataGetAnno causes an issue:")
             message(cond)
             return(NULL)
         })
@@ -58,11 +58,11 @@ sesameDataDownloadFile = function(file_name, dest_file, base = alt_base) {
     tryCatch(
         download.file(url, dest_file, mode="wb"),
         error = function(cond) {
-            message(".sesameDataDownloadFile causes a error:")
+            message("In .sesameDataDownloadFile:")
             message(cond, "\n")
         },
         warning = function(cond) {
-            message(".sesameDataDownloadFile causes a warning:")
+            message("In .sesameDataDownloadFile:")
             message(cond, "\n")
         })
     url

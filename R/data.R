@@ -107,7 +107,7 @@ alt_base2 = "https://zwdzwd.s3.amazonaws.com"
             return(FALSE)
         },
         warning = function(cond) {
-            message("sesameDataGet2 causes a warning:")
+            message("sesameDataGet2 causes an issue:")
             message(cond)
             return(FALSE)
         })
@@ -128,11 +128,12 @@ stopAndCache <- function(title) {
 | to retrieve and cache needed sesame data.', platforms[[1]]))
 }
 
-.sesameDataGet <- function(title) {
+.sesameDataGet <- function(title, use_alternative = FALSE) {
+    browser()
     eh_id = eh_id_lookup[title]
-    if (is.na(eh_id)) { # missing from lookup table
-        eh_id = title   # use title itself
-    } else {            # present in lookup table
+    if (is.na(eh_id)) {            # missing from lookup table
+        eh_id = title              # use title itself
+    } else if (!use_alternative) { # present in lookup table
         ## try ExperimentHub
         if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
             if (!file.exists(getExperimentHubOption("CACHE"))) {
@@ -163,6 +164,7 @@ stopAndCache <- function(title) {
 #' Get SeSAMe data
 #'
 #' @param title title of the data
+#' @param use_alternative retrieve from the alternative site
 #' @param verbose whether to output ExperimentHub message
 #' @return data object
 #' @import ExperimentHub
@@ -173,14 +175,14 @@ stopAndCache <- function(title) {
 #' sesameDataCache("HM27")
 #' genomeInfo.hg38 <- sesameDataGet('genomeInfo.hg38')
 #' @export
-sesameDataGet <- function(title, verbose=FALSE) {
+sesameDataGet <- function(title, use_alternative = FALSE, verbose = FALSE) {
     
     if (verbose) {
         .sesameDataGet(title)
     } else {
         suppressMessages(
-            log <- capture.output(
-                obj <- .sesameDataGet(title)));
+            log <- capture.output(obj <- .sesameDataGet(
+                title, use_alternative = use_alternative)));
         obj
     }
 }
