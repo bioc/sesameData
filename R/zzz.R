@@ -5,3 +5,6 @@
 }
 
 
+.onLoad = function(libname, pkgname) {
+    
+}
