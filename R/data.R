@@ -22,7 +22,7 @@ NULL
 NULL
 
 cacheEnv <- new.env()
-alt_base = "http://zhouserver.research.chop.edu"
+alt_base = "https://zhouserver.research.chop.edu"
 alt_base2 = "https://zwdzwd.s3.amazonaws.com"
 
 ## fall back data retrieval in case ExperimentHub is down
