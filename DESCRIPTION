@@ -15,4 +15,4 @@ Imports: utils, curl
 biocViews: ExperimentData, MicroarrayData, Genome, ExperimentHub, MethylationArrayData
 VignetteBuilder: knitr
 NeedsCompilation: no
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
