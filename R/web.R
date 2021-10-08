@@ -1,33 +1,35 @@
 
+valid_url = function(url_in,t=2){
+    con = url(url_in)
+    check = suppressWarnings(try(open.connection(
+        con,open="rt",timeout=t),silent=TRUE)[1])
+    suppressWarnings(try(close.connection(con),silent=TRUE))
+    ifelse(is.null(check),TRUE,FALSE)
+}
+
+
 sesameDataGetAnno1 = function(title, base = alt_base) {
-    download_path <-
+    download_path =
         sprintf('%s/InfiniumAnnotation/current/%s', base, title)
 
-    anno <- NULL
-    tryCatch(
-        if (endsWith(title, ".tsv.gz")) {
-            z <- gzcon(url(download_path))
-            raw <- textConnection(readLines(z))
-            close(z)
-            cat("Retrieving annotation from ",download_path, "... ")
-            anno <- read.table(raw, header=TRUE, sep="\t")
-            close(raw)
-            cat("Done.\n")
-        } else if (endsWith(title, ".rds")) {
-            cat("Retrieving annotation from ",download_path, "... ")
-            anno <- readRDS(url(download_path))
-            cat("Done.\n")
-        },
-        error = function(cond) {
-            message("Networking Error. Please report.")
-            message(cond)
-            return(NULL)
-        },
-        warning = function(cond) {
-            message("sesameDataGetAnno causes a warning:")
-            message(cond)
-            return(NULL)
-        })
+    if (!valid_url(download_path)) {
+        message(sprintf("Resource not available %s.", download_path))
+        return(NULL)
+    }
+
+    if (endsWith(title, ".tsv.gz")) {
+        z = gzcon(url(download_path))
+        raw = textConnection(readLines(z))
+        close(z)
+        cat("Retrieving annotation from ",download_path, "... ")
+        anno = read.table(raw, header=TRUE, sep="\t")
+        close(raw)
+        cat("Done.\n")
+    } else if (endsWith(title, ".rds")) {
+        cat("Retrieving annotation from ",download_path, "... ")
+        anno = readRDS(url(download_path))
+        cat("Done.\n")
+    }
     anno
 }
 
@@ -55,16 +57,12 @@ sesameDataGetAnno <- function(title) {
 sesameDataDownloadFile = function(file_name, dest_file, base = alt_base) {
     url = sprintf(
         "%s/sesameData/raw/%s", base, file_name)
-    tryCatch(
-        download.file(url, dest_file, mode="wb"),
-        error = function(cond) {
-            message(".sesameDataDownloadFile causes a error:")
-            message(cond, "\n")
-        },
-        warning = function(cond) {
-            message(".sesameDataDownloadFile causes a warning:")
-            message(cond, "\n")
-        })
+    if (!valid_url(url)) {
+        message(sprintf("Resource not available %s.", url))
+        return(NULL)
+    }
+
+    download.file(url, dest_file, mode="wb")
     url
 }
         
@@ -124,7 +122,7 @@ sesameDataPullVariantAnno_SNP <- function(
                 '%s/%s/%s.%s.snp_overlap_b151.rds'),
             alt_base, version, platform, platform, refversion)
 
-    cat("Retrieving SNP annotation from ",download_path, "... ")
+    cat("Retrieving SNP annotation from",download_path, "... ")
     anno <- readRDS(url(download_path))
     cat("Done.\n")
     
