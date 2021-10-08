@@ -2,7 +2,8 @@
 #' Master data frame for all object to cache
 #'
 #' This is an internal object which will be updated on every new release
-#' eh = query(ExperimentHub(localHub=FALSE), c("sesameData", "v1.9.1"))
+#' library(ExperimentHub)
+#' eh = query(ExperimentHub(localHub=FALSE), c("sesameData", "v1.11.7"))
 #' data.frame(name=eh$title, eh=names(eh))
 #'
 #' @name df_master
