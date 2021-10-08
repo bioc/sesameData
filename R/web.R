@@ -1,33 +1,35 @@
 
+valid_url = function(url_in,t=2){
+    con = url(url_in)
+    check = suppressWarnings(try(open.connection(
+        con,open="rt",timeout=t),silent=TRUE)[1])
+    suppressWarnings(try(close.connection(con),silent=TRUE))
+    ifelse(is.null(check),TRUE,FALSE)
+}
+
 sesameDataGetAnno1 = function(title, base = alt_base) {
     download_path <-
         sprintf('%s/InfiniumAnnotation/current/%s', base, title)
 
-    anno <- NULL
-    tryCatch(
-        if (endsWith(title, ".tsv.gz")) {
-            z <- gzcon(url(download_path))
-            raw <- textConnection(readLines(z))
-            close(z)
-            cat("Retrieving annotation from ",download_path, "... ")
-            anno <- read.table(raw, header=TRUE, sep="\t")
-            close(raw)
-            cat("Done.\n")
-        } else if (endsWith(title, ".rds")) {
-            cat("Retrieving annotation from ",download_path, "... ")
-            anno <- readRDS(url(download_path))
-            cat("Done.\n")
-        },
-        error = function(cond) {
-            message("Networking failure. Please report.")
-            message(cond)
-            return(NULL)
-        },
-        warning = function(cond) {
-            message("sesameDataGetAnno causes an issue:")
-            message(cond)
-            return(NULL)
-        })
+
+    if (valid_url(download_path)) {
+        message(sprintf("Resource not available %s.", download_path))
+        return(NULL)
+    }
+    
+    if (endsWith(title, ".tsv.gz")) {
+        z = gzcon(url(download_path))
+        raw = textConnection(readLines(z))
+        close(z)
+        cat("Retrieving annotation from ",download_path, "... ")
+        anno = read.table(raw, header=TRUE, sep="\t")
+        close(raw)
+        cat("Done.\n")
+    } else if (endsWith(title, ".rds")) {
+        cat("Retrieving annotation from ",download_path, "... ")
+        anno = readRDS(url(download_path))
+        cat("Done.\n")
+    }
     anno
 }
 
@@ -39,11 +41,11 @@ sesameDataGetAnno1 = function(title, base = alt_base) {
 #' @return annotation file
 #' @examples
 #'
-#' mft <- sesameDataGetAnno("HM27/HM27.hg19.manifest.tsv.gz")
-#' annoS <- sesameDataGetAnno("EPIC/EPIC.hg19.typeI_overlap_b151.rds")
+#' mft = sesameDataGetAnno("HM27/HM27.hg19.manifest.tsv.gz")
+#' annoS = sesameDataGetAnno("EPIC/EPIC.hg19.typeI_overlap_b151.rds")
 #' 
 #' @export
-sesameDataGetAnno <- function(title) {
+sesameDataGetAnno = function(title) {
     anno = sesameDataGetAnno1(title, base = alt_base)
     if (is.null(anno)) {
         anno = sesameDataGetAnno1(title, base = alt_base2)
@@ -55,16 +57,12 @@ sesameDataGetAnno <- function(title) {
 sesameDataDownloadFile = function(file_name, dest_file, base = alt_base) {
     url = sprintf(
         "%s/sesameData/raw/%s", base, file_name)
-    tryCatch(
-        download.file(url, dest_file, mode="wb"),
-        error = function(cond) {
-            message("In .sesameDataDownloadFile:")
-            message(cond, "\n")
-        },
-        warning = function(cond) {
-            message("In .sesameDataDownloadFile:")
-            message(cond, "\n")
-        })
+    if (!valid_url(url)) {
+        message(sprintf("Resource not available %s.", url))
+        return(NULL)
+    }
+
+    download.file(url, dest_file, mode="wb")
     url
 }
         
@@ -106,7 +104,7 @@ sesameDataDownload = function(file_name, dest_dir=NULL) {
 #' @return variant annotation file of explicit rs probes
 #' @examples
 #'
-#' annoS <- sesameDataPullVariantAnno_SNP('EPIC', 'hg38')
+#' annoS = sesameDataPullVariantAnno_SNP('EPIC', 'hg38')
 #' 
 #' @export
 sesameDataPullVariantAnno_SNP <- function(
@@ -114,8 +112,8 @@ sesameDataPullVariantAnno_SNP <- function(
     refversion = c('hg19','hg38'),
     version = '20200704') {
 
-    platform <- match.arg(platform)
-    refversion <- match.arg(refversion)
+    platform = match.arg(platform)
+    refversion = match.arg(refversion)
 
     download_path <-
         sprintf(
@@ -125,7 +123,7 @@ sesameDataPullVariantAnno_SNP <- function(
             alt_base, version, platform, platform, refversion)
 
     cat("Retrieving SNP annotation from ",download_path, "... ")
-    anno <- readRDS(url(download_path))
+    anno = readRDS(url(download_path))
     cat("Done.\n")
     
     anno
@@ -141,7 +139,7 @@ sesameDataPullVariantAnno_SNP <- function(
 #' @return variant annotation file of infinium I probes
 #' @examples
 #'
-#' annoI <- sesameDataPullVariantAnno_InfiniumI('EPIC', 'hg38')
+#' annoI = sesameDataPullVariantAnno_InfiniumI('EPIC', 'hg38')
 #' 
 #' @export
 sesameDataPullVariantAnno_InfiniumI <- function(
@@ -149,8 +147,8 @@ sesameDataPullVariantAnno_InfiniumI <- function(
     refversion = c('hg19','hg38'),
     version = '20200704') {
 
-    platform <- match.arg(platform)
-    refversion <- match.arg(refversion)
+    platform = match.arg(platform)
+    refversion = match.arg(refversion)
 
     download_path <-
         sprintf(
@@ -160,7 +158,7 @@ sesameDataPullVariantAnno_InfiniumI <- function(
             alt_base, version, platform, platform, refversion)
 
     cat("Retrieving SNP annotation from ",download_path, "... ")
-    anno <- readRDS(url(download_path))
+    anno = readRDS(url(download_path))
     cat("Done.\n")
     
     anno

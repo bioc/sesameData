@@ -21,7 +21,7 @@ and https://github.com/zhou-lab/InfiniumAnnotation
 }
 \examples{
 
-mft <- sesameDataGetAnno("HM27/HM27.hg19.manifest.tsv.gz")
-annoS <- sesameDataGetAnno("EPIC/EPIC.hg19.typeI_overlap_b151.rds")
+mft = sesameDataGetAnno("HM27/HM27.hg19.manifest.tsv.gz")
+annoS = sesameDataGetAnno("EPIC/EPIC.hg19.typeI_overlap_b151.rds")
 
 }

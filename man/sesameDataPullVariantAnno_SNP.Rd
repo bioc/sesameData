@@ -29,6 +29,6 @@ at http://zwdzwd.github.io/InfiniumAnnotation
 }
 \examples{
 
-annoS <- sesameDataPullVariantAnno_SNP('EPIC', 'hg38')
+annoS = sesameDataPullVariantAnno_SNP('EPIC', 'hg38')
 
 }

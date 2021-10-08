@@ -65,8 +65,7 @@ sesameDataCacheAll <- function(showProgress = FALSE) {
         eh_ids = eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
     }, silent = TRUE)
     if (length(eh_ids) == 0) return(TRUE);
-    tryCatch(
-    {
+    tryCatch({
         ## load meta data
         if (showProgress) {
             eh = query(ExperimentHub(), "sesameData")[eh_ids]
@@ -86,12 +85,6 @@ sesameDataCacheAll <- function(showProgress = FALSE) {
         message("ExperimentHub Caching fails:")
         message(cond)
         return(FALSE)
-    },
-    warning = function(cond) {
-        message("ExperimentHub Caching causes an issue:")
-        message(cond)
-        return(FALSE)
     })
-    
     TRUE
 }

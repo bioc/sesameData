@@ -32,27 +32,18 @@ alt_base2 = "https://zwdzwd.s3.amazonaws.com"
         eh_id = title
     }
     message("ExperimentHub not responding. Using backup.")
-    tryCatch(
-        assign(eh_id, get(load(url(sprintf('%s/sesameData/%s.rda',
-            alt_base, title)))),
-            envir=cacheEnv),
-        error = function(cond) {
-            message("%s doesn't respond. Try alternative backup")
-            tryCatch(
-                assign(eh_id, get(load(url(sprintf("%s/sesameData/%s.rda",
-                    alt_base2, title)))),
-                    envir=cacheEnv),
-                error = function(cond) {
-                    message("sesameDataGet2 fails:")
-                    message(cond)
-                })
-            return(FALSE)
-        },
-        warning = function(cond) {
-            message("sesameDataGet2 causes an issue:")
-            message(cond)
-            return(FALSE)
-        })
+    u1 = sprintf('%s/sesameData/%s.rda', alt_base, title)
+    u2 = sprintf('%s/sesameData/%s.rda', alt_base2, title)
+    if (valid_url(u1)) {
+        assign(eh_id, get(load(url(u1))), envir=cacheEnv)
+        TRUE
+    } else if (valid_url(u2)) {
+        assign(eh_id, get(load(url(u2))), envir=cacheEnv)
+        TRUE
+    } else {
+        warning(sprintf("Resource %s cannot be retrieved.", title))
+        FALSE
+    }
     TRUE
 }
 
