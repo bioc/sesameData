@@ -4,12 +4,12 @@
 \alias{sesameDataCache}
 \title{Cache SeSAMe data for specific platform}
 \usage{
-sesameDataCache(platform, showProgress = FALSE)
+sesameDataCache(platform = NULL, keyword = NULL)
 }
 \arguments{
 \item{platform}{EPIC, HM450, MM285, etc.}
 
-\item{showProgress}{whether to show progress of download}
+\item{keyword}{keyword used to filter records}
 }
 \value{
 TRUE

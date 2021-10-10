@@ -10,28 +10,19 @@
 #' @docType data
 NULL
 
-#' EH ID lookup table in R/sysdata.rda
-#'
-#' @name eh_id_lookup
-#' @docType data
-NULL
-
-#' EH ID lookup table per platform in R/sysdata.rda
-#'
-#' @name platform2eh_ids
-#' @docType data
-NULL
-
 cacheEnv <- new.env()
 alt_base = "https://zhouserver.research.chop.edu"
 alt_base2 = "https://zwdzwd.s3.amazonaws.com"
 
 ## fall back data retrieval in case ExperimentHub is down
 .sesameDataGet2 <- function(title) {
-    eh_id = eh_id_lookup[title]
+    eh_id = df_master$EHID[match(title, df_master$Title)]
+    stopifnot(is.na(eh_id) || length(eh_id) == 1)
+    
     if (is.na(eh_id)) {
         eh_id = title
     }
+    
     message("ExperimentHub not responding. Using backup.")
     u1 = sprintf('%s/sesameData/%s.rda', alt_base, title)
     u2 = sprintf('%s/sesameData/%s.rda', alt_base2, title)
@@ -49,21 +40,17 @@ alt_base2 = "https://zwdzwd.s3.amazonaws.com"
 }
 
 stopAndCache <- function(title) {
-
-    platforms = names(which(vapply(
-        platform2eh_ids, function(x) title %in% names(x), logical(1))))
-    
     stop(sprintf('
-| File needs to be cached to be used in sesame.
-| Please run
-| > sesameDataCache("%s")
-| or cache all platforms by
+| File %s needs to be cached to be used in sesame.
+| Please make sure you have updated ExperimentHub and try
 | > sesameDataCacheAll()
-| to retrieve and cache needed sesame data.', platforms[[1]]))
+| to retrieve and cache needed sesame data.', title))
 }
 
 .sesameDataGet <- function(title, use_alternative = FALSE) {
-    eh_id = eh_id_lookup[title]
+    eh_id = df_master$EHID[match(title, df_master$Title)]
+    stopifnot(is.na(eh_id) || length(eh_id) == 1)
+    
     if (is.na(eh_id)) {            # missing from lookup table
         eh_id = title              # use title itself
     } else if (!use_alternative) { # present in lookup table
@@ -135,7 +122,7 @@ has_internet <- function(){
 #' sesameDataList()
 #' @export
 sesameDataList <- function() {
-    eh_id_lookup
+    df_master[,c("EHID","Title")]
 }
 
 

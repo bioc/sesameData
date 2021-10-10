@@ -1,42 +1,52 @@
 #' Cache SeSAMe data for specific platform
 #'
 #' @param platform EPIC, HM450, MM285, etc.
-#' @param showProgress whether to show progress of download
+#' @param keyword keyword used to filter records
 #' @return TRUE
 #' @import ExperimentHub
 #' @import AnnotationHub
 #' @examples
 #' if(FALSE) { sesameDataCache("MM285") }
 #' @export
-sesameDataCache <- function(platform, showProgress = FALSE) {
+sesameDataCache <- function(
+    platform=NULL, keyword = NULL) {
+    
     dir.create(getExperimentHubOption("CACHE"), showWarnings = FALSE)
     setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
-    if (platform %in% names(platform2eh_ids)) {
-        eh_ids = platform2eh_ids[[platform]]
-    } else {
-        stop(sprintf(
-            "%s not supported for this version. Nothing to cache.", platform))
+
+    tmp = df_master
+    if (!is.null(platform)) {
+        if (paste0("Platform",platform) %in% colnames(tmp)) {
+            tmp = tmp[tmp[[paste0("Platform",platform)]] == 1,]
+        } else {
+            stop(sprintf(
+                "%s not supported for this version.", platform))
+        }
     }
-    ## platform is supported but no data added for the snapshot
-    try({
+    
+    if (!is.null(keyword)) {
+        tmp = tmp[grep(keyword, tmp$Title),]
+    }
+    eh_ids = tmp$EHID
+    
+    ## TODO platform is supported but no data added for the snapshot
+    try({ # only if it's not cached already
         eh_ids = eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
     }, silent = TRUE)
     if (length(eh_ids) == 0) return(TRUE);
+
+    titles = tmp$Title[match(eh_ids, tmp$EHID)]
     tryCatch({
         ## load meta data
-        if (showProgress) {
-            eh = query(ExperimentHub(), "sesameData")[eh_ids]
-        } else {
-            suppressMessages(log <- capture.output(
-                eh <- query(ExperimentHub(), "sesameData")[eh_ids]))
-        }
-
+        cat(sprintf("Metadata (N=%d):\n", length(eh_ids)))
+        suppressMessages(log <- capture.output(
+            eh <- query(ExperimentHub(), "sesameData")[eh_ids]))
+        
         ## load actual data
-        if (showProgress) {
-            cache(eh)
-        } else {
-            suppressMessages(log <- capture.output(cache(eh)))
-        }
+        tmp2 = lapply(seq_along(eh), function(i) {
+            cat(eh$title[i], ":\n")
+            suppressMessages(log <- capture.output(cache(eh[i])))
+        })
     },
     error = function(cond) {
         message("ExperimentHub Caching fails:")
@@ -46,40 +56,38 @@ sesameDataCache <- function(platform, showProgress = FALSE) {
     TRUE
 }
 
+## a convenience function, only works on Mac
+sesameDataClearCache = function() {
+    unlink("~/Library/Caches/org.R-project.R/R/ExperimentHub/", recursive=TRUE)
+}
+
 #' Cache all SeSAMe data
 #'
-#' @param showProgress whether to show progress of download
 #' @return TRUE
 #' @import ExperimentHub
 #' @import AnnotationHub
 #' @examples
 #' if(FALSE) { sesameDataCacheAll() }
 #' @export
-sesameDataCacheAll <- function(showProgress = FALSE) {
+sesameDataCacheAll <- function() {
     setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
 
     dir.create(getExperimentHubOption("CACHE"), showWarnings = FALSE)
         
-    eh_ids = unique(eh_id_lookup)
+    eh_ids = unique(df_master$EHID)
+    eh_ids = eh_ids[eh_ids != "TBD"]
+    
     try({
         eh_ids = eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
     }, silent = TRUE)
     if (length(eh_ids) == 0) return(TRUE);
     tryCatch({
         ## load meta data
-        if (showProgress) {
-            eh = query(ExperimentHub(), "sesameData")[eh_ids]
-        } else {
-            suppressMessages(log <- capture.output(
-                eh <- query(ExperimentHub(), "sesameData")[eh_ids]))
-        }
+        suppressMessages(log <- capture.output(
+            eh <- query(ExperimentHub(), "sesameData")[eh_ids]))
 
         ## load actual data
-        if (showProgress) {
-            cache(eh)
-        } else {
-            suppressMessages(log <- capture.output(cache(eh)))
-        }
+        suppressMessages(log <- capture.output(cache(eh)))
     },
     error = function(cond) {
         message("ExperimentHub Caching fails:")

@@ -4,10 +4,7 @@
 \alias{sesameDataCacheAll}
 \title{Cache all SeSAMe data}
 \usage{
-sesameDataCacheAll(showProgress = FALSE)
-}
-\arguments{
-\item{showProgress}{whether to show progress of download}
+sesameDataCacheAll()
 }
 \value{
 TRUE
