@@ -12,7 +12,7 @@ sesameDataGetAnno1 = function(title, base = alt_base) {
         sprintf('%s/InfiniumAnnotation/current/%s', base, title)
 
 
-    if (valid_url(download_path)) {
+    if (!valid_url(download_path)) {
         message(sprintf("Resource not available %s.", download_path))
         return(NULL)
     }
