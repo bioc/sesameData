@@ -1,3 +1,17 @@
+sesameDataCache0 = function(eh, eh_ids) {
+    ## load meta data
+    cat(sprintf("Metadata (N=%d):\n", length(eh_ids)))
+    suppressMessages(log <- capture.output(
+        eh <- query(ExperimentHub(), "sesameData")[eh_ids]))
+    
+    ## load actual data
+    tmp2 = lapply(seq_along(eh), function(i) {
+        cat(sprintf(
+            "(%d/%d) %s | %s:\n", i, length(eh_ids), eh$title[i], eh_ids[i]))
+        suppressMessages(log <- capture.output(cache(eh[i])))
+    })
+}
+
 #' Cache SeSAMe data for specific platform
 #'
 #' @param platform EPIC, HM450, MM285, etc.
@@ -37,16 +51,7 @@ sesameDataCache <- function(
 
     titles = tmp$Title[match(eh_ids, tmp$EHID)]
     tryCatch({
-        ## load meta data
-        cat(sprintf("Metadata (N=%d):\n", length(eh_ids)))
-        suppressMessages(log <- capture.output(
-            eh <- query(ExperimentHub(), "sesameData")[eh_ids]))
-        
-        ## load actual data
-        tmp2 = lapply(seq_along(eh), function(i) {
-            cat(eh$title[i], ":\n")
-            suppressMessages(log <- capture.output(cache(eh[i])))
-        })
+        sesameDataCache0(eh, eh_ids)
     },
     error = function(cond) {
         message("ExperimentHub Caching fails:")
@@ -82,12 +87,7 @@ sesameDataCacheAll <- function() {
     }, silent = TRUE)
     if (length(eh_ids) == 0) return(TRUE);
     tryCatch({
-        ## load meta data
-        suppressMessages(log <- capture.output(
-            eh <- query(ExperimentHub(), "sesameData")[eh_ids]))
-
-        ## load actual data
-        suppressMessages(log <- capture.output(cache(eh)))
+        sesameDataCache0(eh, eh_ids)
     },
     error = function(cond) {
         message("ExperimentHub Caching fails:")
