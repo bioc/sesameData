@@ -2,6 +2,7 @@
 
 export(sesameDataCache)
 export(sesameDataCacheAll)
+export(sesameDataClearCache)
 export(sesameDataDownload)
 export(sesameDataGet)
 export(sesameDataGetAnno)

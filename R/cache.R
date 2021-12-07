@@ -1,4 +1,4 @@
-sesameDataCache0 = function(eh, eh_ids) {
+sesameDataCache0 = function(eh_ids) {
     ## load meta data
     cat(sprintf("Metadata (N=%d):\n", length(eh_ids)))
     suppressMessages(log <- capture.output(
@@ -51,7 +51,7 @@ sesameDataCache <- function(
 
     titles = tmp$Title[match(eh_ids, tmp$EHID)]
     tryCatch({
-        sesameDataCache0(eh, eh_ids)
+        sesameDataCache0(eh_ids)
     },
     error = function(cond) {
         message("ExperimentHub Caching fails:")
@@ -62,8 +62,21 @@ sesameDataCache <- function(
 }
 
 ## a convenience function, only works on Mac
-sesameDataClearCache = function() {
+sesameDataClearHub = function() {
     unlink("~/Library/Caches/org.R-project.R/R/ExperimentHub/", recursive=TRUE)
+}
+
+#' Clear cache to free memory
+#'
+#' sesameData:::cacheEnv
+#'
+#' @return gc() output
+#' @examples
+#' sesameDataClearCache()
+#' @export
+sesameDataClearCache = function() {
+    rm(list=ls(envir=cacheEnv), envir=cacheEnv)
+    gc()
 }
 
 #' Cache all SeSAMe data
@@ -87,7 +100,7 @@ sesameDataCacheAll <- function() {
     }, silent = TRUE)
     if (length(eh_ids) == 0) return(TRUE);
     tryCatch({
-        sesameDataCache0(eh, eh_ids)
+        sesameDataCache0(eh_ids)
     },
     error = function(cond) {
         message("ExperimentHub Caching fails:")
