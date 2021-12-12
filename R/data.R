@@ -84,6 +84,7 @@ stopAndCache <- function(title) {
 #' Get SeSAMe data
 #'
 #' @param title title of the data
+#' @param use_alternative to use alternative hosting site
 #' @param verbose whether to output ExperimentHub message
 #' @return data object
 #' @import ExperimentHub
@@ -94,11 +95,13 @@ stopAndCache <- function(title) {
 #' sesameDataCache("HM27")
 #' HM27.hg19.manifest <- sesameDataGet('HM27.hg19.manifest')
 #' @export
-sesameDataGet <- function(title, verbose = FALSE) {
+sesameDataGet <- function(title, use_alternative = FALSE, verbose = FALSE) {
 
-    use_alternative = (
-        !is.null(getOption("sesameData_use_alternative")) &&
-            getOption("sesameData_use_alternative"))
+    if (!use_alternative) { # take it from env
+        use_alternative = (
+            !is.null(getOption("sesameData_use_alternative")) &&
+                getOption("sesameData_use_alternative"))
+    }
     
     if (verbose) {
         .sesameDataGet(title, use_alternative = use_alternative)
