@@ -1,12 +1,12 @@
-sesameDataCache0 = function(eh_ids) {
+sesameDataCache0 <- function(eh_ids) {
     ## load meta data
-    cat(sprintf("Metadata (N=%d):\n", length(eh_ids)))
+    message(sprintf("Metadata (N=%d):\n", length(eh_ids)))
     suppressMessages(log <- capture.output(
         eh <- query(ExperimentHub(), "sesameData")[eh_ids]))
     
     ## load actual data
-    tmp2 = lapply(seq_along(eh), function(i) {
-        cat(sprintf(
+    tmp2 <- lapply(seq_along(eh), function(i) {
+        message(sprintf(
             "(%d/%d) %s | %s:\n", i, length(eh_ids), eh$title[i], eh_ids[i]))
         suppressMessages(log <- capture.output(cache(eh[i])))
     })
@@ -28,10 +28,10 @@ sesameDataCache <- function(
     dir.create(getExperimentHubOption("CACHE"), showWarnings = FALSE)
     setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
 
-    tmp = df_master
+    tmp <- df_master
     if (!is.null(platform)) {
         if (paste0("Platform",platform) %in% colnames(tmp)) {
-            tmp = tmp[tmp[[paste0("Platform",platform)]] == 1,]
+            tmp <- tmp[tmp[[paste0("Platform",platform)]] == 1,]
         } else {
             stop(sprintf(
                 "%s not supported for this version.", platform))
@@ -39,21 +39,20 @@ sesameDataCache <- function(
     }
     
     if (!is.null(keyword)) {
-        tmp = tmp[grep(keyword, tmp$Title),]
+        tmp <- tmp[grep(keyword, tmp$Title),]
     }
-    eh_ids = tmp$EHID
+    eh_ids <- tmp$EHID
     
     ## TODO platform is supported but no data added for the snapshot
     try({ # only if it's not cached already
-        eh_ids = eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
+        eh_ids <- eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
     }, silent = TRUE)
     if (length(eh_ids) == 0) return(TRUE);
 
-    titles = tmp$Title[match(eh_ids, tmp$EHID)]
+    titles <- tmp$Title[match(eh_ids, tmp$EHID)]
     tryCatch({
         sesameDataCache0(eh_ids)
-    },
-    error = function(cond) {
+    }, error = function(cond) {
         message("ExperimentHub Caching fails:")
         message(cond)
         return(FALSE)
@@ -62,7 +61,7 @@ sesameDataCache <- function(
 }
 
 ## a convenience function, only works on Mac
-sesameDataClearHub = function() {
+sesameDataClearHub <- function() {
     unlink("~/Library/Caches/org.R-project.R/R/ExperimentHub/", recursive=TRUE)
 }
 
@@ -74,7 +73,7 @@ sesameDataClearHub = function() {
 #' @examples
 #' sesameDataClearCache()
 #' @export
-sesameDataClearCache = function() {
+sesameDataClearCache <- function() {
     rm(list=ls(envir=cacheEnv), envir=cacheEnv)
     gc()
 }
@@ -92,17 +91,16 @@ sesameDataCacheAll <- function() {
 
     dir.create(getExperimentHubOption("CACHE"), showWarnings = FALSE)
         
-    eh_ids = unique(df_master$EHID)
-    eh_ids = eh_ids[eh_ids != "TBD"]
+    eh_ids <- unique(df_master$EHID)
+    eh_ids <- eh_ids[eh_ids != "TBD"]
     
     try({
-        eh_ids = eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
+        eh_ids <- eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
     }, silent = TRUE)
     if (length(eh_ids) == 0) return(TRUE);
     tryCatch({
         sesameDataCache0(eh_ids)
-    },
-    error = function(cond) {
+    }, error = function(cond) {
         message("ExperimentHub Caching fails:")
         message(cond)
         return(FALSE)

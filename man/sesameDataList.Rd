@@ -4,7 +4,10 @@
 \alias{sesameDataList}
 \title{List all SeSAMe data}
 \usage{
-sesameDataList()
+sesameDataList(filter = NULL)
+}
+\arguments{
+\item{filter}{keyword to filter title, optional}
 }
 \value{
 all titles from SeSAMe Data
@@ -13,5 +16,5 @@ all titles from SeSAMe Data
 List all SeSAMe data
 }
 \examples{
-sesameDataList()
+sesameDataList("KYCG")
 }

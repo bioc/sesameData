@@ -3,7 +3,7 @@
 #'
 #' This is an internal object which will be updated on every new release
 #' library(ExperimentHub)
-#' eh = query(ExperimentHub(localHub=FALSE), c("sesameData", "v1.11.7"))
+#' eh <- query(ExperimentHub(localHub=FALSE), c("sesameData", "v1.11.7"))
 #' data.frame(name=eh$title, eh=names(eh))
 #'
 #' @name df_master
@@ -11,21 +11,21 @@
 NULL
 
 cacheEnv <- new.env()
-alt_base = "https://zhouserver.research.chop.edu"
-alt_base2 = "https://zwdzwd.s3.amazonaws.com"
+alt_base <- "https://zhouserver.research.chop.edu"
+alt_base2 <- "https://zwdzwd.s3.amazonaws.com"
 
 ## fall back data retrieval in case ExperimentHub is down
 .sesameDataGet2 <- function(title) {
-    eh_id = df_master$EHID[match(title, df_master$Title)]
+    eh_id <- df_master$EHID[match(title, df_master$Title)]
     stopifnot(is.na(eh_id) || length(eh_id) == 1)
     
     if (is.na(eh_id)) {
-        eh_id = title
+        eh_id <- title
     }
     
     message("ExperimentHub not responding. Using backup.")
-    u1 = sprintf('%s/sesameData/%s.rda', alt_base, title)
-    u2 = sprintf('%s/sesameData/%s.rda', alt_base2, title)
+    u1 <- sprintf('%s/sesameData/%s.rda', alt_base, title)
+    u2 <- sprintf('%s/sesameData/%s.rda', alt_base2, title)
     if (valid_url(u1)) {
         assign(eh_id, get(load(url(u1))), envir=cacheEnv)
         TRUE
@@ -48,11 +48,11 @@ stopAndCache <- function(title) {
 }
 
 .sesameDataGet <- function(title, use_alternative = FALSE) {
-    eh_id = df_master$EHID[match(title, df_master$Title)]
+    eh_id <- df_master$EHID[match(title, df_master$Title)]
     stopifnot(is.na(eh_id) || length(eh_id) == 1)
     
     if (is.na(eh_id)) {            # missing from lookup table
-        eh_id = title              # use title itself
+        eh_id <- title              # use title itself
     } else if (!use_alternative) { # present in lookup table
         ## try ExperimentHub
         if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
@@ -60,7 +60,7 @@ stopAndCache <- function(title) {
                 stopAndCache(title)
             }
             tryCatch({
-                eh = query(ExperimentHub(localHub=TRUE), 'sesameData')
+                eh <- query(ExperimentHub(localHub=TRUE), 'sesameData')
             }, error = function(cond) {
                 stopAndCache(title)
             })
@@ -98,7 +98,7 @@ stopAndCache <- function(title) {
 sesameDataGet <- function(title, use_alternative = FALSE, verbose = FALSE) {
 
     if (!use_alternative) { # take it from env
-        use_alternative = (
+        use_alternative <- (
             !is.null(getOption("sesameData_use_alternative")) &&
                 getOption("sesameData_use_alternative"))
     }
@@ -120,12 +120,17 @@ has_internet <- function(){
 
 #' List all SeSAMe data
 #'
+#' @param filter keyword to filter title, optional
 #' @return all titles from SeSAMe Data
 #' @examples
-#' sesameDataList()
+#' sesameDataList("KYCG")
 #' @export
-sesameDataList <- function() {
-    df_master[,c("EHID","Title")]
+sesameDataList <- function(filter = NULL) {
+    df <- df_master[,c("EHID","Title")]
+    if (!is.null(filter)) {
+        df[grep(filter, df$Title),]
+    }
+    df
 }
 
 
