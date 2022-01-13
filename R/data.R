@@ -128,7 +128,7 @@ has_internet <- function(){
 sesameDataList <- function(filter = NULL) {
     df <- df_master[,c("EHID","Title")]
     if (!is.null(filter)) {
-        df[grep(filter, df$Title),]
+        df <- df[grep(filter, df$Title),]
     }
     df
 }
