@@ -17,6 +17,7 @@ alt_base2 <- "https://zwdzwd.s3.amazonaws.com"
 ## fall back data retrieval in case ExperimentHub is down
 .sesameDataGet2 <- function(title) {
     eh_id <- df_master$EHID[match(title, df_master$Title)]
+    if (eh_id %in% c("TBD", "NA")) { eh_id <- NA; }
     stopifnot(is.na(eh_id) || length(eh_id) == 1)
     
     if (is.na(eh_id)) {
@@ -53,7 +54,7 @@ stopAndCache <- function(title) {
     stopifnot(is.na(eh_id) || length(eh_id) == 1)
     
     if (is.na(eh_id)) {            # missing from lookup table
-        eh_id <- title              # use title itself
+        eh_id <- title             # use title itself
     } else if (!use_alternative) { # present in lookup table
         ## try ExperimentHub
         if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
