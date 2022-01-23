@@ -49,6 +49,7 @@ stopAndCache <- function(title) {
 
 .sesameDataGet <- function(title, use_alternative = FALSE) {
     eh_id <- df_master$EHID[match(title, df_master$Title)]
+    if (eh_id %in% c("TBD", "NA")) { eh_id <- NA; }
     stopifnot(is.na(eh_id) || length(eh_id) == 1)
     
     if (is.na(eh_id)) {            # missing from lookup table
