@@ -14,33 +14,19 @@ sesameDataCache0 <- function(eh_ids) {
 
 #' Cache SeSAMe data for specific platform
 #'
-#' @param platform EPIC, HM450, MM285, etc.
-#' @param keyword keyword used to filter records
 #' @return TRUE
 #' @import ExperimentHub
 #' @import AnnotationHub
 #' @examples
-#' if(FALSE) { sesameDataCache("MM285") }
+#' if(FALSE) { sesameDataCacheExample() }
 #' @export
-sesameDataCache <- function(
-    platform=NULL, keyword = NULL) {
+sesameDataCacheExample <- function() {
     
     dir.create(getExperimentHubOption("CACHE"), showWarnings = FALSE)
     setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
 
     tmp <- df_master
-    if (!is.null(platform)) {
-        if (paste0("Platform",platform) %in% colnames(tmp)) {
-            tmp <- tmp[tmp[[paste0("Platform",platform)]] == 1,]
-        } else {
-            stop(sprintf(
-                "%s not supported for this version.", platform))
-        }
-    }
-    
-    if (!is.null(keyword)) {
-        tmp <- tmp[grep(keyword, tmp$Title),]
-    }
+    tmp <- tmp[tmp$Example==1,]
     eh_ids <- tmp$EHID
     
     ## TODO platform is supported but no data added for the snapshot
@@ -57,7 +43,7 @@ sesameDataCache <- function(
         message(cond)
         return(FALSE)
     })
-    TRUE
+    invisible(TRUE)
 }
 
 ## a convenience function, only works on Mac
@@ -105,5 +91,5 @@ sesameDataCacheAll <- function() {
         message(cond)
         return(FALSE)
     })
-    TRUE
+    invisible(TRUE)
 }

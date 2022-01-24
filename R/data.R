@@ -94,8 +94,8 @@ stopAndCache <- function(title) {
 #' @import rmarkdown
 #' @examples
 #'
-#' sesameDataCache("HM27")
-#' HM27.hg19.manifest <- sesameDataGet('HM27.hg19.manifest')
+#' sesameDataCacheExample()
+#' EPIC.1.SigDF <- sesameDataGet('EPIC.1.SigDF')
 #' @export
 sesameDataGet <- function(title, use_alternative = FALSE, verbose = FALSE) {
 

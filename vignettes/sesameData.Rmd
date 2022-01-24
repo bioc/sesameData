@@ -43,9 +43,9 @@ Each datum is accessible through the `sesameDataGet` interface. It should be
 noted that all data must be pre-cached to local disk before they can be used.
 This design is to prevent conflict in annotation data caching and remove
 internet dependency. Caching needs only be done once per sesame/sesameData
-installation. One can cache data for a specific assay platform, say HM27 by
+installation. One can cache data for the examples.
 ```{r}
-sesameDataCache("HM27")
+sesameDataCacheExample()
 ```
 or choose to cache all sesame data, by
 ```{r, eval=FALSE}
