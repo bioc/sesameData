@@ -93,3 +93,13 @@ sesameDataCacheAll <- function() {
     })
     invisible(TRUE)
 }
+
+#' Cache all SeSAMe data
+#'
+#' @return TRUE
+#' @import ExperimentHub
+#' @import AnnotationHub
+#' @examples
+#' if(FALSE) { sesameDataCacheAll() }
+#' @export
+sesameDataCache <- sesameDataCacheAll
