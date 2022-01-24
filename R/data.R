@@ -41,7 +41,6 @@ alt_base2 <- "https://zwdzwd.s3.amazonaws.com"
 }
 
 stopAndCache <- function(title) {
-    sesameDataCache()
     stop(sprintf('
 | File %s needs to be cached to be used in sesame.
 | Please make sure you have updated ExperimentHub and try
