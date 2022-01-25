@@ -33,7 +33,7 @@ sesameDataCacheExample <- function() {
     try({ # only if it's not cached already
         eh_ids <- eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
     }, silent = TRUE)
-    if (length(eh_ids) == 0) return(TRUE);
+    if (length(eh_ids) == 0) return(invisible(TRUE));
 
     titles <- tmp$Title[match(eh_ids, tmp$EHID)]
     tryCatch({
@@ -41,7 +41,7 @@ sesameDataCacheExample <- function() {
     }, error = function(cond) {
         message("ExperimentHub Caching fails:")
         message(cond)
-        return(FALSE)
+        return(invisible(FALSE))
     })
     invisible(TRUE)
 }
@@ -83,13 +83,13 @@ sesameDataCacheAll <- function() {
     try({
         eh_ids <- eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
     }, silent = TRUE)
-    if (length(eh_ids) == 0) return(TRUE);
+    if (length(eh_ids) == 0) return(invisible(TRUE));
     tryCatch({
         sesameDataCache0(eh_ids)
     }, error = function(cond) {
         message("ExperimentHub Caching fails:")
         message(cond)
-        return(FALSE)
+        return(invisible(FALSE))
     })
     invisible(TRUE)
 }
