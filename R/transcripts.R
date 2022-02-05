@@ -9,6 +9,7 @@ read_GENCODE_gtf <- function(x) {
             start=col_integer(),
             end=col_integer(),
             .default=col_character()))
+    gtf
 }
 
 read_GENCODE_gtf_transcript <- function(gtf) {
@@ -88,7 +89,18 @@ build_GENCODE_gtf <- function(x) {
     grl
 }
 
-getTranscriptGRanges <- function(grl) {
+#' convert GRangesList to transcript GRanges
+#'
+#' @param grl GRangesList object
+#' @return a GRanges object
+#' @examples
+#' full_model <- sesameDataGet("genomeInfo.mm10")$txns
+#' txns <- sesameData_getTxnGRanges(full_model)
+#' ## get verified protein-coding
+#' txns <- txns[(txns$transcript_type == "protein_coding" & txns$level <= 2)]
+#'
+#' @export
+sesameData_getTxnGRanges <- function(grl) {
     mcl <- mcols(grl)
     gr <- GRanges(
         seqnames = mcl$chrm, ranges = IRanges(
@@ -100,6 +112,32 @@ getTranscriptGRanges <- function(grl) {
         "transcript_end","transcript_strand"))]]
     gr <- sort(gr, ignore.strand = TRUE)
     gr
+}
+
+#' convert transcript GRanges to gene GRanges
+#'
+#' @param txns GRanges object
+#' @return a GRanges object
+#' @examples
+#' full_model <- sesameDataGet("genomeInfo.mm10")$txns
+#' txns <- sesameData_getTxnGRanges(full_model)
+#' genes <- sesameData_getGeneGRanges(txns)
+#' 
+#' @export
+sesameData_getGeneGRanges <- function(txns) {
+    gene_ids <- unique(txns$gene_id)
+    gene2starts <- split(start(txns), txns$gene_id)[gene_ids]
+    gene2ends <- split(end(txns), txns$gene_id)[gene_ids]
+    genes <- GRanges(seqnames = seqnames(txns)[match(gene_ids, txns$gene_id)],
+        IRanges(
+            vapply(gene2starts, min, integer(1)),
+            vapply(gene2ends, max, integer(1))),
+        strand = strand(txns)[match(gene_ids, txns$gene_id)])
+
+    names(genes) <- gene_ids
+    mcols(genes)$gene_name <- txns$gene_name[match(names(genes), txns$gene_id)]
+    mcols(genes)$gene_type <- txns$gene_type[match(names(genes), txns$gene_id)]
+    sort(genes, ignore.strand=TRUE)
 }
 
 
