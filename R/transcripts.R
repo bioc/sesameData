@@ -100,12 +100,12 @@ build_GENCODE_gtf <- function(x) {
 #' @return a GRanges object
 #' @examples
 #' full_model <- sesameDataGet("genomeInfo.mm10")$txns
-#' txns <- sesameData_getTxnGRanges(full_model)
+#' txns <- sesameData_toTxnGRanges(full_model)
 #' ## get verified protein-coding
 #' txns <- txns[(txns$transcript_type == "protein_coding" & txns$level <= 2)]
 #'
 #' @export
-sesameData_getTxnGRanges <- function(grl) {
+sesameData_toTxnGRanges <- function(grl) {
     mcl <- mcols(grl)
     gr <- GRanges(
         seqnames = mcl$chrm, ranges = IRanges(
@@ -125,11 +125,11 @@ sesameData_getTxnGRanges <- function(grl) {
 #' @return a GRanges object
 #' @examples
 #' full_model <- sesameDataGet("genomeInfo.mm10")$txns
-#' txns <- sesameData_getTxnGRanges(full_model)
-#' genes <- sesameData_getGeneGRanges(txns)
+#' txns <- sesameData_toTxnGRanges(full_model)
+#' genes <- sesameData_toGeneGRanges(txns)
 #' 
 #' @export
-sesameData_getGeneGRanges <- function(txns) {
+sesameData_toGeneGRanges <- function(txns) {
     gene_ids <- unique(txns$gene_id)
     gene2starts <- split(start(txns), txns$gene_id)[gene_ids]
     gene2ends <- split(end(txns), txns$gene_id)[gene_ids]
