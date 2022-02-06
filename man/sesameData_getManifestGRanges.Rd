@@ -8,6 +8,7 @@ sesameData_getManifestGRanges(
   platform,
   genome = NULL,
   version = 1,
+  decoy = FALSE,
   columns = c("mapQ_A", "mapAS_A")
 )
 }
@@ -17,6 +18,8 @@ sesameData_getManifestGRanges(
 \item{genome}{hg38, mm10 etc.}
 
 \item{version}{release version, default is the latest}
+
+\item{decoy}{whether to include probes mapped to decoy sequence}
 
 \item{columns}{additional columns to add from the manifest to mcols}
 }
