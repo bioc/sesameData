@@ -1,4 +1,6 @@
-# SeSAMe Supporting Data Package [![Travis-CI Build Status](https://travis-ci.org/zwdzwd/sesame.svg?branch=master)](https://travis-ci.org/zwdzwd/sesame)
+# SeSAMe Supporting Data Package
+
+[![last commit](https://img.shields.io/github/last-commit/zwdzwd/sesameData.svg?style=flat-square)](https://github.com/zwdzwd/sesameData/commits/master)
                   
 ## Bugs
     
