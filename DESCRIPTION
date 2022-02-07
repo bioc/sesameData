@@ -11,7 +11,7 @@ Authors@R: c(person("Wanding", "Zhou", role = c("aut","cre"),
 License: Artistic-2.0
 Depends: R (>= 4.1), ExperimentHub, AnnotationHub, rmarkdown
 Suggests: BiocGenerics, sesame, testthat, knitr
-Imports: utils, curl, readr, stringr, GenomicRanges, IRanges, GenomeInfoDb
+Imports: utils, readr, stringr, GenomicRanges, IRanges, GenomeInfoDb
 biocViews: ExperimentData, MicroarrayData, Genome, ExperimentHub, MethylationArrayData
 VignetteBuilder: knitr
 NeedsCompilation: no
