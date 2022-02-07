@@ -165,3 +165,30 @@ sesameData_getTranscriptsByGene <- function(gene_name, genome) {
 
     txns[GenomicRanges::mcols(txns)$gene_name == gene_name]
 }
+
+sesameData_inferPlatformFromProbeIDs <- function(probeIDs) {
+    sig <- sesameDataGet("probeIDSignature")
+    names(which.max(vapply(
+        sig, function(x) sum(probeIDs %in% x), integer(1))))
+}
+
+#' get genes next to certain probes
+#'
+#' @param Probe_IDs probe IDs
+#' @param platform EPIC, HM450, ... will infer if not given
+#' @param max_distance maximum distance to gene (default: 10000)
+#' @return a GRanges object for overlapping genes
+#' @importMethodsFrom IRanges subsetByOverlaps
+#' @examples
+#' sesameData_getGenesByProbes(c("cg14620903","cg22464003"))
+#' @export
+sesameData_getGenesByProbes <- function(
+    Probe_IDs, platform = NULL, max_distance = 10000) {
+    if (is.null(platform)) {
+        platform <- sesameData_inferPlatformFromProbeIDs(Probe_IDs) }
+    genes <- sesameData_txnToGeneGRanges(
+        sesameData_getTxnGRanges(
+            sesameData_check_genome(NULL, platform)))
+    probes <- sesameData_getManifestGRanges(platform)[Probe_IDs]
+    subsetByOverlaps(genes, probes + max_distance)
+}

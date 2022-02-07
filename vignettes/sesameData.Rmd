@@ -75,6 +75,8 @@ genes_gr <- sesameData_txnToGeneGRanges(txns_gr)
 genes_gr
 ```
 
+Get nearby genes given probes
+
 # Manifest from Github
 
 Sesame provide parsers to handle manifest files hosted on Github. One may
@@ -98,6 +100,8 @@ length(gr)
 length(gr_decoy)
 ```
 
+# Subset probes
+
 One can directly get probes from different parts of the genome.
 
 ```{r message = FALSE, warning = FALSE}
@@ -111,6 +115,12 @@ sesameData_getProbesByChromosome('chrX', platform = 'Mammal40')
 sesameData_getAutosomeProbes("Mammal40")
 sesameData_getProbesByGene('DNMT3A', "Mammal40", upstream=500)
 sesameData_getProbesByTSS('DNMT3A', "Mammal40")
+```
+
+# Get nearby genes
+
+```{r}
+sesameData_getGenesByProbes(c("cg14620903","cg22464003"), max_distance = 10000)
 ```
 
 # Additional Data
