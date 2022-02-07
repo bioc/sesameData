@@ -55,30 +55,23 @@ HM27.address <- sesameDataGet('HM27.address')
 
 Sesame provides some utility functions to process transcript models, which can
 be represented as data.frame, GRanges and GRangesList objects. For example,
+`sesameData_getTxnGRanges` calls `sesameDataGet("genomeInfo.mm10")$txns` to
+retrieve a transcript-centric GRangesList object from GENCODE including its
+gene annotation, exon and cds (for protein-coding genes). It is then turned
+into a simple GRanges object of transcript:
 
 ```{r}
-txns_grl <- sesameDataGet("genomeInfo.mm10")$txns
-txns_grl
-```
-
-retrieves a transcript-centric GRangesList object from GENCODE including its
-gene annotation, exon and cds (for protein-coding genes).
-
-We can turn that into a simple GRanges object of transcript by
-
-```{r}
-txns_gr <- sesameData_toTxnGRanges(txns_grl)
+txns_gr <- sesameData_getTxnGRanges("mm10")
 txns_gr
 ```
 
-The new GRanges object does not contain the exon coordinates.
-
-We can further collapse different transcripts of the same gene (isoforms) to
-gene level. Gene start is the minimum of all isoform starts and end is the
-maximum of all isoform ends.
+The returned GRanges object does not contain the exon coordinates. We can
+further collapse different transcripts of the same gene (isoforms) to gene
+level. Gene start is the minimum of all isoform starts and end is the maximum
+of all isoform ends.
 
 ```{r}
-genes_gr <- sesameData_toGeneGRanges(txns_gr)
+genes_gr <- sesameData_txnToGeneGRanges(txns_gr)
 genes_gr
 ```
 
@@ -103,6 +96,21 @@ option.
 gr_decoy <- sesameData_getManifestGRanges("HM450", decoy = TRUE)
 length(gr)
 length(gr_decoy)
+```
+
+One can directly get probes from different parts of the genome.
+
+```{r message = FALSE, warning = FALSE}
+library(GenomicRanges)
+```
+
+```{r}
+regs <- GRanges('chr5', IRanges(135313937, 135419936))
+sesameData_getProbesByRegion(regs, platform = 'Mammal40')
+sesameData_getProbesByChromosome('chrX', platform = 'Mammal40')
+sesameData_getAutosomeProbes("Mammal40")
+sesameData_getProbesByGene('DNMT3A', "Mammal40", upstream=500)
+sesameData_getProbesByTSS('DNMT3A', "Mammal40")
 ```
 
 # Additional Data

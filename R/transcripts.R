@@ -96,16 +96,20 @@ build_GENCODE_gtf <- function(x) {
 
 #' convert GRangesList to transcript GRanges
 #'
+#' @param genome hg38, mm10, ...
 #' @param grl GRangesList object
 #' @return a GRanges object
 #' @examples
-#' full_model <- sesameDataGet("genomeInfo.mm10")$txns
-#' txns <- sesameData_toTxnGRanges(full_model)
+#' txns <- sesameData_getTxnGRanges("mm10")
 #' ## get verified protein-coding
 #' txns <- txns[(txns$transcript_type == "protein_coding" & txns$level <= 2)]
 #'
 #' @export
-sesameData_toTxnGRanges <- function(grl) {
+sesameData_getTxnGRanges <- function(genome = NULL, grl = NULL) {
+    if (is.null(grl)) {
+        genome <- sesameData_check_genome(genome, NULL)
+        grl <- sesameDataGet(sprintf("genomeInfo.%s", genome))$txns
+    }
     mcl <- mcols(grl)
     gr <- GRanges(
         seqnames = mcl$chrm, ranges = IRanges(
@@ -124,12 +128,11 @@ sesameData_toTxnGRanges <- function(grl) {
 #' @param txns GRanges object
 #' @return a GRanges object
 #' @examples
-#' full_model <- sesameDataGet("genomeInfo.mm10")$txns
-#' txns <- sesameData_toTxnGRanges(full_model)
-#' genes <- sesameData_toGeneGRanges(txns)
+#' txns <- sesameData_getTxnGRanges("mm10")
+#' genes <- sesameData_txnToGeneGRanges(txns)
 #' 
 #' @export
-sesameData_toGeneGRanges <- function(txns) {
+sesameData_txnToGeneGRanges <- function(txns) {
     gene_ids <- unique(txns$gene_id)
     gene2starts <- split(start(txns), txns$gene_id)[gene_ids]
     gene2ends <- split(end(txns), txns$gene_id)[gene_ids]
@@ -145,5 +148,20 @@ sesameData_toGeneGRanges <- function(txns) {
     sort(genes, ignore.strand=TRUE)
 }
 
+#' get transcripts by gene name
+#'
+#' @param gene_name gene name
+#' @param genome hg38, mm10 etc.
+#' @return GRangesList of the transcripts
+#' @examples
+#' sesameData_getTranscriptsByGene("Cdkn2a", "mm10")
+#' @export
+sesameData_getTranscriptsByGene <- function(gene_name, genome) {
 
+    txns <- sesameDataGet(paste0("genomeInfo.", genome))$txns
+    if (!(gene_name %in% GenomicRanges::mcols(txns)$gene_name)) {
+        stop('Gene ', gene_name, ' not found in ', genome, ".");
+    }
 
+    txns[GenomicRanges::mcols(txns)$gene_name == gene_name]
+}

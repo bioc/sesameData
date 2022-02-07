@@ -1,8 +1,45 @@
-check_genomes <- function(genome, platform) {
+sesameData_check_platform <- function(platform) {
+    if (is.null(platform)) {
+        platform <- "EPIC"
+    } else {
+        stopifnot(platform %in% c(
+            "EPIC", "HM27", "HM450", "MM285", "Mammal40"))
+    }
+    platform
+}
+
+## defaultAssembly <- function(platform) {
+##     platform2build <- c(
+##         "HM27"="hg38",
+##         "HM450"="hg38",
+##         "EPIC"="hg38",
+##         "MM285"="mm10",
+##         "Mammal40"="hg38"
+##     )
+##     if (!(platform %in% names(platform2build))) {
+##         stop(sprintf(
+##             "Platform %s not supported. Try custom manifest?", platform))
+##     }
+##     platform2build[platform]
+## }
+
+#' check genome supported for a platform
+#'
+#' @param genome mm10, hg38, ... or NULL
+#' @param platform HM27, HM450, EPIC, ...
+#' @return genome as string
+#' @examples
+#' sesameData_check_genome(NULL, "Mammal40")
+#' @export
+sesameData_check_genome <- function(genome, platform) {
+    platform <- sesameData_check_platform(platform)
+    supported_genomes <- c("hg19", "hg38", "mm10")
     default_genome <- c(
-        Mammal40="hg38", MM285="mm10", EPIC="hg38", HM450="hg38")
+        HM27 = "hg38", HM450 = "hg38", EPIC = "hg38",
+        Mammal40 = "hg38", MM285 = "mm10")
     if (is.null(genome)) { genome <- default_genome[platform] }
     stopifnot(!is.null(genome))
+    stopifnot(genome %in% supported_genomes)
     genome
 }
 
@@ -20,8 +57,10 @@ check_genomes <- function(genome, platform) {
 #' mft <- sesameData_getManifestDF("Mammal40")
 #' @export
 sesameData_getManifestDF <- function(platform, genome=NULL, version=1) {
-    genome <- check_genomes(genome, platform)
+    platform <- sesameData_check_platform(platform)
+    genome <- sesameData_check_genome(genome, platform)
     base <- "https://github.com/zhou-lab/InfiniumManifestsV"
+    
     read_tsv(sprintf(
         "%s%d/raw/main/%s/%s.tsv.gz", base, version, platform, genome),
         col_types=cols(CpG_beg=col_integer(), CpG_end=col_integer(),
@@ -42,9 +81,9 @@ sesameData_getManifestDF <- function(platform, genome=NULL, version=1) {
 #' gr <- sesameData_getManifestGRanges("Mammal40")
 #' @export
 sesameData_getManifestGRanges <- function(
-    platform, genome = NULL, version = 1, decoy = FALSE,
-    columns = c("mapQ_A", "mapAS_A")) {
-    genome <- check_genomes(genome, platform)
+    platform, genome = NULL, version = 1, decoy = FALSE, columns = NULL) {
+    
+    genome <- sesameData_check_genome(genome, platform)
     df <- sesameData_getManifestDF(platform, genome=genome, version=version)
 
     chrms <- df$CpG_chrm
@@ -66,7 +105,8 @@ sesameData_getManifestGRanges <- function(
         IRanges(df$CpG_beg+1, df$CpG_end),
         strand = ifelse(df$mapFlag_A=="0", "+", "-"),
         seqinfo = Seqinfo(chrms))
-    mcols(gr) <- df[,columns]
+    if (length(columns) > 0) {
+        mcols(gr) <- df[,columns] }
     names(gr) <- df$Probe_ID
     sort(gr, ignore.strand = TRUE)
 }

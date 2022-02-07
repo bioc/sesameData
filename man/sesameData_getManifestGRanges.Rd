@@ -9,7 +9,7 @@ sesameData_getManifestGRanges(
   genome = NULL,
   version = 1,
   decoy = FALSE,
-  columns = c("mapQ_A", "mapAS_A")
+  columns = NULL
 )
 }
 \arguments{
