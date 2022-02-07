@@ -8,15 +8,13 @@ valid_url <- function(url_in,t=2){
 }
 
 download_file <- function(title, version, dest_dir) {
-    ## file_name, dest_file, base = alt_base) {
     dest_file <- sprintf("%s/%s", dest_dir, title)
-    ## url <- sesameDataDownloadFile(file_name, dest_file, base = alt_base)
+    dir.create(sprintf("%s/%s", dest_dir, dirname(title)),
+        recursive = TRUE, showWarnings = FALSE)
     url <- sprintf("%s%d/raw/main/%s", anno_base, version, title)
-    ## url <- sprintf(
-    ## "%s/sesameData/raw/%s", base, file_name)
     stopifnot(valid_url(url))
     download.file(url, dest_file, mode="wb")
-    stopifnot(!file.exists(dest_file) || file.info(dest_file)$size == 0)
+    stopifnot(file.exists(dest_file) && file.info(dest_file)$size > 0)
     
     list(
         url = url,
@@ -49,14 +47,14 @@ download_file <- function(title, version, dest_dir) {
 #' mft <- sesameData_getAnno("HM27/HM27.hg19.manifest.tsv.gz")
 #' annoI <- sesameData_getAnno("EPIC/EPIC.hg19.typeI_overlap_b151.rds")
 #' annoS <- sesameData_getAnno("EPIC/EPIC.hg19.snp_overlap_b151.rds")
-#' sesameData_getAnno("3999492009_R01C01_Grn.idat", dest_dir = tempdir())
+#' sesameData_getAnno("test/3999492009_R01C01_Grn.idat", dest_dir = tempdir())
 #' }
 #' 
 #' @export
 sesameData_getAnno <- function(
     title, version = anno_base_default_version, dest_dir = NULL) {
 
-    if (is.null(dest_dir)) {
+    if (!is.null(dest_dir)) {
         return(download_file(title, version, dest_dir))
     }
     
@@ -83,72 +81,4 @@ sesameData_getAnno <- function(
     }
     anno
 }
-
-## the following will be made to ExperimentHub to ensure consistent behavior
-
-## #' Retrieve variant annotation file for explicit rs probes
-## #' from the supporting website
-## #' at http://zwdzwd.github.io/InfiniumAnnotation
-## #'
-## #' @param platform Infinium platform
-## #' @param refversion human reference version, irrelevant for mouse array
-## #' @param version manifest version, default to the latest/current.
-## #' @return variant annotation file of explicit rs probes
-## #' @examples
-## #'
-## #' annoS <- sesameDataPullVariantAnno_SNP('EPIC', 'hg38')
-## #' 
-## #' @export
-## sesameDataPullVariantAnno_SNP <- function(
-##     platform = c('EPIC'), refversion = c('hg19','hg38'),
-##     version = '20200704') {
-
-##     platform <- match.arg(platform)
-##     refversion <- match.arg(refversion)
-
-##     download_path <-
-##         sprintf(
-##             paste0(
-##                 '%s/InfiniumAnnotation/',
-##                 '%s/%s/%s.%s.snp_overlap_b151.rds'),
-##             alt_base, version, platform, platform, refversion)
-
-##     message("Retrieving SNP annotation from ",download_path, "... ")
-##     anno <- readRDS(url(download_path))
-##     message("Done.\n")
-    
-##     anno
-## }
-
-## #' Retrieve variant annotation file for Infinium-I probes
-## #' from the supporting website
-## #' at http://zwdzwd.github.io/InfiniumAnnotation
-## #'
-## #' @param platform Infinium platform
-## #' @param refversion human reference version, irrelevant for mouse array
-## #' @param version manifest version, default to the latest/current.
-## #' @return variant annotation file of infinium I probes
-## #' @examples
-## #'
-## #' annoI <- sesameDataPullVariantAnno_InfiniumI('EPIC', 'hg38')
-## #' 
-## #' @export
-## sesameDataPullVariantAnno_InfiniumI <- function(
-##     platform = c('EPIC'), refversion = c('hg19','hg38'),
-##     version = '20200704') {
-
-##     platform <- match.arg(platform)
-##     refversion <- match.arg(refversion)
-
-##     download_path <- sprintf(paste0(
-##         '%s/InfiniumAnnotation/',
-##         '%s/%s/%s.%s.typeI_overlap_b151.rds'),
-##         alt_base, version, platform, platform, refversion)
-
-##     message("Retrieving SNP annotation from ",download_path, "... ")
-##     anno <- readRDS(url(download_path))
-##     message("Done.\n")
-    
-##     anno
-## }
 
