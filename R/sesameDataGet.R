@@ -61,11 +61,10 @@ sesameDataGet_resetEnv <- function() {
     u1 <- sprintf('%s/sesameData/%s.rda', alt_base, title)
     u2 <- sprintf('%s/sesameData/%s.rda', alt_base2, title)
     if (valid_url(u1)) {
-        sesameDataGet_assign(eh_id, get(load(url(u1))))
-        assign(eh_id, get(load(url(u1))), envir=cacheEnv)
+        sesameDataGet_assignEnv(eh_id, get(load(url(u1))))
         TRUE
     } else if (valid_url(u2)) {
-        assign(eh_id, get(load(url(u2))), envir=cacheEnv)
+        sesameDataGet_assignEnv(eh_id, get(load(url(u2))))
         TRUE
     } else {
         warning(sprintf("Resource %s cannot be retrieved.", title))
@@ -95,7 +94,7 @@ sesameDataGet_resetEnv <- function() {
             if (!(eh_id %in% names(eh))) {
                 stopAndCache(title)
             }
-            assign(eh_id, eh[[eh_id]], envir=cacheEnv)
+            sesameDataGet_assignEnv(eh_id, eh[[eh_id]])
         }
     }
 

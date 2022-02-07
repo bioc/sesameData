@@ -28,11 +28,13 @@ Titles of all the available data can be shown with:
 sesameDataList()
 ```
 
-Each datum is accessible through the `sesameDataGet` interface. It should be
-noted that all data must be pre-cached to local disk before they can be used.
-This design is to prevent conflict in annotation data caching and remove
-internet dependency. Caching needs only be done once per sesame/sesameData
-installation. One can cache data using
+## Local caching
+
+Each sesame datum from ExperimentHub is accessible through the `sesameDataGet`
+interface. It should be noted that all data must be pre-cached to local disk
+before they can be used.  This design is to prevent conflict in annotation data
+caching and remove internet dependency. Caching needs only be done once per
+sesame/sesameData installation. One can cache data using
 
 ```{r, include = FALSE}
 sesameDataCacheExample()        # examples
@@ -49,6 +51,18 @@ design is meant to speeed up the run time.
 For example, the annotation for HM27 can be retrieved with the title: 
 ```{r}
 HM27.address <- sesameDataGet('HM27.address')
+```
+
+## In-memory caching
+
+It's worth noting that once a data is retrieved through the `sesameDataGet`
+inferface or the `sesameData_getManifestDF` inferface (below), it will stay in
+memory so next time the object will be returned immediately. This design avoids
+repeated disk/web retrieval. In some rare situation, one may want to redo the
+download/disk IO, or empty the cache to save memory. This can be done with:
+
+```{r}
+sesameDataGet_resetEnv()
 ```
 
 ## Transcript Models
