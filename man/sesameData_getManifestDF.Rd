@@ -2,7 +2,7 @@
 % Please edit documentation in R/manifest.R
 \name{sesameData_getManifestDF}
 \alias{sesameData_getManifestDF}
-\title{download Infinium manifest from repositories}
+\title{download Infinium manifest from Github repositories}
 \usage{
 sesameData_getManifestDF(platform, genome = NULL, version = 1)
 }
@@ -17,7 +17,7 @@ sesameData_getManifestDF(platform, genome = NULL, version = 1)
 tibble
 }
 \description{
-download Infinium manifest from repositories
+download Infinium manifest from Github repositories
 }
 \examples{
 mft <- sesameData_getManifestDF("Mammal40")

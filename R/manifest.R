@@ -1,49 +1,5 @@
-sesameData_check_platform <- function(platform) {
-    if (is.null(platform)) {
-        platform <- "EPIC"
-    } else {
-        stopifnot(platform %in% c(
-            "EPIC", "HM27", "HM450", "MM285", "Mammal40"))
-    }
-    platform
-}
 
-## defaultAssembly <- function(platform) {
-##     platform2build <- c(
-##         "HM27"="hg38",
-##         "HM450"="hg38",
-##         "EPIC"="hg38",
-##         "MM285"="mm10",
-##         "Mammal40"="hg38"
-##     )
-##     if (!(platform %in% names(platform2build))) {
-##         stop(sprintf(
-##             "Platform %s not supported. Try custom manifest?", platform))
-##     }
-##     platform2build[platform]
-## }
-
-#' check genome supported for a platform
-#'
-#' @param genome mm10, hg38, ... or NULL
-#' @param platform HM27, HM450, EPIC, ...
-#' @return genome as string
-#' @examples
-#' sesameData_check_genome(NULL, "Mammal40")
-#' @export
-sesameData_check_genome <- function(genome, platform) {
-    platform <- sesameData_check_platform(platform)
-    supported_genomes <- c("hg19", "hg38", "mm10")
-    default_genome <- c(
-        HM27 = "hg38", HM450 = "hg38", EPIC = "hg38",
-        Mammal40 = "hg38", MM285 = "mm10")
-    if (is.null(genome)) { genome <- default_genome[platform] }
-    stopifnot(!is.null(genome))
-    stopifnot(genome %in% supported_genomes)
-    genome
-}
-
-#' download Infinium manifest from repositories
+#' download Infinium manifest from Github repositories
 #'
 #' @param platform Mammal40, MM285, EPIC, and HM450
 #' @param genome hg38, mm10 etc.
@@ -60,12 +16,20 @@ sesameData_getManifestDF <- function(platform, genome=NULL, version=1) {
     platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
     base <- "https://github.com/zhou-lab/InfiniumManifestsV"
-    
-    read_tsv(sprintf(
-        "%s%d/raw/main/%s/%s.tsv.gz", base, version, platform, genome),
-        col_types=cols(CpG_beg=col_integer(), CpG_end=col_integer(),
-            address_A=col_integer(), address_B=col_integer(),
-            .default=col_character()))
+
+    title <- sprintf("InfiniumManifestV%d_%s_%s", platform, genome)
+    data <- sesameDataGet_checkEnv(title)
+    if (is.null(data)) {
+        u1 <- sprintf(
+            "%s%d/raw/main/%s/%s.tsv.gz", base, version, platform, genome)
+        stopifnot(valid_url(u1))
+        data <- read_tsv(u1,
+            col_types=cols(CpG_beg=col_integer(), CpG_end=col_integer(),
+                address_A=col_integer(), address_B=col_integer(),
+                .default=col_character()))
+        sesameDataGet_assignEnv(title, data)
+    }
+    data
 }
 
 #' download Infinium manifest from repositories and return GRanges

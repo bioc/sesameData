@@ -1,4 +1,3 @@
-
 #' Master data frame for all object to cache
 #'
 #' This is an internal object which will be updated on every new release
@@ -14,8 +13,42 @@ cacheEnv <- new.env()
 alt_base <- "https://zhouserver.research.chop.edu"
 alt_base2 <- "https://zwdzwd.s3.amazonaws.com"
 
+#' Check whether the title exists in cacheEnv
+#'
+#' @param title the title to check
+#' @return the data associated with the title or NULL if title doesn't exist
+sesameDataGet_checkEnv <- function(title) {
+    if (exists(title, envir = cacheEnv, inherits = FALSE)) {
+        return(get(title, envir = cacheEnv, inherits = FALSE))
+    } else {
+        return(NULL)
+    }
+}
+
+sesameDataGet_assignEnv <- function(title, data) {
+    assign(title, data, envir = cacheEnv)
+}
+
+#' Empty cache environment to free memory
+#'
+#' When this function is called sesameDataGet will
+#' retrieve all data from disk again instead of using the in-memory
+#' cache, i.e., sesameData:::cacheEnv.
+#'
+#' Note this is different from sesameDataClearHub which empties the
+#' ExperimentHub on disk.
+#'
+#' @return gc() output
+#' @examples
+#' sesameDataGet_resetEnv()
+#' @export
+sesameDataGet_resetEnv <- function() {
+    rm(list=ls(envir=cacheEnv), envir=cacheEnv)
+    gc()
+}
+
 ## fall back data retrieval in case ExperimentHub is down
-.sesameDataGet2 <- function(title) {
+.sesameDataGet_fallback <- function(title) {
     eh_id <- df_master$EHID[match(title, df_master$Title)]
     if (eh_id %in% c("TBD", "NA")) { eh_id <- NA; }
     stopifnot(is.na(eh_id) || length(eh_id) == 1)
@@ -28,6 +61,7 @@ alt_base2 <- "https://zwdzwd.s3.amazonaws.com"
     u1 <- sprintf('%s/sesameData/%s.rda', alt_base, title)
     u2 <- sprintf('%s/sesameData/%s.rda', alt_base2, title)
     if (valid_url(u1)) {
+        sesameDataGet_assign(eh_id, get(load(url(u1))))
         assign(eh_id, get(load(url(u1))), envir=cacheEnv)
         TRUE
     } else if (valid_url(u2)) {
@@ -38,14 +72,6 @@ alt_base2 <- "https://zwdzwd.s3.amazonaws.com"
         FALSE
     }
     TRUE
-}
-
-stopAndCache <- function(title) {
-    stop(sprintf('
-| File %s needs to be cached to be used in sesame.
-| Please make sure you have updated ExperimentHub and try
-| > sesameDataCacheAll()
-| to retrieve and cache needed sesame data.', title))
 }
 
 .sesameDataGet <- function(title, use_alternative = FALSE) {
@@ -75,7 +101,7 @@ stopAndCache <- function(title) {
 
     ## try backup
     if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
-        if (!.sesameDataGet2(title)) {
+        if (!.sesameDataGet_fallback(title)) {
             stop(sprintf(
                 "%s doesn't exist. Try: sesameDataCacheAll(\"%s\")", title))
         }
@@ -113,11 +139,6 @@ sesameDataGet <- function(title, use_alternative = FALSE, verbose = FALSE) {
                 title, use_alternative = use_alternative)));
         obj
     }
-}
-
-#' @import curl
-has_internet <- function(){
-    !is.null(curl::nslookup("r-project.org", error = FALSE))
 }
 
 #' List all SeSAMe data
