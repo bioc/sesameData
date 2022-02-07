@@ -1,3 +1,16 @@
+#' infer platform from Probe_IDs
+#'
+#' @param Probe_IDs probe IDs
+#' @return a platform code
+#' @examples
+#' inferPlatformFromProbeIDs(c("cg14620903","cg22464003"))
+#' @export
+inferPlatformFromProbeIDs <- function(Probe_IDs) {
+    sig <- sesameDataGet("probeIDSignature")
+    names(which.max(vapply(
+        sig, function(x) sum(Probe_IDs %in% x), integer(1))))
+}
+
 sesameData_check_platform <- function(platform) {
     if (is.null(platform)) {
         platform <- "EPIC"

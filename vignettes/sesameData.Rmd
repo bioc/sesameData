@@ -65,7 +65,7 @@ download/disk IO, or empty the cache to save memory. This can be done with:
 sesameDataGet_resetEnv()
 ```
 
-## Transcript Models
+## Transcript models
 
 Sesame provides some utility functions to process transcript models, which can
 be represented as data.frame, GRanges and GRangesList objects. For example,
@@ -102,7 +102,7 @@ includes only mapped probes.
 mft <- sesameData_getManifestDF("HM450")
 mft
 gr <- sesameData_getManifestGRanges("HM450")
-gr
+length(gr)
 ```
 
 Note that by default the GRanges object exclude decoy sequence probes (e.g.,
@@ -111,7 +111,6 @@ option.
 
 ```{r}
 gr_decoy <- sesameData_getManifestGRanges("HM450", decoy = TRUE)
-length(gr)
 length(gr_decoy)
 ```
 
