@@ -17,7 +17,7 @@ sesameData_getManifestDF <- function(platform, genome=NULL, version=1) {
     genome <- sesameData_check_genome(genome, platform)
     base <- "https://github.com/zhou-lab/InfiniumManifestsV"
 
-    title <- sprintf("InfiniumManifestV%d_%s_%s", platform, genome)
+    title <- sprintf("InfiniumManifestV%d_%s_%s", version, platform, genome)
     data <- sesameDataGet_checkEnv(title)
     if (is.null(data)) {
         u1 <- sprintf(

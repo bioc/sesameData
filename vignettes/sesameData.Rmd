@@ -25,7 +25,7 @@ library(sesameData)
 
 Titles of all the available data can be shown with:
 ```{r}
-sesameDataList()
+head(sesameDataList())
 ```
 
 ## Local caching
@@ -93,9 +93,10 @@ Get nearby genes given probes
 
 # Manifest from Github
 
-Sesame provide parsers to handle manifest files hosted on Github. One may
-choose to return a data frame which includes all probes or a GRanges object
-which includes only mapped probes.
+Sesame provide parsers to handle manifest files hosted on
+[Github](https://github.com/zhou-lab/InfiniumManifestsV1). One may choose to
+return a data frame which includes all probes or a GRanges object which
+includes only mapped probes.
 
 ```{r}
 mft <- sesameData_getManifestDF("HM450")
