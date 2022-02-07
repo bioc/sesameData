@@ -4,7 +4,11 @@
 \alias{sesameData_getManifestDF}
 \title{download Infinium manifest from Github repositories}
 \usage{
-sesameData_getManifestDF(platform, genome = NULL, version = 1)
+sesameData_getManifestDF(
+  platform,
+  genome = NULL,
+  version = manifest_base_default_version
+)
 }
 \arguments{
 \item{platform}{Mammal40, MM285, EPIC, and HM450}

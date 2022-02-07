@@ -7,7 +7,7 @@
 sesameData_getManifestGRanges(
   platform,
   genome = NULL,
-  version = 1,
+  version = manifest_base_default_version,
   decoy = FALSE,
   columns = NULL
 )

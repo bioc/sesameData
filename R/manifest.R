@@ -12,16 +12,18 @@
 #' @examples
 #' mft <- sesameData_getManifestDF("Mammal40")
 #' @export
-sesameData_getManifestDF <- function(platform, genome=NULL, version=1) {
+sesameData_getManifestDF <- function(platform, genome=NULL,
+    version = manifest_base_default_version) {
+    
     platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
-    base <- "https://github.com/zhou-lab/InfiniumManifestsV"
-
+    
     title <- sprintf("InfiniumManifestV%d_%s_%s", version, platform, genome)
     data <- sesameDataGet_checkEnv(title)
     if (is.null(data)) {
         u1 <- sprintf(
-            "%s%d/raw/main/%s/%s.tsv.gz", base, version, platform, genome)
+            "%s%d/raw/main/%s/%s.tsv.gz",
+            manifest_base, version, platform, genome)
         stopifnot(valid_url(u1))
         data <- read_tsv(u1,
             col_types=cols(CpG_beg=col_integer(), CpG_end=col_integer(),
@@ -45,7 +47,8 @@ sesameData_getManifestDF <- function(platform, genome=NULL, version=1) {
 #' gr <- sesameData_getManifestGRanges("Mammal40")
 #' @export
 sesameData_getManifestGRanges <- function(
-    platform, genome = NULL, version = 1, decoy = FALSE, columns = NULL) {
+    platform, genome = NULL, version = manifest_base_default_version,
+    decoy = FALSE, columns = NULL) {
     
     genome <- sesameData_check_genome(genome, platform)
     df <- sesameData_getManifestDF(platform, genome=genome, version=version)
