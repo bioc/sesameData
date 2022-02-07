@@ -3,7 +3,6 @@
 export(sesameDataCache)
 export(sesameDataCacheAll)
 export(sesameDataCacheExample)
-export(sesameDataDownload)
 export(sesameDataGet)
 export(sesameDataGet_resetEnv)
 export(sesameDataList)
