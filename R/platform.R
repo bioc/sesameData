@@ -11,13 +11,22 @@ inferPlatformFromProbeIDs <- function(Probe_IDs) {
         sig, function(x) sum(Probe_IDs %in% x), integer(1))))
 }
 
-sesameData_check_platform <- function(platform) {
+#' check platform code
+#'
+#' @param platform input platform
+#' @param probes probes by which the platform may be guessed
+#' @examples
+#' sesameData_check_platform("HM450")
+#' @export
+sesameData_check_platform <- function(platform = NULL, probes = NULL) {
     if (is.null(platform)) {
-        platform <- "EPIC"
-    } else {
-        stopifnot(platform %in% c(
-            "EPIC", "HM27", "HM450", "MM285", "Mammal40"))
+        if (is.null(probes)) {
+            platform <- "EPIC" # random guess
+        } else {
+            platform <- inferPlatformFromProbeIDs(probes)
+        }
     }
+    stopifnot(platform %in% c("EPIC", "HM27", "HM450", "MM285", "Mammal40"))
     platform
 }
 

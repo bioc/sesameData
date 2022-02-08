@@ -16,11 +16,11 @@ download_file <- function(title, version, dest_dir) {
     download.file(url, dest_file, mode="wb")
     stopifnot(file.exists(dest_file) && file.info(dest_file)$size > 0)
     
-    list(
+    invisible(list(
         url = url,
         dest_dir = dest_dir,
         dest_file = dest_file,
-        file_name = title)
+        file_name = title))
 }
 
 #' Retrieve additional annotation files

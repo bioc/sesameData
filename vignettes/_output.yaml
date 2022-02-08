@@ -1,7 +1,7 @@
 html_document:
   self_contained: true
   number_sections: no
-  theme: simplex
+  theme: flatly
   highlight: zenburn
   toc: true
   toc_float:
