@@ -59,11 +59,11 @@ build_GENCODE_gtf <- function(x) {
     gtf <- read_GENCODE_gtf(x)
 
     ## transcript
-    g1 <- read_GENCODE_gtf_transcript(x)
+    g1 <- read_GENCODE_gtf_transcript(gtf)
     stopifnot(length(g1$transcript_id) == length(unique(g1$transcript_id)))
 
     ## exon
-    g2 <- read_GENCODE_gtf_exon(x)
+    g2 <- read_GENCODE_gtf_exon(gtf)
     chrms <- guess_chrmorder(g2$chrm)
     gr <- GRanges(seqnames = g2$chrm, ranges=IRanges(g2$start, g2$end),
         strand = g2$strand, seqinfo=Seqinfo(chrms))
@@ -76,9 +76,11 @@ build_GENCODE_gtf <- function(x) {
     ## CDS
     g3 <- gtf[gtf$feature_type == "CDS", ]
     g3$transcript_id <- str_match(g3$additional, 'transcript_id "([^"]*)"')[,2]
-    g1$cdsStart <- g3$start[match(g1$transcript_id, g3$transcript_id)]
-    g1$cdsEnd <- g3$end[match(g1$transcript_id, g3$transcript_id)]
-
+    tid2start <- vapply(split(g3$start, g3$transcript_id), min, numeric(1))
+    tid2end <- vapply(split(g3$end, g3$transcript_id), max, numeric(1))
+    g1$cdsStart <- tid2start[g1$transcript_id]
+    g1$cdsEnd <- tid2end[g1$transcript_id]
+    
     ## put together
     g1 <- g1[order(factor(g1$chrm, levels=chrms), g1$start),]
     grl <- grl[g1$transcript_id]
