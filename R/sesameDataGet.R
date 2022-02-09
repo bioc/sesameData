@@ -95,12 +95,16 @@ sesameDataGet <- function(title, use_alternative = FALSE, verbose = FALSE) {
 #' List all SeSAMe data
 #'
 #' @param filter keyword to filter title, optional
+#' @param full whether to display all columns
 #' @return all titles from SeSAMe Data
 #' @examples
 #' sesameDataList("KYCG")
 #' @export
-sesameDataList <- function(filter = NULL) {
-    df <- df_master[,c("EHID","Title")]
+sesameDataList <- function(filter = NULL, full = FALSE) {
+    df <- df_master
+    if (!full) {
+        df <- df[,c("EHID","Title")]
+    }
     if (!is.null(filter)) {
         df <- df[grep(filter, df$Title),]
     }
