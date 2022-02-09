@@ -4,10 +4,12 @@
 \alias{sesameDataList}
 \title{List all SeSAMe data}
 \usage{
-sesameDataList(filter = NULL)
+sesameDataList(filter = NULL, full = FALSE)
 }
 \arguments{
 \item{filter}{keyword to filter title, optional}
+
+\item{full}{whether to display all columns}
 }
 \value{
 all titles from SeSAMe Data
