@@ -185,7 +185,9 @@ sesameData_getGenesByProbes <- function(
     genes <- sesameData_txnToGeneGRanges(
         sesameData_getTxnGRanges(
             sesameData_check_genome(NULL, platform)))
-    probes <- sesameData_getManifestGRanges(platform)[Probe_IDs]
+    probes <- sesameData_getManifestGRanges(platform)
+    ## not every probes are mappable
+    probes <- probes[names(probes) %in% Probe_IDs]
     subsetByOverlaps(genes, probes + max_distance)
 }
 
