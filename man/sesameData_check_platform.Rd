@@ -11,6 +11,9 @@ sesameData_check_platform(platform = NULL, probes = NULL)
 
 \item{probes}{probes by which the platform may be guessed}
 }
+\value{
+platform code
+}
 \description{
 check platform code
 }

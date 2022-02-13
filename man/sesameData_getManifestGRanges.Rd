@@ -8,6 +8,7 @@ sesameData_getManifestGRanges(
   platform,
   genome = NULL,
   version = manifest_base_default_version,
+  check_EH = TRUE,
   decoy = FALSE,
   columns = NULL
 )
@@ -18,6 +19,8 @@ sesameData_getManifestGRanges(
 \item{genome}{hg38, mm10 etc.}
 
 \item{version}{release version, default is the latest}
+
+\item{check_EH}{return the ExperimentHub version if present}
 
 \item{decoy}{whether to include probes mapped to decoy sequence}
 

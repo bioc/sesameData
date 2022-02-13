@@ -15,6 +15,7 @@ inferPlatformFromProbeIDs <- function(Probe_IDs) {
 #'
 #' @param platform input platform
 #' @param probes probes by which the platform may be guessed
+#' @return platform code
 #' @examples
 #' sesameData_check_platform("HM450")
 #' @export

@@ -40,6 +40,7 @@ sesameData_getManifestDF <- function(platform, genome=NULL,
 #' @param genome hg38, mm10 etc.
 #' @param decoy whether to include probes mapped to decoy sequence
 #' @param version release version, default is the latest
+#' @param check_EH return the ExperimentHub version if present
 #' @param columns additional columns to add from the manifest to mcols
 #' @return GRanges
 #' @importFrom GenomeInfoDb Seqinfo
@@ -48,9 +49,15 @@ sesameData_getManifestDF <- function(platform, genome=NULL,
 #' @export
 sesameData_getManifestGRanges <- function(
     platform, genome = NULL, version = manifest_base_default_version,
-    decoy = FALSE, columns = NULL) {
-    
+    check_EH = TRUE, decoy = FALSE, columns = NULL) {
+
+    platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
+
+    ## check EH first
+    addr <- sesameDataGet(sprintf("%s.address", platform))
+    if (genome %in% names(addr)) { return(addr[[genome]]) }
+    
     df <- sesameData_getManifestDF(platform, genome=genome, version=version)
 
     chrms <- df$CpG_chrm

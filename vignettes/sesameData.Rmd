@@ -3,8 +3,8 @@ title: "SeSAMe Data User Guide"
 shorttitle: "sesameData guide"
 package: sesameData
 output: rmarkdown::html_vignette
-fig_width: 8
-fig_height: 6
+fig_width: 6
+fig_height: 5
 vignette: >
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteIndexEntry{sesameData User Guide}
