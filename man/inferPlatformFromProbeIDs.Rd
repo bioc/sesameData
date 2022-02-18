@@ -4,10 +4,12 @@
 \alias{inferPlatformFromProbeIDs}
 \title{infer platform from Probe_IDs}
 \usage{
-inferPlatformFromProbeIDs(Probe_IDs)
+inferPlatformFromProbeIDs(Probe_IDs, silent = FALSE)
 }
 \arguments{
 \item{Probe_IDs}{probe IDs}
+
+\item{silent}{suppress message}
 }
 \value{
 a platform code

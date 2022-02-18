@@ -1,14 +1,20 @@
 #' infer platform from Probe_IDs
 #'
 #' @param Probe_IDs probe IDs
+#' @param silent suppress message
 #' @return a platform code
 #' @examples
 #' inferPlatformFromProbeIDs(c("cg14620903","cg22464003"))
 #' @export
-inferPlatformFromProbeIDs <- function(Probe_IDs) {
+inferPlatformFromProbeIDs <- function(Probe_IDs, silent = FALSE) {
     sig <- sesameDataGet("probeIDSignature")
-    names(which.max(vapply(
-        sig, function(x) sum(Probe_IDs %in% x), integer(1))))
+    cnts <- vapply(sig, function(x) sum(Probe_IDs %in% x), integer(1))
+    if(sum(cnts == max(cnts)) > 1) {
+        stop("Ambiguous platform. Please provide platform explicitly.") }
+
+    platform <- names(which.max(cnts))
+    message("Platform set to: ", platform)
+    platform
 }
 
 #' check platform code

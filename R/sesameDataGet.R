@@ -68,7 +68,6 @@
 #' @return data object
 #' @import ExperimentHub
 #' @import AnnotationHub
-#' @import rmarkdown
 #' @examples
 #'
 #' sesameDataCacheExample()
