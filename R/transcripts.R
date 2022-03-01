@@ -150,24 +150,6 @@ sesameData_txnToGeneGRanges <- function(txns) {
     sort(genes, ignore.strand=TRUE)
 }
 
-#' get transcripts by gene name
-#'
-#' @param gene_name gene name
-#' @param genome hg38, mm10 etc.
-#' @return GRangesList of the transcripts
-#' @examples
-#' sesameData_getTranscriptsByGene("Cdkn2a", "mm10")
-#' @export
-sesameData_getTranscriptsByGene <- function(gene_name, genome) {
-
-    txns <- sesameDataGet(paste0("genomeInfo.", genome))$txns
-    if (!(gene_name %in% GenomicRanges::mcols(txns)$gene_name)) {
-        stop('Gene ', gene_name, ' not found in ', genome, ".");
-    }
-
-    txns[GenomicRanges::mcols(txns)$gene_name == gene_name]
-}
-
 #' get genes next to certain probes
 #'
 #' @param Probe_IDs probe IDs

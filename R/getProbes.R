@@ -101,7 +101,9 @@ sesameData_getProbesByGene <- function(
     genome <- sesameData_check_genome(genome, platform)
     
     requireNamespace("GenomicRanges", quietly = TRUE)
-    target.txns <- sesameData_getTranscriptsByGene(gene_name, genome)
+    txns <- sesameData_getTxnGRanges(genome)
+    target.txns <- txns[GenomicRanges::mcols(txns)$gene_name == gene_name]
+    stopifnot(length(target_txns) == 0)
     merged.exons <- GenomicRanges::reduce(unlist(target.txns))
     
     up <- ifelse(as.vector(GenomicRanges::strand(
