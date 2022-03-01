@@ -4,6 +4,7 @@
 #' @param regs a GenomicRanges::GRanges object against which
 #' probes will be annotated, default to genes if not given
 #' @param collapse whether to collapse multiple regs into one
+#' @param chooseOne choose an arbitrary annotation if multiple exist
 #' @param sep the delimiter for collapsing
 #' @param column which column in regs to annotate
 #' @param out_name column header of the annotation, use column if not given
@@ -15,7 +16,7 @@
 #' @importFrom S4Vectors queryHits
 #' @return a GRanges with annotated column
 #' @examples
-#' 
+#' library(GenomicRanges)
 #' regs = sesameData_getTxnGRanges("mm10")
 #' Probe_IDs = names(sesameData_getManifestGRanges("MM285"))
 #' anno = sesameData_annoProbes(Probe_IDs, promoters(regs), column="gene_name")

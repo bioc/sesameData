@@ -100,22 +100,20 @@ sesameData_getProbesByGene <- function(
     platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
     
-    requireNamespace("GenomicRanges", quietly = TRUE)
     txns <- sesameData_getTxnGRanges(genome)
-    target.txns <- txns[GenomicRanges::mcols(txns)$gene_name == gene_name]
-    stopifnot(length(target_txns) == 0)
-    merged.exons <- GenomicRanges::reduce(unlist(target.txns))
+    txns <- txns[GenomicRanges::mcols(txns)$gene_name == gene_name]
+    stopifnot(length(txns) > 0)
     
-    up <- ifelse(as.vector(GenomicRanges::strand(
-        target.txns[[1]][1])) == '-', downstream, upstream)
-    dw <- ifelse(as.vector(GenomicRanges::strand(
-        target.txns[[1]][1])) == '-', upstream, downstream)
+    up <- ifelse(as.vector(GenomicRanges::strand(txns)) == '-',
+        downstream, upstream)
+    dw <- ifelse(as.vector(GenomicRanges::strand(txns)) == '-',
+        upstream, downstream)
     
     sesameData_getProbesByRegion(GRanges(
-        as.character(GenomicRanges::seqnames(merged.exons[1])),
+        as.vector(GenomicRanges::seqnames(txns)),
         IRanges(
-            min(GenomicRanges::start(merged.exons)) - up,
-            max(GenomicRanges::end(merged.exons)) + dw)),
+            GenomicRanges::start(txns) - up,
+            GenomicRanges::end(txns) + dw)),
         platform = platform, genome = genome)
 }
 

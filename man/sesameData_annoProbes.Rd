@@ -24,6 +24,8 @@ probes will be annotated, default to genes if not given}
 
 \item{collapse}{whether to collapse multiple regs into one}
 
+\item{chooseOne}{choose an arbitrary annotation if multiple exist}
+
 \item{column}{which column in regs to annotate}
 
 \item{sep}{the delimiter for collapsing}
@@ -41,7 +43,7 @@ a GRanges with annotated column
 Annotate Probes by Probe ID
 }
 \examples{
-
+library(GenomicRanges)
 regs = sesameData_getTxnGRanges("mm10")
 Probe_IDs = names(sesameData_getManifestGRanges("MM285"))
 anno = sesameData_annoProbes(Probe_IDs, promoters(regs), column="gene_name")
