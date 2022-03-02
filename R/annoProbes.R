@@ -10,6 +10,7 @@
 #' @param out_name column header of the annotation, use column if not given
 #' @param platform EPIC, MM285 etc. will infer from Probe_IDs if not given
 #' @param genome hg38, mm10, will infer if not given
+#' @param silent suppress messages
 #' @importFrom GenomicRanges findOverlaps
 #' @importFrom GenomicRanges mcols
 #' @importFrom S4Vectors subjectHits
@@ -23,11 +24,11 @@
 #' @export
 sesameData_annoProbes <- function(Probe_IDs, regs = NULL,
     collapse = TRUE, chooseOne = FALSE, column = NULL, sep=",",
-    out_name = NULL, platform = NULL, genome = NULL) {
+    out_name = NULL, platform = NULL, genome = NULL, silent = FALSE) {
 
     stopifnot(is.character(Probe_IDs))
     if(is.null(platform)) {
-        platform <- inferPlatformFromProbeIDs(Probe_IDs) }
+        platform <- inferPlatformFromProbeIDs(Probe_IDs, silent = silent) }
 
     if (is.null(regs)) { # default to annotate genes
         if (is.null(genome)) {
@@ -49,10 +50,10 @@ sesameData_annoProbes <- function(Probe_IDs, regs = NULL,
     if (collapse) {
         if (chooseOne) {
             pid2label <- vapply(split(label, queryHits(hits)),
-                function(x) paste0(unique(x), collapse=sep), character(1))
+                function(x) x[1], character(1))
         } else {
             pid2label <- vapply(split(label, queryHits(hits)),
-                function(x) x[1], character(1))
+                function(x) paste0(unique(x), collapse=sep), character(1))
         }
         mcols(probes)[[out_name]] <- NA
         mcols(probes[as.integer(names(pid2label))])[[out_name]] <- pid2label
