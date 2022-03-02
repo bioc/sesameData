@@ -25,6 +25,7 @@ sesameData_annoProbes <- function(Probe_IDs, regs = NULL,
     collapse = TRUE, chooseOne = FALSE, column = NULL, sep=",",
     out_name = NULL, platform = NULL, genome = NULL) {
 
+    stopifnot(is.character(Probe_IDs))
     if(is.null(platform)) {
         platform <- inferPlatformFromProbeIDs(Probe_IDs) }
 

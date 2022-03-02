@@ -13,7 +13,9 @@ inferPlatformFromProbeIDs <- function(Probe_IDs, silent = FALSE) {
         stop("Ambiguous platform. Please provide platform explicitly.") }
 
     platform <- names(which.max(cnts))
-    message("Platform set to: ", platform)
+    if (!silent) {
+        message("Platform set to: ", platform)
+    }
     platform
 }
 
