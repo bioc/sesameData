@@ -57,10 +57,10 @@ HM27.address <- sesameDataGet('HM27.address')
 ## In-memory caching
 
 It's worth noting that once a data is retrieved through the `sesameDataGet`
-inferface or the `sesameData_getManifestDF` inferface (below), it will stay in
-memory so next time the object will be returned immediately. This design avoids
-repeated disk/web retrieval. In some rare situation, one may want to redo the
-download/disk IO, or empty the cache to save memory. This can be done with:
+inferface (below), it will stay in memory so next time the object will be
+returned immediately. This design avoids repeated disk/web retrieval. In some
+rare situation, one may want to redo the download/disk IO, or empty the cache
+to save memory. This can be done with:
 
 ```{r}
 sesameDataGet_resetEnv()
@@ -107,27 +107,19 @@ sesameData_annoProbes(probes, pm, column = "gene_name")
 
 # Manifest from Github
 
-Sesame provide parsers to handle manifest files hosted on
-[Github](https://github.com/zhou-lab/InfiniumManifestsV1). One may choose to
-return a data frame which includes all probes or a GRanges object which
-includes only mapped probes.
+Sesame provides access to array manfiest stored as GRanges object. These
+GRanges object are converted from the raw tsv files on our [array annotation
+website](http://zwdzwd.github.io/InfiniumAnnotation) using the [conversion
+code](https://tinyurl.com/8bt9dssc)
 
 ```{r}
-mft <- sesameData_getManifestDF("HM450")
-mft
-##  actually checks ExperimentHub first, use check_EH = FALSE to override
 gr <- sesameData_getManifestGRanges("HM450")
 length(gr)
 ```
 
 Note that by default the GRanges object exclude decoy sequence probes (e.g.,
 _alt, and _random contigs). To include them, we need to use the `decoy = TRUE`
-option.
-
-```{r}
-gr_decoy <- sesameData_getManifestGRanges("HM450", decoy = TRUE)
-length(gr_decoy)
-```
+option in sesameData_getManifestDF.
 
 # Subset probes
 
@@ -150,20 +142,6 @@ sesameData_getProbesByTSS('DNMT3A', "Mammal40")
 
 ```{r}
 sesameData_getGenesByProbes(c("cg14620903","cg22464003"), max_distance = 10000)
-```
-
-# Additional annotation Data
-
-Here we demonstrate downloading a .rds from the annotation website.
-
-```{r}
-annoS <- sesameData_getAnno("EPIC/EPIC.hg19.typeI_overlap_b151.rds")
-```
-
-One can also download annotation file to disk
-
-```{r}
-sesameData_getAnno("test/3999492009_R01C01_Grn.idat", dest_dir = tempdir())
 ```
 
 # Installation

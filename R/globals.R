@@ -11,11 +11,6 @@ NULL
 
 cacheEnv <- new.env()
 alt_base <- "https://zhouserver.research.chop.edu"
-alt_base2 <- "https://zwdzwd.s3.amazonaws.com"
-manifest_base <- "https://github.com/zhou-lab/InfiniumManifestsV"
-manifest_base_default_version <- 1
-anno_base <- "https://github.com/zhou-lab/InfiniumAnnotationV"
-anno_base_default_version <- 1
 
 #' Check whether the title exists in cacheEnv
 #'

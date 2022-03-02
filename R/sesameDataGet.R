@@ -11,12 +11,8 @@
     
     message("ExperimentHub not responding. Using backup.")
     u1 <- sprintf('%s/sesameData/%s.rda', alt_base, title)
-    u2 <- sprintf('%s/sesameData/%s.rda', alt_base2, title)
     if (valid_url(u1)) {
         sesameDataGet_assignEnv(eh_id, get(load(url(u1))))
-        TRUE
-    } else if (valid_url(u2)) {
-        sesameDataGet_assignEnv(eh_id, get(load(url(u2))))
         TRUE
     } else {
         warning(sprintf("Resource %s cannot be retrieved.", title))

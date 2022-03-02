@@ -31,7 +31,6 @@ sesameDataCache0 <- function(eh_ids) {
 #' @export
 sesameDataCacheExample <- function() {
     
-    dir.create(getExperimentHubOption("CACHE"), showWarnings = FALSE)
     setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
 
     tmp <- df_master
@@ -55,11 +54,6 @@ sesameDataCacheExample <- function() {
     invisible(TRUE)
 }
 
-## a convenience function, only works on Mac
-sesameDataClearHub <- function() {
-    unlink("~/Library/Caches/org.R-project.R/R/ExperimentHub/", recursive=TRUE)
-}
-
 #' Cache all SeSAMe data
 #'
 #' @return TRUE
@@ -71,8 +65,6 @@ sesameDataClearHub <- function() {
 sesameDataCacheAll <- function() {
     setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
 
-    dir.create(getExperimentHubOption("CACHE"), showWarnings = FALSE)
-        
     eh_ids <- unique(df_master$EHID)
     eh_ids <- eh_ids[eh_ids != "TBD"]
     

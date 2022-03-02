@@ -59,17 +59,3 @@ sesameData_check_genome <- function(genome, platform) {
     genome
 }
 
-## defaultAssembly <- function(platform) {
-##     platform2build <- c(
-##         "HM27"="hg38",
-##         "HM450"="hg38",
-##         "EPIC"="hg38",
-##         "MM285"="mm10",
-##         "Mammal40"="hg38"
-##     )
-##     if (!(platform %in% names(platform2build))) {
-##         stop(sprintf(
-##             "Platform %s not supported. Try custom manifest?", platform))
-##     }
-##     platform2build[platform]
-## }

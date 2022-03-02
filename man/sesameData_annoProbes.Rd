@@ -13,7 +13,8 @@ sesameData_annoProbes(
   sep = ",",
   out_name = NULL,
   platform = NULL,
-  genome = NULL
+  genome = NULL,
+  silent = FALSE
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ probes will be annotated, default to genes if not given}
 \item{platform}{EPIC, MM285 etc. will infer from Probe_IDs if not given}
 
 \item{genome}{hg38, mm10, will infer if not given}
+
+\item{silent}{suppress messages}
 }
 \value{
 a GRanges with annotated column

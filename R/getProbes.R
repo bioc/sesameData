@@ -148,26 +148,4 @@ sesameData_getProbesByTSS <- function(
         downstream = downstream)
 
     sesameData_getProbesByRegion(tss, platform = platform, genome = genome)
-    ## target.txns <- sesameData_getTranscriptsByGene(gene_name, genome)
-    ## tss <- GenomicRanges::reduce(unlist(GenomicRanges::GRangesList(
-    ##     lapply(target.txns, function(txn) {
-    ##         tss1 <- ifelse(
-    ##             as.vector(GenomicRanges::strand(txn))[1] == '-',
-    ##             max(GenomicRanges::end(txn)), min(GenomicRanges::start(txn)))
-    ##         up <- ifelse(as.vector(
-    ##             GenomicRanges::strand(txn))[1] == '-', dwstream, upstream)
-    ##         dw <- ifelse(as.vector(
-    ##             GenomicRanges::strand(txn))[1] == '-', upstream, dwstream)
-    ##         GenomicRanges::GRanges(
-    ##             as.vector(GenomicRanges::seqnames(txn))[1],
-    ##             ranges = IRanges::IRanges(start=tss1-up, end=tss1+dw))
-    ## }))))
-
-    ## probes1 <- subsetByOverlaps(sesameDataGet(paste0(
-    ##     platform, '.probeInfo'))[[paste0('mapped.probes.',genome)]], tss)
-    
-    ## if (length(probes1)>0) {
-    ##     probes1$gene <- gene_name
-    ## }
-    ## probes1
 }

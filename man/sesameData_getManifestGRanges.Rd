@@ -2,35 +2,20 @@
 % Please edit documentation in R/manifest.R
 \name{sesameData_getManifestGRanges}
 \alias{sesameData_getManifestGRanges}
-\title{download Infinium manifest from repositories and return GRanges}
+\title{get Infinium manifest GRanges}
 \usage{
-sesameData_getManifestGRanges(
-  platform,
-  genome = NULL,
-  version = manifest_base_default_version,
-  check_EH = TRUE,
-  decoy = FALSE,
-  columns = NULL
-)
+sesameData_getManifestGRanges(platform, genome = NULL)
 }
 \arguments{
 \item{platform}{Mammal40, MM285, EPIC, and HM450}
 
 \item{genome}{hg38, mm10 etc.}
-
-\item{version}{release version, default is the latest}
-
-\item{check_EH}{return the ExperimentHub version if present}
-
-\item{decoy}{whether to include probes mapped to decoy sequence}
-
-\item{columns}{additional columns to add from the manifest to mcols}
 }
 \value{
 GRanges
 }
 \description{
-download Infinium manifest from repositories and return GRanges
+for building manifest from the original
 }
 \examples{
 gr <- sesameData_getManifestGRanges("Mammal40")
