@@ -1,4 +1,14 @@
 
+sesameDataRecache <- function(eh_id) {
+    stopifnot(startsWith(eh_id, "EH"))
+    tryCatch({
+        sesameDataCache0(eh_id)
+    }, error=function(cond) {
+        stopAndCache(eh_id)
+    })
+    query(ExperimentHub(localHub=TRUE), 'sesameData')
+}
+
 stopAndCache <- function(title) {
     stop(sprintf('
 | File %s needs to be cached to be used in sesame.

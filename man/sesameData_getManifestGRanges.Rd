@@ -15,7 +15,9 @@ sesameData_getManifestGRanges(platform, genome = NULL)
 GRanges
 }
 \description{
-for building manifest from the original
+Note that some unaligned probes are not included.
+For full manifest, please visit
+\url{http://zwdzwd.github.io/InfiniumAnnotation}
 }
 \examples{
 gr <- sesameData_getManifestGRanges("Mammal40")

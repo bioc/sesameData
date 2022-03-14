@@ -2,7 +2,9 @@
 
 #' get Infinium manifest GRanges
 #'
-#' for building manifest from the original
+#' Note that some unaligned probes are not included.
+#' For full manifest, please visit
+#' \url{http://zwdzwd.github.io/InfiniumAnnotation}
 #'
 #' @param platform Mammal40, MM285, EPIC, and HM450
 #' @param genome hg38, mm10 etc.

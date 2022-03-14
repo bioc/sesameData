@@ -26,22 +26,19 @@
     if (eh_id %in% c("TBD", "NA")) { eh_id <- NA; }
     stopifnot(is.na(eh_id) || length(eh_id) == 1)
     
-    if (is.na(eh_id)) {            # missing from lookup table
-        eh_id <- title             # use title itself
-    } else if (!use_alternative) { # present in lookup table
+    if (is.na(eh_id)) { # missing from lookup table
+        stop(sprintf("Data %s not found.\n", title)) }
+    
+    if (!use_alternative) { # present in lookup table
         ## try ExperimentHub
         if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
             if (!file.exists(getExperimentHubOption("CACHE"))) {
-                stopAndCache(title)
-            }
+                stopAndCache(title) }
             tryCatch({
                 eh <- query(ExperimentHub(localHub=TRUE), 'sesameData')
-            }, error = function(cond) {
-                stopAndCache(title)
-            })
+            }, error = function(cond) { stopAndCache(title); })
             if (!(eh_id %in% names(eh))) {
-                stopAndCache(title)
-            }
+                stopAndCache(title); }
             sesameDataGet_assignEnv(eh_id, eh[[eh_id]])
         }
     }
@@ -64,6 +61,7 @@
 #' @return data object
 #' @import ExperimentHub
 #' @import AnnotationHub
+#' @importFrom stringr str_replace
 #' @examples
 #'
 #' sesameDataCacheExample()
@@ -71,6 +69,7 @@
 #' @export
 sesameDataGet <- function(title, use_alternative = FALSE, verbose = FALSE) {
 
+    title <- str_replace(title, "MMB", "MM285") # fix potential code discrepancy
     if (!use_alternative) { # take it from env
         use_alternative <- (
             !is.null(getOption("sesameData_use_alternative")) &&
