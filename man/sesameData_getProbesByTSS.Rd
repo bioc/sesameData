@@ -5,7 +5,7 @@
 \title{Get Probes by Gene Transcription Start Site (TSS)}
 \usage{
 sesameData_getProbesByTSS(
-  gene_name,
+  gene_name = NULL,
   platform = NULL,
   upstream = 1500,
   downstream = 1500,
@@ -13,7 +13,7 @@ sesameData_getProbesByTSS(
 )
 }
 \arguments{
-\item{gene_name}{gene name}
+\item{gene_name}{gene name, if NULL, return all TSS probes}
 
 \item{platform}{EPIC, HM450, or MM285}
 

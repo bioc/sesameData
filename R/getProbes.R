@@ -125,7 +125,7 @@ sesameData_getProbesByGene <- function(
 #' `genome` options. The function returns a vector of probes that falls
 #' into the TSS region of the gene.
 #'
-#' @param gene_name gene name
+#' @param gene_name gene name, if NULL, return all TSS probes
 #' @param platform EPIC, HM450, or MM285
 #' @param upstream the number of base pairs to expand upstream the TSS
 #' @param downstream the number of base pairs to expand downstream the TSS
@@ -135,15 +135,18 @@ sesameData_getProbesByGene <- function(
 #' probes <- sesameData_getProbesByTSS('DNMT3A', "Mammal40")
 #' @export
 sesameData_getProbesByTSS <- function(
-    gene_name, platform = NULL,
+    gene_name = NULL, platform = NULL,
     upstream = 1500, downstream = 1500, genome = NULL) {
     
     platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
 
     txns <- sesameData_getTxnGRanges(genome)
+    if (!is.null(gene_name)) {
+        txns <- txns[txns$gene_name == gene_name]
+    }
     tss <- promoters(
-        txns[txns$gene_name == gene_name],
+        txns,
         upstream = upstream,
         downstream = downstream)
 

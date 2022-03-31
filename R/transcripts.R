@@ -36,6 +36,12 @@ read_GENCODE_gtf_exon <- function(gtf) {
     g
 }
 
+guess_chrmorder <- function(chrms) {
+    chrms1 <- chrms[!(chrms %in% c("chrX","chrY","chrM"))]
+    paste0("chr",c(as.character(seq_len(max(as.integer(str_replace(
+        sort(unique(chrms1)), "chr", "")), na.rm=TRUE))), c("X","Y","M")))
+}
+
 #' build GENCODE gtf
 #'
 #' @param x GENCODE ftp url

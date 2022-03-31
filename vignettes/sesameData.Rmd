@@ -138,6 +138,12 @@ sesameData_getProbesByGene('DNMT3A', "Mammal40", upstream=500)
 sesameData_getProbesByTSS('DNMT3A', "Mammal40")
 ```
 
+One can also get all TSS probes by
+
+```{r}
+TSSprobes = sesameData_getProbesByTSS(NULL, "Mammal40")
+```
+
 # Get nearby genes
 
 ```{r}
