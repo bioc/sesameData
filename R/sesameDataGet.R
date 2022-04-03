@@ -105,4 +105,14 @@ sesameDataList <- function(filter = NULL, full = FALSE) {
     df
 }
 
+#' Whether sesameData has
+#'
+#' @param data_titles data titles to check
+#' @return a boolean vector the same length as data_titles
+#' @examples
+#' sesameDataHas(c("EPIC.address","EPIC.address.Nonexist"))
+#' @export
+sesameDataHas <- function(data_titles) {
+    data_titles %in% sesameDataList()$Title
+}
 
