@@ -20,6 +20,10 @@
 #' @importFrom S4Vectors subjectHits
 #' @importFrom S4Vectors queryHits
 #' @return a GRanges with annotated column
+#' If a probe has no overlap with regs, it will be included in the results
+#' with NA. But if a probe is not included in the manifest (due to
+#' mappability), it won't be included in the results.
+#' 
 #' @examples
 #' library(GenomicRanges)
 #' regs = sesameData_getTxnGRanges("mm10")
@@ -41,8 +45,14 @@ sesameData_annoProbes <- function(Probe_IDs, regs = NULL,
         if (is.null(column)) column <- "gene_name"
     }
 
-    probes <- sesameData_getManifestGRanges(platform)[Probe_IDs]
+    gr <- sesameData_getManifestGRanges(platform)
+    in_mft <- Probe_IDs %in% names(gr)
+    if (sum(!in_mft) > 0) { warning(sprintf(
+        "%d probes out of manifest were excluded.", sum(!in_mft))) }
+    probes <- gr[Probe_IDs[in_mft]]
+    if (length(probes) == 0) { return(probes); } # empty GRanges
     hits <- findOverlaps(probes, regs, ignore.strand = TRUE)
+
     if (is.null(column)) {
         label <- names(regs[subjectHits(hits)])
         if (is.null(out_name)) { out_name <- "anno" }

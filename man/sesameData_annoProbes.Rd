@@ -41,6 +41,9 @@ probes will be annotated, default to genes if not given}
 }
 \value{
 a GRanges with annotated column
+If a probe has no overlap with regs, it will be included in the results
+with NA. But if a probe is not included in the manifest (due to
+mappability), it won't be included in the results.
 }
 \description{
 Annotate Probes by Probe ID
