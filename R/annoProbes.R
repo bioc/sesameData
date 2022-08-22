@@ -1,10 +1,14 @@
 #' Annotate Probes by Probe ID
 #'
+#' Please note that if unfound, the annotation will be NA.
+#' The probe will always be kept in the output.
+#'
 #' @param Probe_IDs a character vector of probe IDs
 #' @param regs a GenomicRanges::GRanges object against which
 #' probes will be annotated, default to genes if not given
 #' @param collapse whether to collapse multiple regs into one
 #' @param chooseOne choose an arbitrary annotation if multiple exist
+#' default to FALSE. which concatenates all with ","
 #' @param sep the delimiter for collapsing
 #' @param column which column in regs to annotate
 #' @param out_name column header of the annotation, use column if not given

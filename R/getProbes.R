@@ -83,7 +83,7 @@ sesameData_getAutosomeProbes <- function(
 #' `genome` options. The function returns a vector of probes that falls
 #' into the given gene.
 #'
-#' @param gene_name gene name
+#' @param gene_name gene name, if NULL return all genes
 #' @param platform EPIC or HM450
 #' @param upstream number of bases to expand upstream of target gene
 #' @param downstream number of bases to expand downstream of target gene
@@ -94,14 +94,16 @@ sesameData_getAutosomeProbes <- function(
 #'     'DNMT3A', "Mammal40", upstream=500, downstream=500)
 #' @export
 sesameData_getProbesByGene <- function(
-    gene_name, platform = NULL,
+    gene_name = NULL, platform = NULL,
     upstream = 0, downstream = 0, genome = NULL) {
 
     platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
     
     txns <- sesameData_getTxnGRanges(genome)
-    txns <- txns[GenomicRanges::mcols(txns)$gene_name == gene_name]
+    if (!is.null(gene_name)) {
+        txns <- txns[GenomicRanges::mcols(txns)$gene_name == gene_name]
+    }
     stopifnot(length(txns) > 0)
     
     up <- ifelse(as.vector(GenomicRanges::strand(txns)) == '-',
