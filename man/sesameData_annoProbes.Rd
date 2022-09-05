@@ -25,7 +25,8 @@ probes will be annotated, default to genes if not given}
 
 \item{collapse}{whether to collapse multiple regs into one}
 
-\item{chooseOne}{choose an arbitrary annotation if multiple exist}
+\item{chooseOne}{choose an arbitrary annotation if multiple exist
+default to FALSE. which concatenates all with ","}
 
 \item{column}{which column in regs to annotate}
 
@@ -35,7 +36,12 @@ probes will be annotated, default to genes if not given}
 
 \item{platform}{EPIC, MM285 etc. will infer from Probe_IDs if not given}
 
-\item{genome}{hg38, mm10, will infer if not given}
+\item{genome}{hg38, mm10, ... will infer if not given.
+For additional mapping, download the GRanges object from
+http://zwdzwd.github.io/InfiniumAnnotation
+and provide the following argument
+..., genome = sesameAnno_buildManifestGRanges("downloaded_file"),...
+to this function.}
 
 \item{silent}{suppress messages}
 }
@@ -46,7 +52,8 @@ with NA. But if a probe is not included in the manifest (due to
 mappability), it won't be included in the results.
 }
 \description{
-Annotate Probes by Probe ID
+Please note that if unfound, the annotation will be NA.
+The probe will always be kept in the output.
 }
 \examples{
 library(GenomicRanges)

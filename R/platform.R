@@ -41,13 +41,14 @@ sesameData_check_platform <- function(platform = NULL, probes = NULL) {
 
 #' check genome supported for a platform
 #'
-#' @param genome mm10, hg38, ... or NULL
+#' @param genome mm10, hg38, ..., or NULL
 #' @param platform HM27, HM450, EPIC, ...
 #' @return genome as string
 #' @examples
 #' sesameData_check_genome(NULL, "Mammal40")
 #' @export
 sesameData_check_genome <- function(genome, platform) {
+    if ("GRanges" %in% class(genome)) { return(genome); }
     platform <- sesameData_check_platform(platform)
     supported_genomes <- c("hg19", "hg38", "mm10")
     default_genome <- c(

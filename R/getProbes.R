@@ -8,7 +8,12 @@
 #' @param beg begin, 1 if omitted
 #' @param end end, chromosome end if omitted
 #' @param platform EPIC, HM450, ...
-#' @param genome use default if not given
+#' @param genome hg38, mm10, ... will infer if not given.
+#' For additional mapping, download the GRanges object from
+#' http://zwdzwd.github.io/InfiniumAnnotation
+#' and provide the following argument
+#' ..., genome = sesameAnno_buildManifestGRanges("downloaded_file"),...
+#' to this function.
 #' @return GRanges of selected probes
 #' @importMethodsFrom IRanges subsetByOverlaps
 #' @examples
@@ -23,7 +28,7 @@ sesameData_getProbesByRegion <- function(
     platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
     
-    probes <- sesameData_getManifestGRanges(platform, genome)
+    probes <- sesameData_getManifestGRanges(platform, genome=genome)
 
     if (!is.null(chrm)) {
         if (end < 0) {
@@ -42,7 +47,12 @@ sesameData_getProbesByRegion <- function(
 #'
 #' @param chrms chromosomes to subset
 #' @param platform EPIC, HM450, Mouse
-#' @param genome hg19, hg38, or mm10, inference by default
+#' @param genome hg38, mm10, ... will infer if not given.
+#' For additional mapping, download the GRanges object from
+#' http://zwdzwd.github.io/InfiniumAnnotation
+#' and provide the following argument
+#' ..., genome = sesameAnno_buildManifestGRanges("downloaded_file"),...
+#' to this function.
 #' @return GRanges of selected probes
 #' @examples
 #' Xprobes <- sesameData_getProbesByChromosome('chrX', "Mammal40")
@@ -53,14 +63,19 @@ sesameData_getProbesByChromosome <- function(
     platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
 
-    gr <- sesameData_getManifestGRanges(platform, genome)
+    gr <- sesameData_getManifestGRanges(platform, genome=genome)
     gr[as.character(GenomicRanges::seqnames(gr)) %in% chrms]
 }
 
 #' Get autosome probes
 #'
 #' @param platform 'EPIC', 'HM450' etc.
-#' @param genome hg19, hg38, or mm10, inference by default
+#' @param genome hg38, mm10, ... will infer if not given.
+#' For additional mapping, download the GRanges object from
+#' http://zwdzwd.github.io/InfiniumAnnotation
+#' and provide the following argument
+#' ..., genome = sesameAnno_buildManifestGRanges("downloaded_file"),...
+#' to this function.
 #' @return GRanges of autosome probes
 #' @examples
 #' auto_probes <- sesameData_getAutosomeProbes('Mammal40')
@@ -71,7 +86,7 @@ sesameData_getAutosomeProbes <- function(
     platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
 
-    gr <- sesameData_getManifestGRanges(platform, genome)
+    gr <- sesameData_getManifestGRanges(platform, genome=genome)
     gr[!(as.character(GenomicRanges::seqnames(gr)) %in% c("chrX","chrY"))]
 }
 

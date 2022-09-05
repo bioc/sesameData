@@ -13,7 +13,12 @@
 #' @param column which column in regs to annotate
 #' @param out_name column header of the annotation, use column if not given
 #' @param platform EPIC, MM285 etc. will infer from Probe_IDs if not given
-#' @param genome hg38, mm10, will infer if not given
+#' @param genome hg38, mm10, ... will infer if not given.
+#' For additional mapping, download the GRanges object from
+#' http://zwdzwd.github.io/InfiniumAnnotation
+#' and provide the following argument
+#' ..., genome = sesameAnno_buildManifestGRanges("downloaded_file"),...
+#' to this function.
 #' @param silent suppress messages
 #' @importFrom GenomicRanges findOverlaps
 #' @importFrom GenomicRanges mcols
@@ -45,7 +50,7 @@ sesameData_annoProbes <- function(Probe_IDs, regs = NULL,
         if (is.null(column)) column <- "gene_name"
     }
 
-    gr <- sesameData_getManifestGRanges(platform)
+    gr <- sesameData_getManifestGRanges(platform, genome = genome)
     in_mft <- Probe_IDs %in% names(gr)
     if (sum(!in_mft) > 0) { warning(sprintf(
         "%d probes out of manifest were excluded.", sum(!in_mft))) }

@@ -9,7 +9,12 @@ sesameData_getAutosomeProbes(platform = NULL, genome = NULL)
 \arguments{
 \item{platform}{'EPIC', 'HM450' etc.}
 
-\item{genome}{hg19, hg38, or mm10, inference by default}
+\item{genome}{hg38, mm10, ... will infer if not given.
+For additional mapping, download the GRanges object from
+http://zwdzwd.github.io/InfiniumAnnotation
+and provide the following argument
+..., genome = sesameAnno_buildManifestGRanges("downloaded_file"),...
+to this function.}
 }
 \value{
 GRanges of autosome probes

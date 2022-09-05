@@ -7,7 +7,7 @@
 sesameData_check_genome(genome, platform)
 }
 \arguments{
-\item{genome}{mm10, hg38, ... or NULL}
+\item{genome}{mm10, hg38, ..., or NULL}
 
 \item{platform}{HM27, HM450, EPIC, ...}
 }

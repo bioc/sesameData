@@ -5,7 +5,7 @@
 \title{Get Probes by Gene}
 \usage{
 sesameData_getProbesByGene(
-  gene_name,
+  gene_name = NULL,
   platform = NULL,
   upstream = 0,
   downstream = 0,
@@ -13,7 +13,7 @@ sesameData_getProbesByGene(
 )
 }
 \arguments{
-\item{gene_name}{gene name}
+\item{gene_name}{gene name, if NULL return all genes}
 
 \item{platform}{EPIC or HM450}
 

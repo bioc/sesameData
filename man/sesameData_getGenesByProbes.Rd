@@ -4,12 +4,24 @@
 \alias{sesameData_getGenesByProbes}
 \title{get genes next to certain probes}
 \usage{
-sesameData_getGenesByProbes(Probe_IDs, platform = NULL, max_distance = 10000)
+sesameData_getGenesByProbes(
+  Probe_IDs,
+  platform = NULL,
+  genome = NULL,
+  max_distance = 10000
+)
 }
 \arguments{
 \item{Probe_IDs}{probe IDs}
 
 \item{platform}{EPIC, HM450, ... will infer if not given}
+
+\item{genome}{hg38, mm10, ... will infer if not given.
+For additional mapping, download the GRanges object from
+http://zwdzwd.github.io/InfiniumAnnotation
+and provide the following argument
+..., genome = sesameAnno_buildManifestGRanges("downloaded_file"),...
+to this function.}
 
 \item{max_distance}{maximum distance to gene (default: 10000)}
 }
