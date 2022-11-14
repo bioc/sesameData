@@ -24,20 +24,12 @@ sesameData_getManifestGRanges <- function(
 
     platform <- sesameData_check_platform(platform)
     genome <- sesameData_check_genome(genome, platform)
-
-    if (sesameDataHas("Infinium.mapping")) {
-        manifests <- sesameDataGet("Infinium.mapping")
-        mft_key <- paste0(platform,"|",genome)
-        if (mft_key %in% names(manifests)) {
-            return(manifests[[mft_key]]) }
-        stop(sprintf("%s-%s manifest is not found in Bioconductor.
-Please go to http://zwdzwd.github.io/InfiniumAnnotation
-for additional mapping files.
-", platform, genome))
+    ## only one genome is supported natively.
+    addr <- sesameDataGet(sprintf("%s.address", platform))
+    if (genome %in% names(addr)) {
+        return(addr[[genome]])
     } else {
-        addr <- sesameDataGet(sprintf("%s.address", platform))
-        if (genome %in% names(addr)) { return(addr[[genome]]) }
-        stop(sprintf("%s-%s manifest is not found", platform, genome))
+        return(NULL)
     }
 }
 

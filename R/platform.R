@@ -20,7 +20,7 @@ inferPlatformFromProbeIDs <- function(Probe_IDs, silent = FALSE) {
 }
 
 #' check platform code
-#'
+#' 
 #' @param platform input platform
 #' @param probes probes by which the platform may be guessed
 #' @return platform code
@@ -35,7 +35,8 @@ sesameData_check_platform <- function(platform = NULL, probes = NULL) {
             platform <- inferPlatformFromProbeIDs(probes)
         }
     }
-    stopifnot(platform %in% c("EPIC", "HM27", "HM450", "MM285", "Mammal40"))
+    stopifnot(platform %in% c(
+        "EPICv2", "EPIC", "HM27", "HM450", "MM285", "Mammal40"))
     platform
 }
 
