@@ -4,6 +4,9 @@
 \name{df_master}
 \alias{df_master}
 \title{Master data frame for all object to cache}
+\value{
+master sheet of sesameData objects
+}
 \description{
 This is an internal object which will be updated on every new release
 library(ExperimentHub)

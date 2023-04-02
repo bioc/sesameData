@@ -7,10 +7,11 @@
 #'
 #' @name df_master
 #' @docType data
+#' @return master sheet of sesameData objects
 NULL
 
 cacheEnv <- new.env()
-sesameData_open_alt <- TRUE # whether we can access alternative, only in devel
+sesameData_open_alt <- FALSE # whether we can access alternative, only in devel
 alt_base <- "https://zhouserver.research.chop.edu"
 
 #' Check whether the title exists in cacheEnv
