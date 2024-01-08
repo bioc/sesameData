@@ -13,35 +13,33 @@
 }
 
 .sesameDataGet <- function(title) {
+
     eh_id <- df_master$EHID[match(title, df_master$Title)]
     if (eh_id %in% c("TBD", "NA")) { eh_id <- NA; }
     stopifnot(is.na(eh_id) || length(eh_id) == 1)
-    
+
     if (is.na(eh_id)) { # missing from lookup table
-        if (sesameData_open_alt) {
-            .sesameDataGet_fallback(title)
-            eh_id <- title
-        } else {
-            stop(sprintf("Data %s not found.\n", title))
-        }
-    } else {
-        ## try ExperimentHub
-        if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
-            if (!file.exists(getExperimentHubOption("CACHE"))) {
-                stopAndCache(title) }
-            tryCatch({
-                eh <- query(ExperimentHub(localHub=TRUE), 'sesameData')
-            }, error = function(cond) { stopAndCache(title); })
-            if (!(eh_id %in% names(eh))) {
-                stopAndCache(title); }
-            sesameDataGet_assignEnv(eh_id, eh[[eh_id]])
-        }
+        eh_id <- title
     }
 
-    ## try backup
-    if (!exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
-        stop(sprintf("%s doesn't exist.", title))
+    if (exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
+        return(get(eh_id, envir=cacheEnv, inherits=FALSE))
     }
+
+    if ((!is.null(options("SESAMEDATA_USE_ALT")[[1]])) &&
+        options("SESAMEDATA_USE_ALT")[[1]]) {
+        .sesameDataGet_fallback(title)
+    } else {
+        if (!file.exists(getExperimentHubOption("CACHE"))) {
+            stopAndCache(title) }
+        tryCatch({
+            eh <- query(ExperimentHub(localHub=TRUE), 'sesameData')
+        }, error = function(cond) { stopAndCache(title); })
+        if (!(eh_id %in% names(eh))) {
+            stopAndCache(title); }
+        sesameDataGet_assignEnv(eh_id, eh[[eh_id]])
+    }
+
     return(get(eh_id, envir=cacheEnv, inherits=FALSE))
 }
 

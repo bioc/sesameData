@@ -11,7 +11,8 @@ sesameDataRecache <- function(eh_id) {
 
 stopAndCache <- function(title) {
     stop(sprintf('
-| File %s needs to be cached to be used in sesame.
+| File %s either not found or needs to be cached to be
+| used in sesame.
 | Please make sure you have updated ExperimentHub and try
 | > sesameDataCache()
 | to retrieve and cache needed sesame data.', title))

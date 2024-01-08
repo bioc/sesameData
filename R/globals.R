@@ -11,7 +11,6 @@
 NULL
 
 cacheEnv <- new.env()
-sesameData_open_alt <- FALSE # whether we can access alternative, only in devel
 alt_base <- "https://zhouserver.research.chop.edu"
 
 #' Check whether the title exists in cacheEnv
