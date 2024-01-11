@@ -38,7 +38,7 @@ caching and remove internet dependency. Caching needs only be done once per
 sesame/sesameData installation. One can cache data using
 
 ```{r, include = FALSE}
-sesameDataCacheExample()        # examples
+sesameDataCache()        # examples
 ```
 
 ```{r}

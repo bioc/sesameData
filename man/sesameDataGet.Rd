@@ -19,6 +19,6 @@ Get SeSAMe data
 }
 \examples{
 
-sesameDataCacheExample()
+sesameDataCache()
 EPIC.1.SigDF <- sesameDataGet('EPIC.1.SigDF')
 }

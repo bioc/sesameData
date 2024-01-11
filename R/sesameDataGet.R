@@ -51,7 +51,7 @@
 #' @importFrom stringr str_replace
 #' @examples
 #'
-#' sesameDataCacheExample()
+#' sesameDataCache()
 #' EPIC.1.SigDF <- sesameDataGet('EPIC.1.SigDF')
 #' @export
 sesameDataGet <- function(title, verbose = FALSE) {

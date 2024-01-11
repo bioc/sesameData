@@ -32,39 +32,6 @@ sesameDataCache0 <- function(eh_ids) {
     })
 }
 
-#' Cache SeSAMe data for specific platform
-#'
-#' @return TRUE
-#' @import ExperimentHub
-#' @import AnnotationHub
-#' @examples
-#' if(FALSE) { sesameDataCacheExample() }
-#' @export
-sesameDataCacheExample <- function() {
-    
-    setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
-
-    tmp <- df_master
-    tmp <- tmp[tmp$Example==1,]
-    eh_ids <- tmp$EHID
-    
-    ## TODO platform is supported but no data added for the snapshot
-    suppressMessages(try({ # only if it's not cached already
-        eh_ids <- eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
-    }, silent = TRUE))
-    if (length(eh_ids) == 0) return(invisible(TRUE));
-
-    titles <- tmp$Title[match(eh_ids, tmp$EHID)]
-    tryCatch({
-        sesameDataCache0(eh_ids)
-    }, error = function(cond) {
-        message("ExperimentHub Caching fails:")
-        message(cond)
-        return(invisible(FALSE))
-    })
-    invisible(TRUE)
-}
-
 #' Cache all SeSAMe data
 #'
 #' @return TRUE
