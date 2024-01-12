@@ -11,6 +11,8 @@ sesameData_annoProbes(
   chooseOne = FALSE,
   column = NULL,
   sep = ",",
+  return_ov_probes = FALSE,
+  return_ov_features = FALSE,
   out_name = NULL,
   platform = NULL,
   genome = NULL,
@@ -28,9 +30,16 @@ probes will be annotated, default to genes if not given}
 \item{chooseOne}{choose an arbitrary annotation if multiple exist
 default to FALSE. which concatenates all with ","}
 
-\item{column}{which column in regs to annotate}
+\item{column}{which column in regs to annotate, if not given
+return all overlapping probes}
 
 \item{sep}{the delimiter for collapsing}
+
+\item{return_ov_probes}{if TRUE will return overlapping
+probes in a GRanges object.}
+
+\item{return_ov_features}{if TRUE will return overlapping
+features in a GRanges object.}
 
 \item{out_name}{column header of the annotation, use column if not given}
 
@@ -63,4 +72,10 @@ sesameDataCache(c("genomeInfo.mm10", "MM285.address"))
 regs = sesameData_getTxnGRanges("mm10")
 Probe_IDs = names(sesameData_getManifestGRanges("MM285"))
 anno = sesameData_annoProbes(Probe_IDs, promoters(regs), column="gene_name")
+
+## get all genes associated with a probe set
+sesameData_getGenesByProbes(c("cg14620903","cg22464003"))
+genes = sesameData_getTxnGRanges("hg38", merge2gene)
+anno = sesameData_annoProbes(
+    c("cg14620903","cg22464003"), genes, return_ov_features=TRUE)
 }

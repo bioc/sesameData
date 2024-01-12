@@ -4,12 +4,14 @@
 \alias{sesameData_getTxnGRanges}
 \title{convert GRangesList to transcript GRanges}
 \usage{
-sesameData_getTxnGRanges(genome = NULL, grl = NULL)
+sesameData_getTxnGRanges(genome = NULL, grl = NULL, merge2gene = FALSE)
 }
 \arguments{
 \item{genome}{hg38, mm10, ...}
 
 \item{grl}{GRangesList object}
+
+\item{merge2gene}{merge transcript to genes}
 }
 \value{
 a GRanges object
@@ -21,5 +23,5 @@ convert GRangesList to transcript GRanges
 txns <- sesameData_getTxnGRanges("mm10")
 ## get verified protein-coding
 txns <- txns[(txns$transcript_type == "protein_coding" & txns$level <= 2)]
-
+genes <- sesameData_getTxnGRanges(txns, merge2gene = TRUE)
 }

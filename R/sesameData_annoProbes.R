@@ -11,7 +11,12 @@
 #' @param chooseOne choose an arbitrary annotation if multiple exist
 #' default to FALSE. which concatenates all with ","
 #' @param sep the delimiter for collapsing
-#' @param column which column in regs to annotate
+#' @param column which column in regs to annotate, if not given
+#' return all overlapping probes
+#' @param return_ov_probes if TRUE will return overlapping
+#' probes in a GRanges object.
+#' @param return_ov_features if TRUE will return overlapping
+#' features in a GRanges object.
 #' @param out_name column header of the annotation, use column if not given
 #' @param platform EPIC, MM285 etc. will infer from Probe_IDs if not given
 #' @param genome hg38, mm10, ... will infer if not given.
@@ -37,9 +42,16 @@
 #' regs = sesameData_getTxnGRanges("mm10")
 #' Probe_IDs = names(sesameData_getManifestGRanges("MM285"))
 #' anno = sesameData_annoProbes(Probe_IDs, promoters(regs), column="gene_name")
+#'
+#' ## get all genes associated with a probe set
+#' sesameData_getGenesByProbes(c("cg14620903","cg22464003"))
+#' genes = sesameData_getTxnGRanges("hg38", merge2gene)
+#' anno = sesameData_annoProbes(
+#'     c("cg14620903","cg22464003"), genes, return_ov_features=TRUE)
 #' @export
 sesameData_annoProbes <- function(Probe_IDs, regs = NULL,
     collapse = TRUE, chooseOne = FALSE, column = NULL, sep=",",
+    return_ov_probes = FALSE, return_ov_features = FALSE,
     out_name = NULL, platform = NULL, genome = NULL, silent = FALSE) {
 
     stopifnot(is.character(Probe_IDs))
@@ -61,6 +73,12 @@ sesameData_annoProbes <- function(Probe_IDs, regs = NULL,
     if (length(probes) == 0) { return(probes); } # empty GRanges
     hits <- findOverlaps(probes, regs, ignore.strand = TRUE)
 
+    if (return_ov_probes) {
+        return(probes[unique(queryHits(hits))])
+    } else if (return_ov_features) {
+        return(regs[unique(subjectHits(hits))])
+    }
+
     if (is.null(column)) {
         label <- names(regs[subjectHits(hits)])
         if (is.null(out_name)) { out_name <- "anno" }
@@ -81,9 +99,13 @@ sesameData_annoProbes <- function(Probe_IDs, regs = NULL,
         mcols(probes[as.integer(names(pid2label))])[[out_name]] <- pid2label
     } else {
         unfound <- probes[!(seq_along(probes) %in% queryHits(hits))]
-        mcols(unfound)[[out_name]] <- NA
+        if (length(unfound) > 0) {
+            mcols(unfound)[[out_name]] <- NA
+        }
         found <- probes[queryHits(hits)]
-        mcols(found)[[out_name]] <- label[subjectHits(hits)]
+        if (length(found) > 0) {
+            mcols(found)[[out_name]] <- label
+        }
         probes <- sort(c(unfound, found))
     }
     probes

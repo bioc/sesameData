@@ -169,14 +169,17 @@ sesameData_txnToGeneGRanges <- function(txns) {
 #'
 #' @param genome hg38, mm10, ...
 #' @param grl GRangesList object
+#' @param merge2gene merge transcript to genes
 #' @return a GRanges object
 #' @examples
 #' txns <- sesameData_getTxnGRanges("mm10")
 #' ## get verified protein-coding
 #' txns <- txns[(txns$transcript_type == "protein_coding" & txns$level <= 2)]
-#'
+#' genes <- sesameData_getTxnGRanges(txns, merge2gene = TRUE)
 #' @export
-sesameData_getTxnGRanges <- function(genome = NULL, grl = NULL) {
+sesameData_getTxnGRanges <- function(
+    genome = NULL, grl = NULL, merge2gene = FALSE) {
+    
     if (is.null(grl)) {
         genome <- sesameData_check_genome(genome, NULL)
         grl <- sesameData_getGenomeInfo(genome)$txns
@@ -190,7 +193,11 @@ sesameData_getTxnGRanges <- function(genome = NULL, grl = NULL) {
     mcols(gr) <- mcl[,colnames(mcl)[!(colnames(mcl) %in% c(
         "chrm","transcript_id", "transcript_start",
         "transcript_end","transcript_strand"))]]
+
     gr <- sort(gr, ignore.strand = TRUE)
+    if (merge2gene) {
+        gr <- sesameData_txnToGeneGRanges(gr)
+    }
     gr
 }
 

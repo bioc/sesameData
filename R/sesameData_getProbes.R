@@ -49,7 +49,7 @@ sesameData_getProbesByRegion <- function(
     genome <- sesameData_check_genome(genome, platform)
     probes <- sesameData_getManifestGRanges(platform, genome=genome)
 
-    if (!is.null(chrm) || !is.null(chrm_exclude)) {
+    if (!is.null(chrm) || !is.null(chrm_to_exclude)) {
         if (beg == 1 && end < 0) {
             if (is.null(chrm_to_exclude)) {
                 return(probes[as.character(
