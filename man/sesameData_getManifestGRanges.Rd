@@ -26,5 +26,5 @@ For full manifest, please visit
 }
 \examples{
 sesameDataCache("Mammal40.address")
-res <- esameData_getManifestGRanges("Mammal40")
+res <- sesameData_getManifestGRanges("Mammal40")
 }

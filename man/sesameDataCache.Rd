@@ -16,8 +16,5 @@ TRUE
 Cache SeSAMe data
 }
 \examples{
-\dontrun{
-  sesameDataCache()
-  sesameDataCache("EPIC.1.SigDF")
-}
+sesameDataCache("genomeInfo.hg38")
 }

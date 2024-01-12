@@ -6,6 +6,9 @@
 \usage{
 sesameDataCacheAll(data_titles = NULL)
 }
+\arguments{
+\item{data_titles}{data to cache, if not given will cache all}
+}
 \value{
 TRUE
 }
@@ -13,7 +16,5 @@ TRUE
 Cache all SeSAMe data
 }
 \examples{
-\dontrun{
-sesameDataCacheAll()
-}
+sesameDataCache("genomeInfo.hg38")
 }

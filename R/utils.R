@@ -9,9 +9,6 @@
 #' @importFrom GenomicRanges start
 #' @importFrom GenomicRanges end
 #' @return a GenomicRanges::GRanges
-#' @examples
-#' library(GenomicRanges)
-#' extend(GRanges("chr1",IRanges(10,20), "-"), upstream = 5, downstream = 3)
 extend <- function(gr, upstream=0, downstream=0) {
     if (any(strand(gr) == "*")) {
         warning("'*' ranges were treated as '+'") }

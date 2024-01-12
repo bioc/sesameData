@@ -19,7 +19,3 @@ a GenomicRanges::GRanges
 \description{
 source: https://support.bioconductor.org/p/78652/
 }
-\examples{
-library(GenomicRanges)
-extend(GRanges("chr1",IRanges(10,20), "-"), upstream = 5, downstream = 3)
-}

@@ -14,7 +14,7 @@
 #' @return GRanges
 #' @examples
 #' sesameDataCache("Mammal40.address")
-#' res <- esameData_getManifestGRanges("Mammal40")
+#' res <- sesameData_getManifestGRanges("Mammal40")
 #' @export
 sesameData_getManifestGRanges <- function(
     platform, genome = NULL) {

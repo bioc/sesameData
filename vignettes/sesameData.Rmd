@@ -20,6 +20,7 @@ for different Infinium platforms.
 ```{r, message=FALSE, warning=FALSE}
 library(sesameData)
 library(GenomicRanges)
+sesameDataCache(c("genomeInfo.mm10", "HM450.address"))
 ```
 
 # Genome Information

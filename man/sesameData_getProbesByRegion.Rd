@@ -47,6 +47,7 @@ on the specified platform that falls in the given genomic region.
 sesameDataCache(c("Mammal40.address", "genomeInfo.hg38"))
 
 ## get probes in a region
+library(GenomicRanges)
 probes = sesameData_getProbesByRegion(
     GRanges('chr5', IRanges(135313937, 135419936)), platform = 'Mammal40')
 

@@ -20,8 +20,14 @@ a GRanges object
 convert GRangesList to transcript GRanges
 }
 \examples{
+
+## all mm10 transcripts
 txns <- sesameData_getTxnGRanges("mm10")
-## get verified protein-coding
-txns <- txns[(txns$transcript_type == "protein_coding" & txns$level <= 2)]
-genes <- sesameData_getTxnGRanges(txns, merge2gene = TRUE)
+
+## verified protein-coding transcripts
+txns[(txns$transcript_type == "protein_coding" & txns$level <= 2)]
+
+## merged to genes
+sesameData_getTxnGRanges("mm10", merge2gene = TRUE)
+
 }

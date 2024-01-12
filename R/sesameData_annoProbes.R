@@ -37,15 +37,16 @@
 #' 
 #' @examples
 #' library(GenomicRanges)
-#' sesameDataCache(c("genomeInfo.mm10", "MM285.address"))
+#' sesameDataCache(c(
+#'     "genomeInfo.mm10", "MM285.address",
+#'     "genomeInfo.hg38", "Mammal40.address"))
 #' 
 #' regs = sesameData_getTxnGRanges("mm10")
 #' Probe_IDs = names(sesameData_getManifestGRanges("MM285"))
 #' anno = sesameData_annoProbes(Probe_IDs, promoters(regs), column="gene_name")
 #'
 #' ## get all genes associated with a probe set
-#' sesameData_getGenesByProbes(c("cg14620903","cg22464003"))
-#' genes = sesameData_getTxnGRanges("hg38", merge2gene)
+#' genes = sesameData_getTxnGRanges("hg38", merge2gene = TRUE)
 #' anno = sesameData_annoProbes(
 #'     c("cg14620903","cg22464003"), genes, return_ov_features=TRUE)
 #' @export
@@ -56,7 +57,8 @@ sesameData_annoProbes <- function(Probe_IDs, regs = NULL,
 
     stopifnot(is.character(Probe_IDs))
     if(is.null(platform)) {
-        platform <- inferPlatformFromProbeIDs(Probe_IDs, silent = silent) }
+        platform <- inferPlatformFromProbeIDs(Probe_IDs, silent = silent)
+    }
 
     if (is.null(regs)) { # default to annotate genes
         if (is.null(genome)) {

@@ -41,10 +41,7 @@ sesameDataCache0 <- function(eh_ids) {
 #' @param data_titles data to cache, if not given will cache all
 #' @return TRUE
 #' @examples
-#' \dontrun{
-#'   sesameDataCache()
-#'   sesameDataCache("EPIC.1.SigDF")
-#' }
+#' sesameDataCache("genomeInfo.hg38")
 #' @export
 sesameDataCache <- function(data_titles = NULL) {
     setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
@@ -56,7 +53,8 @@ sesameDataCache <- function(data_titles = NULL) {
         data_titles <- data_titles[!(data_titles %in% df_master$Title)]
         stop(sprintf("%s is missing from sesameData.", data_titles[1]))
     }
-    eh_ids <- na.omit(eh_ids[eh_ids != "TBD"])
+    eh_ids <- eh_ids[eh_ids != "TBD"]
+    eh_ids <- eh_ids[!is.na(eh_ids)]
     stopifnot(length(eh_ids) > 0)
     
     suppressMessages(try({
@@ -74,13 +72,12 @@ sesameDataCache <- function(data_titles = NULL) {
 }
 
 #' Cache all SeSAMe data
-#'
+#' 
+#' @param data_titles data to cache, if not given will cache all
 #' @return TRUE
 #' @import ExperimentHub
 #' @import AnnotationHub
 #' @examples
-#' \dontrun{
-#' sesameDataCacheAll()
-#' }
+#' sesameDataCache("genomeInfo.hg38")
 #' @export
 sesameDataCacheAll <- sesameDataCache
