@@ -1,4 +1,3 @@
-
 sesameDataRecache <- function(eh_id) {
     stopifnot(startsWith(eh_id, "EH"))
     tryCatch({
@@ -56,7 +55,6 @@ sesameDataCache <- function(data_titles = NULL) {
     eh_ids <- eh_ids[eh_ids != "TBD"]
     eh_ids <- eh_ids[!is.na(eh_ids)]
     stopifnot(length(eh_ids) > 0)
-    
     suppressMessages(try({
         eh_ids <- eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
     }, silent = TRUE))
