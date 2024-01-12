@@ -4,6 +4,7 @@
 #' @param silent suppress message
 #' @return a platform code
 #' @examples
+#' sesameDataCache("probeIDSignature")
 #' inferPlatformFromProbeIDs(c("cg14620903","cg22464003"))
 #' @export
 inferPlatformFromProbeIDs <- function(Probe_IDs, silent = FALSE) {

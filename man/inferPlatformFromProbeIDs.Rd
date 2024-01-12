@@ -18,5 +18,6 @@ a platform code
 infer platform from Probe_IDs
 }
 \examples{
+sesameDataCache("probeIDSignature")
 inferPlatformFromProbeIDs(c("cg14620903","cg22464003"))
 }

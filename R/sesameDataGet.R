@@ -22,8 +22,8 @@
         return(get(title, envir=cacheEnv, inherits=FALSE))
     } else {
         eh_id <- df_master$EHID[match(title, df_master$Title)]
-        if (eh_id %in% c("TBD", "NA")) { eh_id <- NA; }
-        stopifnot(is.na(eh_id) || length(eh_id) == 1)
+        if (eh_id %in% c("TBD", "NA")) { stopAndCache(title); }
+        stopifnot(length(eh_id) == 1)
         
         if (exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
             return(get(eh_id, envir=cacheEnv, inherits=FALSE))
@@ -51,7 +51,7 @@
 #' @importFrom stringr str_replace
 #' @examples
 #'
-#' sesameDataCache()
+#' sesameDataCache("EPIC.1.SigDF")
 #' EPIC.1.SigDF <- sesameDataGet('EPIC.1.SigDF')
 #' @export
 sesameDataGet <- function(title, verbose = FALSE) {

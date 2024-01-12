@@ -2,16 +2,22 @@
 % Please edit documentation in R/sesameDataCache.R
 \name{sesameDataCache}
 \alias{sesameDataCache}
-\title{Cache all SeSAMe data}
+\title{Cache SeSAMe data}
 \usage{
-sesameDataCache()
+sesameDataCache(data_titles = NULL)
+}
+\arguments{
+\item{data_titles}{data to cache, if not given will cache all}
 }
 \value{
 TRUE
 }
 \description{
-Cache all SeSAMe data
+Cache SeSAMe data
 }
 \examples{
-if(FALSE) { sesameDataCacheAll() }
+\dontrun{
+  sesameDataCache()
+  sesameDataCache("EPIC.1.SigDF")
+}
 }

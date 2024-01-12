@@ -13,6 +13,7 @@
 #' to this function.
 #' @return GRanges
 #' @examples
+#' sesameDataCache("Mammal40")
 #' gr <- sesameData_getManifestGRanges("Mammal40")
 #' @export
 sesameData_getManifestGRanges <- function(

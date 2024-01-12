@@ -4,7 +4,7 @@
 \alias{sesameDataCacheAll}
 \title{Cache all SeSAMe data}
 \usage{
-sesameDataCacheAll()
+sesameDataCacheAll(data_titles = NULL)
 }
 \value{
 TRUE
@@ -13,5 +13,7 @@ TRUE
 Cache all SeSAMe data
 }
 \examples{
-if(FALSE) { sesameDataCacheAll() }
+\dontrun{
+sesameDataCacheAll()
+}
 }

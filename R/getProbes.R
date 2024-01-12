@@ -7,7 +7,7 @@
 #' @param chrm chromosome, when given regs are ignored
 #' @param beg begin, 1 if omitted
 #' @param end end, chromosome end if omitted
-#' @param platform EPIC, HM450, ...
+#' @param platform EPICv2, EPIC, HM450, ...
 #' @param genome hg38, mm10, ... will infer if not given.
 #' For additional mapping, download the GRanges object from
 #' http://zwdzwd.github.io/InfiniumAnnotation
@@ -17,9 +17,13 @@
 #' @return GRanges of selected probes
 #' @importMethodsFrom IRanges subsetByOverlaps
 #' @examples
-#' library(GenomicRanges)
+#'
+#' ## get probes in a region
 #' sesameData_getProbesByRegion(
 #'     GRanges('chr5', IRanges(135313937, 135419936)), platform = 'Mammal40')
+#'
+#' ## get all probes on chromosome 5
+#' sesameData_getProbesByRegion("chr5", platform = "Mammal40")
 #' @export
 sesameData_getProbesByRegion <- function(
     regs, chrm = NULL, beg = 1, end = -1,

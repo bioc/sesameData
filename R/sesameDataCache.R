@@ -14,8 +14,10 @@ stopAndCache <- function(title) {
 | File %s either not found or needs to be cached to be
 | used in sesame.
 | Please make sure you have updated ExperimentHub and try
+| > sesameDataCache("%s")
+| or download all data
 | > sesameDataCache()
-| to retrieve and cache needed sesame data.', title))
+| to retrieve and cache needed sesame data.', title, title))
 }
 
 sesameDataCache0 <- function(eh_ids) {
@@ -32,19 +34,30 @@ sesameDataCache0 <- function(eh_ids) {
     })
 }
 
-#' Cache all SeSAMe data
+#' Cache SeSAMe data
 #'
-#' @return TRUE
 #' @import ExperimentHub
 #' @import AnnotationHub
+#' @param data_titles data to cache, if not given will cache all
+#' @return TRUE
 #' @examples
-#' if(FALSE) { sesameDataCacheAll() }
+#' \dontrun{
+#'   sesameDataCache()
+#'   sesameDataCache("EPIC.1.SigDF")
+#' }
 #' @export
-sesameDataCacheAll <- function() {
+sesameDataCache <- function(data_titles = NULL) {
     setExperimentHubOption(arg="MAX_DOWNLOADS", 100)
-
-    eh_ids <- unique(df_master$EHID)
-    eh_ids <- eh_ids[eh_ids != "TBD"]
+    if (is.null(data_titles)) { # cache all
+        eh_ids <- unique(df_master$EHID)
+    } else if (all(data_titles %in% df_master$Title)) {
+        eh_ids <- df_master$EHID[df_master$Title %in% data_titles]
+    } else {
+        data_titles <- data_titles[!(data_titles %in% df_master$Title)]
+        stop(sprintf("%s is missing from sesameData.", data_titles[1]))
+    }
+    eh_ids <- na.omit(eh_ids[eh_ids != "TBD"])
+    stopifnot(length(eh_ids) > 0)
     
     suppressMessages(try({
         eh_ids <- eh_ids[!(eh_ids %in% names(ExperimentHub(localHub=TRUE)))]
@@ -66,6 +79,8 @@ sesameDataCacheAll <- function() {
 #' @import ExperimentHub
 #' @import AnnotationHub
 #' @examples
-#' if(FALSE) { sesameDataCacheAll() }
+#' \dontrun{
+#' sesameDataCacheAll()
+#' }
 #' @export
-sesameDataCache <- sesameDataCacheAll
+sesameDataCacheAll <- sesameDataCache
