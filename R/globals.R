@@ -5,6 +5,9 @@
 #' eh <- query(ExperimentHub(localHub=FALSE), c("sesameData", "v1.13.1"))
 #' data.frame(name=eh$title, eh=names(eh))
 #'
+#' Cache location is default to
+#' /Users/zhouw3/Library/Caches/org.R-project.R/R/ExperimentHub/
+#'
 #' @name df_master
 #' @docType data
 #' @return master sheet of sesameData objects

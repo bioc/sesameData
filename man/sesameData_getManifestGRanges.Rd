@@ -25,6 +25,6 @@ For full manifest, please visit
 \url{http://zwdzwd.github.io/InfiniumAnnotation}
 }
 \examples{
-sesameDataCache("Mammal40")
-gr <- sesameData_getManifestGRanges("Mammal40")
+sesameDataCache("Mammal40.address")
+res <- esameData_getManifestGRanges("Mammal40")
 }

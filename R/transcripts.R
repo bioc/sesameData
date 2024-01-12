@@ -110,7 +110,7 @@ build_GENCODE_gtf <- function(x) {
 sesameData_getTxnGRanges <- function(genome = NULL, grl = NULL) {
     if (is.null(grl)) {
         genome <- sesameData_check_genome(genome, NULL)
-        grl <- sesameDataGet(sprintf("genomeInfo.%s", genome))$txns
+        grl <- sesameData_getGenomeInfo(genome)$txns
     }
     mcl <- mcols(grl)
     gr <- GRanges(

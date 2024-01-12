@@ -1,5 +1,6 @@
 #' Annotate Probes by Probe ID
 #'
+#' Columns in the manifests will be added to the annotation.
 #' Please note that if unfound, the annotation will be NA.
 #' The probe will always be kept in the output.
 #'
@@ -31,6 +32,8 @@
 #' 
 #' @examples
 #' library(GenomicRanges)
+#' sesameDataCache(c("genomeInfo.mm10", "MM285.address"))
+#' 
 #' regs = sesameData_getTxnGRanges("mm10")
 #' Probe_IDs = names(sesameData_getManifestGRanges("MM285"))
 #' anno = sesameData_annoProbes(Probe_IDs, promoters(regs), column="gene_name")

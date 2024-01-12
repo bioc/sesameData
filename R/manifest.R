@@ -13,8 +13,8 @@
 #' to this function.
 #' @return GRanges
 #' @examples
-#' sesameDataCache("Mammal40")
-#' gr <- sesameData_getManifestGRanges("Mammal40")
+#' sesameDataCache("Mammal40.address")
+#' res <- esameData_getManifestGRanges("Mammal40")
 #' @export
 sesameData_getManifestGRanges <- function(
     platform, genome = NULL) {
@@ -34,24 +34,3 @@ sesameData_getManifestGRanges <- function(
     }
 }
 
-#' Get genome info files
-#' 
-#' @param genome hg38, mm10, or GRanges with a metadata(genome)[["genome"]]
-#' @return a list of genome info files
-#' @examples
-#' ginfo <- sesameData_getGenomeInfo("hg38")
-#' @export
-sesameData_getGenomeInfo <- function(genome) {
-    if ("GenomicRanges" %in% class(genome)) {
-        genome <- attr(genome, "genome")
-    }
-    stopifnot(is.character(genome))
-    key <- paste0('genomeInfo.', genome)
-    if (!sesameDataHas(key)) {
-        stop(sprintf("%s genome info is not found in Bioconductor.
-Please go to http://zwdzwd.github.io/InfiniumAnnotation
-for additional genome info files.
-", genome))
-    }
-    sesameDataGet(key)
-}

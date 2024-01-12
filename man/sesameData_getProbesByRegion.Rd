@@ -10,6 +10,7 @@ sesameData_getProbesByRegion(
   beg = 1,
   end = -1,
   platform = NULL,
+  chrm_to_exclude = NULL,
   genome = NULL
 )
 }
@@ -23,6 +24,8 @@ sesameData_getProbesByRegion(
 \item{end}{end, chromosome end if omitted}
 
 \item{platform}{EPICv2, EPIC, HM450, ...}
+
+\item{chrm_to_exclude}{chromosome to exclude.}
 
 \item{genome}{hg38, mm10, ... will infer if not given.
 For additional mapping, download the GRanges object from
@@ -40,10 +43,25 @@ on the specified platform that falls in the given genomic region.
 }
 \examples{
 
+## download needed data
+sesameDataCache(c("Mammal40.address", "genomeInfo.hg38"))
+
 ## get probes in a region
-sesameData_getProbesByRegion(
+probes = sesameData_getProbesByRegion(
     GRanges('chr5', IRanges(135313937, 135419936)), platform = 'Mammal40')
 
 ## get all probes on chromosome 5
-sesameData_getProbesByRegion("chr5", platform = "Mammal40")
+probes = sesameData_getProbesByRegion(chrm = "chr5", platform = "Mammal40")
+
+## get all probes on chromosome X
+probes = sesameData_getProbesByRegion(chrm = 'chrX', platform = "Mammal40")
+
+## get all probes on both chromosome X and Y
+probes = sesameData_getProbesByRegion(
+    chrm = c('chrX', 'chrY'), platform = "Mammal40")
+
+## get all autosomal probes
+probes = sesameData_getProbesByRegion(
+    chrm_to_exclude = c("chrX", "chrY"), platform = "Mammal40")
+
 }

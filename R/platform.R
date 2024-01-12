@@ -20,7 +20,9 @@ inferPlatformFromProbeIDs <- function(Probe_IDs, silent = FALSE) {
     platform
 }
 
-#' check platform code
+#' Check platform code
+#'
+#' Note: custome platforms lead to error here.
 #' 
 #' @param platform input platform
 #' @param probes probes by which the platform may be guessed
@@ -37,28 +39,7 @@ sesameData_check_platform <- function(platform = NULL, probes = NULL) {
         }
     }
     stopifnot(platform %in% c(
-        "EPICv2", "EPIC", "HM27", "HM450", "MM285", "Mammal40"))
+        "MSA", "EPICv2", "EPIC", "HM27", "HM450", "MM285", "Mammal40"))
     platform
-}
-
-#' check genome supported for a platform
-#'
-#' @param genome mm10, hg38, ..., or NULL
-#' @param platform HM27, HM450, EPIC, ...
-#' @return genome as string
-#' @examples
-#' sesameData_check_genome(NULL, "Mammal40")
-#' @export
-sesameData_check_genome <- function(genome, platform) {
-    if ("GRanges" %in% class(genome)) { return(genome); }
-    platform <- sesameData_check_platform(platform)
-    supported_genomes <- c("hg19", "hg38", "mm10")
-    default_genome <- c(
-        HM27 = "hg38", HM450 = "hg38", EPIC = "hg38", EPICv2 = "hg38",
-        Mammal40 = "hg38", MM285 = "mm10")
-    if (is.null(genome)) { genome <- default_genome[platform] }
-    stopifnot(!is.null(genome))
-    stopifnot(genome %in% supported_genomes)
-    genome
 }
 

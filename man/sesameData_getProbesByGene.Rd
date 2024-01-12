@@ -2,13 +2,14 @@
 % Please edit documentation in R/getProbes.R
 \name{sesameData_getProbesByGene}
 \alias{sesameData_getProbesByGene}
-\title{Get Probes by Gene}
+\title{Get Probes by Genes or Gene Promoters}
 \usage{
 sesameData_getProbesByGene(
   gene_name = NULL,
   platform = NULL,
-  upstream = 0,
-  downstream = 0,
+  promoter = FALSE,
+  upstream = 1500,
+  downstream = 1500,
   genome = NULL
 )
 }
@@ -16,6 +17,8 @@ sesameData_getProbesByGene(
 \item{gene_name}{gene name, if NULL return all genes}
 
 \item{platform}{EPIC or HM450}
+
+\item{promoter}{if TRUE, use TSS instead of the whole gene}
 
 \item{upstream}{number of bases to expand upstream of target gene}
 
@@ -34,6 +37,15 @@ platform and reference genome build can be changed with `platform` and
 into the given gene.
 }
 \examples{
+
+## download needed data
+sesameDataCache(c("Mammal40.address", "genomeInfo.hg38"))
+
+## get all probes overlapping with DNMT3A
 probes <- sesameData_getProbesByGene(
     'DNMT3A', "Mammal40", upstream=500, downstream=500)
+
+## get the promoter-associated probes
+probes <- sesameData_getProbesByGene('DNMT3A', "Mammal40", promoter = TRUE)
+
 }

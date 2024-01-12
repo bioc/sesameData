@@ -13,3 +13,7 @@ library(ExperimentHub)
 eh <- query(ExperimentHub(localHub=FALSE), c("sesameData", "v1.13.1"))
 data.frame(name=eh$title, eh=names(eh))
 }
+\details{
+Cache location is default to
+/Users/zhouw3/Library/Caches/org.R-project.R/R/ExperimentHub/
+}

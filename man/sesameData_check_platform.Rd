@@ -2,7 +2,7 @@
 % Please edit documentation in R/platform.R
 \name{sesameData_check_platform}
 \alias{sesameData_check_platform}
-\title{check platform code}
+\title{Check platform code}
 \usage{
 sesameData_check_platform(platform = NULL, probes = NULL)
 }
@@ -15,7 +15,7 @@ sesameData_check_platform(platform = NULL, probes = NULL)
 platform code
 }
 \description{
-check platform code
+Note: custome platforms lead to error here.
 }
 \examples{
 sesameData_check_platform("HM450")
