@@ -4,12 +4,14 @@
 \alias{sesameData_check_platform}
 \title{Check platform code}
 \usage{
-sesameData_check_platform(platform = NULL, probes = NULL)
+sesameData_check_platform(platform = NULL, probes = NULL, silent = TRUE)
 }
 \arguments{
 \item{platform}{input platform}
 
 \item{probes}{probes by which the platform may be guessed}
+
+\item{silent}{suppress message}
 }
 \value{
 platform code

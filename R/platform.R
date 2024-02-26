@@ -26,16 +26,19 @@ inferPlatformFromProbeIDs <- function(Probe_IDs, silent = FALSE) {
 #' 
 #' @param platform input platform
 #' @param probes probes by which the platform may be guessed
+#' @param silent suppress message
 #' @return platform code
 #' @examples
 #' sesameData_check_platform("HM450")
 #' @export
-sesameData_check_platform <- function(platform = NULL, probes = NULL) {
+sesameData_check_platform <- function(
+    platform = NULL, probes = NULL, silent = TRUE) {
+    
     if (is.null(platform)) {
         if (is.null(probes)) {
             platform <- "EPIC" # random guess
         } else {
-            platform <- inferPlatformFromProbeIDs(probes)
+            platform <- inferPlatformFromProbeIDs(probes, silent = silent)
         }
     }
     stopifnot(platform %in% c(
