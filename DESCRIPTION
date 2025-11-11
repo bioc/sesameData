@@ -9,7 +9,7 @@ Authors@R: c(person("Wanding", "Zhou", role = c("aut","cre"),
              email = "Hui.Shen@vai.org"),
              person("Timothy", "Triche", role = "ctb"))
 License: Artistic-2.0
-Depends: R (>= 4.2.0), ExperimentHub, AnnotationHub
+Depends: R (>= 4.3.0), ExperimentHub, AnnotationHub
 Imports:
     utils,
     readr,
