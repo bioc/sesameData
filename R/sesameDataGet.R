@@ -1,7 +1,6 @@
 
-## fall back data retrieval in case ExperimentHub is down
-.sesameDataGet_fallback <- function(title) {
-    u1 <- sprintf('%s/sesameData/%s.rda', alt_base, title)
+## fall back to zenodo in case EHID is not assigned yet.
+.sesameDataGet_fallback <- function(title, u1) {
     if (valid_url(u1)) {
         sesameDataGet_assignEnv(title, get(load(url(u1))))
         TRUE
@@ -14,21 +13,26 @@
 
 .sesameDataGet <- function(title) {
 
-    if ((!is.null(options("SESAMEDATA_USE_ALT")[[1]])) &&
-        options("SESAMEDATA_USE_ALT")[[1]]) {
-        if (!exists(title, envir=cacheEnv, inherits=FALSE)) {
-            .sesameDataGet_fallback(title)
+    idx <- match(title, df_master$Title)
+    eh_id <- df_master$EHID[idx]
+    stopifnot(length(eh_id) == 1)
+    pfx <- df_master$Location_Prefix[idx]
+    rdata <- df_master$RDataPath[idx]
+    if (is.na(eh_id) && !is.na(pfx)) { # no EHID and exists zenodo link
+        ## cache uses title, not ehid
+        if (exists(title, envir=cacheEnv, inherits=FALSE)) {
+            return(get(title, envir=cacheEnv, inherits=FALSE))
         }
-        return(get(title, envir=cacheEnv, inherits=FALSE))
-    } else {
-        eh_id <- df_master$EHID[match(title, df_master$Title)]
-        if (eh_id %in% c("TBD", "NA")) { stopAndCache(title); }
-        stopifnot(length(eh_id) == 1)
         
+        if (.sesameDataGet_fallback(title, paste0(pfx, "/", rdata))) {
+            return(get(title, envir=cacheEnv, inherits=FALSE))
+        } else {
+            stopAndCache(title)
+        }
+    } else {
         if (exists(eh_id, envir=cacheEnv, inherits=FALSE)) {
             return(get(eh_id, envir=cacheEnv, inherits=FALSE))
         }
-
         if (!file.exists(getExperimentHubOption("CACHE"))) {
             stopAndCache(title) }
         tryCatch({
