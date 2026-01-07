@@ -61,9 +61,14 @@ with NA. But if a probe is not included in the manifest (due to
 mappability), it won't be included in the results.
 }
 \description{
-Columns in the manifests will be added to the annotation.
-Please note that if unfound, the annotation will be NA.
+This function annotates probes based on genomic coordinate overlaps with
+provided genomic regions (GRanges). Columns in the manifests will be added
+to the annotation. Please note that if unfound, the annotation will be NA.
 The probe will always be kept in the output.
+}
+\details{
+For annotation by probe ID using KYCG databases (rather than by genomic
+coordinates), see \code{knowYourCG::annoProbes()}
 }
 \examples{
 library(GenomicRanges)
@@ -71,12 +76,60 @@ sesameDataCache(c(
     "genomeInfo.mm10", "MM285.address",
     "genomeInfo.hg38", "Mammal40.address"))
 
-regs = sesameData_getTxnGRanges("mm10")
-Probe_IDs = names(sesameData_getManifestGRanges("MM285"))
-anno = sesameData_annoProbes(Probe_IDs, promoters(regs), column="gene_name")
+## Example 1: Basic usage - annotate with gene names (default)
+## When regs=NULL, function defaults to gene annotation
+probes <- c("cg14620903", "cg22464003")
+anno <- sesameData_annoProbes(probes)
+## Returns GRanges with gene_name column
 
-## get all genes associated with a probe set
-genes = sesameData_getTxnGRanges("hg38", merge2gene = TRUE)
-anno = sesameData_annoProbes(
+## Example 2: Annotate mouse probes with promoter regions
+regs <- sesameData_getTxnGRanges("mm10")
+Probe_IDs <- names(sesameData_getManifestGRanges("MM285"))[1:100]
+anno <- sesameData_annoProbes(Probe_IDs, promoters(regs), column="gene_name")
+## Probes overlapping promoters are annotated with gene names
+
+## Example 3: Get features that overlap with probes
+## return_ov_features=TRUE returns the overlapping genomic features
+genes <- sesameData_getTxnGRanges("hg38", merge2gene = TRUE)
+ov_genes <- sesameData_annoProbes(
     c("cg14620903","cg22464003"), genes, return_ov_features=TRUE)
+## Returns GRanges of genes overlapping the probes
+
+## Example 4: Get probes that overlap with features
+## return_ov_probes=TRUE returns only overlapping probes
+ov_probes <- sesameData_annoProbes(
+    c("cg14620903","cg22464003"), genes, return_ov_probes=TRUE)
+## Returns GRanges of probes that overlap genes
+
+## Example 5: Control annotation collapsing behavior
+## collapse=TRUE (default): multiple annotations concatenated with separator
+anno_collapsed <- sesameData_annoProbes(
+    c("cg14620903","cg22464003"), genes, column="gene_name",
+    collapse=TRUE, sep=";")
+## Multiple overlapping genes listed as "GENE1;GENE2;GENE3"
+
+## collapse=FALSE: each probe-feature overlap gets separate entry
+anno_expanded <- sesameData_annoProbes(
+    c("cg14620903","cg22464003"), genes, column="gene_name",
+    collapse=FALSE)
+## Probes with multiple overlaps appear multiple times
+
+## Example 6: Choose only first annotation when multiple exist
+anno_one <- sesameData_annoProbes(
+    c("cg14620903","cg22464003"), genes, column="gene_name",
+    chooseOne=TRUE)
+## Each probe gets only the first overlapping gene
+
+## Example 7: Annotate with custom genomic regions
+custom_regs <- GRanges(
+    seqnames = c("chr5", "chr5"),
+    ranges = IRanges(start = c(10000, 135350870),
+                     end = c(135350866, 145369531)),
+    feature_type = c("enhancer", "silencer"))
+anno_custom <- sesameData_annoProbes(
+    c("cg14620903","cg22464003"), custom_regs,
+    column="feature_type", genome="hg38")
+
+## Note: For annotation by probe ID using KYCG databases
+## (rather than genomic coordinates), see knowYourCG::annoProbes()
 }

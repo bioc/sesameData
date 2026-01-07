@@ -8,6 +8,31 @@
 #' Cache location is default to
 #' /Users/zhouw3/Library/Caches/org.R-project.R/R/ExperimentHub/
 #'
+#' @format A data frame with 22 columns:
+#' \describe{
+#'   \item{Comments}{Additional comments}
+#'   \item{EHID}{ExperimentHub ID}
+#'   \item{VERSION}{sesameData version}
+#'   \item{IN_USE}{Logical indicating if the resource is in use}
+#'   \item{Title}{Title of the data resource}
+#'   \item{Description}{Description of the data resource}
+#'   \item{BiocVersion}{Bioconductor version}
+#'   \item{Genome}{Genome build (e.g., hg38, mm10)}
+#'   \item{SourceType}{Source file type}
+#'   \item{SourceUrl}{URL to source}
+#'   \item{SourceVersion}{Version of source data}
+#'   \item{Species}{Species name}
+#'   \item{TaxonomyId}{NCBI Taxonomy ID}
+#'   \item{Coordinate_1_based}{Logical indicating if coordinates are 1-based}
+#'   \item{DataProvider}{Data provider name}
+#'   \item{Maintainer}{Maintainer contact information}
+#'   \item{RDataClass}{R data class}
+#'   \item{DispatchClass}{Dispatch class for ExperimentHub}
+#'   \item{RDataPath}{Path to RData file}
+#'   \item{Location_Prefix}{URL prefix for data location}
+#'   \item{Tags}{Tags for categorization}
+#'   \item{Notes}{Additional notes}
+#' }
 #' @name df_master
 #' @docType data
 #' @return master sheet of sesameData objects

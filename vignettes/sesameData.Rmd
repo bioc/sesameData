@@ -13,11 +13,40 @@ vignette: >
 
 # Introduction
 
-`sesameData` package provides associated data for sesame package. This includes
-example data for testing and instructional purpose, as we ll as probe annotation
-for different Infinium platforms.
+`sesameData` package provides associated data for the `sesame` package. This
+includes example data for testing and instructional purposes, as well as probe
+annotation for different Infinium platforms.
 
-```{r, message=FALSE, warning=FALSE}
+# Exported functions overview
+
+Data access and caching:
+
+- `sesameDataList()` list available data titles
+- `sesameDataHas()` check if titles exist
+- `sesameDataGet()` load a data object by title
+- `sesameDataCache()` / `sesameDataCacheAll()` cache data locally
+- `sesameDataGet_resetEnv()` clear the in-memory cache
+
+Platform and genome helpers:
+
+- `inferPlatformFromProbeIDs()` infer platform from probe IDs
+- `sesameData_check_platform()` validate or infer platform
+- `sesameData_check_genome()` validate or infer genome build
+- `sesameData_getGenomeInfo()` load genome metadata
+
+Manifests, probes, and annotation:
+
+- `sesameData_getManifestGRanges()` load manifest GRanges
+- `sesameData_getProbesByRegion()` select probes by genomic range
+- `sesameData_getProbesByGene()` select probes by gene/promoter
+- `sesameData_annoProbes()` annotate probes by features
+
+Transcript utilities:
+
+- `sesameData_getTxnGRanges()` get transcripts or merged genes
+- `sesameData_txnToGeneGRanges()` merge transcripts to genes
+
+```{r setup, message=FALSE, warning=FALSE}
 library(sesameData)
 library(GenomicRanges)
 sesameDataCache(c("genomeInfo.mm10", "HM450.address"))
@@ -32,7 +61,7 @@ retrieve a transcript-centric GRangesList object from GENCODE including its
 gene annotation, exon and cds (for protein-coding genes). It is then turned
 into a simple GRanges object of transcript:
 
-```{r}
+```{r txn-granges}
 sesameData_getTxnGRanges("mm10")
 ```
 
@@ -41,19 +70,19 @@ further collapse different transcripts of the same gene (isoforms) to gene
 level. Gene start is the minimum of all isoform starts and end is the maximum
 of all isoform ends.
 
-```{r}
+```{r txn-granges-merged}
 sesameData_getTxnGRanges("mm10", merge2gene=TRUE)
 ```
 
 # Probes
 
 
-```{r message = FALSE, warning = FALSE}
+```{r load-genomicranges, message = FALSE, warning = FALSE}
 library(GenomicRanges)
 ```
 
 The following code get probes from different parts of the genome.
-```{r eval=FALSE}
+```{r probes-examples, eval=FALSE}
 ## probes in a region
 sesameData_getProbesByRegion(GRanges('chr5',
     IRanges(135313937, 135419936)), platform = 'Mammal40')
@@ -73,7 +102,7 @@ sesameData_getProbesByGene(NULL, "Mammal40", promoter = TRUE)
 One can annotate given probe ID using any genomic features stored in GRanges
 objects. For example, the following demonstrate the annotation of 500 random
 Mammal40 probes for gene promoters.
-```{r eval=FALSE}
+```{r anno-probes-examples, eval=FALSE}
 input_probes <- names(sesameData_getManifestGRanges("Mammal40"))[1:500]
 
 ## annotate for promoter
@@ -95,12 +124,12 @@ sesameData_annoProbes(input_probes, regs+10000, column = "gene_name")
 
 # Manifest
 
-Sesame provides access to array manfiest stored as GRanges object. These
+Sesame provides access to array manifest stored as GRanges object. These
 GRanges object are converted from the raw tsv files on our [array annotation
 website](http://zwdzwd.github.io/InfiniumAnnotation) using the [conversion
 code](https://tinyurl.com/8bt9dssc)
 
-```{r}
+```{r manifest-granges}
 gr <- sesameData_getManifestGRanges("HM450")
 length(gr)
 ```
@@ -112,7 +141,7 @@ option in sesameData_getManifestDF.
 # Raw Data Retrieval
 
 Titles of all the available data can be shown with:
-```{r}
+```{r data-list}
 head(sesameDataList())
 ```
 
@@ -122,30 +151,30 @@ before they can be used.  This design is to prevent conflict in annotation data
 caching and remove internet dependency. Caching needs only be done once per
 sesame/sesameData installation. One can cache data using
 
-```{r}
+```{r cache-data}
 sesameDataCache()
 ```
 
-Once a data object is loaded, it is stored to a tempoary cache, so that the data
-doesn't need to be retrieved again next time we call `sesameDataGet`. This
-design is meant to speeed up the run time.
+Once a data object is loaded, it is stored to a temporary cache, so
+that the data doesn't need to be retrieved again next time we call
+`sesameDataGet`. This design is meant to speed up the run time.
 
-For example, the annotation for HM27 can be retrieved with the title: 
-```{r}
+For example, the annotation for HM27 can be retrieved with the title:
+```{r get-data-example}
 HM27.address <- sesameDataGet('HM27.address')
 ```
 
 It's worth noting that once a data is retrieved through the `sesameDataGet`
-inferface (below), it will stay in memory so next time the object will be
+interface (below), it will stay in memory so next time the object will be
 returned immediately. This design avoids repeated disk/web retrieval. In some
 rare situation, one may want to redo the download/disk IO, or empty the cache
 to save memory. This can be done with:
 
-```{r}
+```{r reset-env}
 sesameDataGet_resetEnv()
 ```
 
 
-```{r}
+```{r session-info}
 sessionInfo()
 ```
