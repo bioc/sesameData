@@ -1,8 +1,14 @@
 
-## fall back to zenodo in case EHID is not assigned yet.
-.sesameDataGet_fallback <- function(title, u1) {
+## fall back to zenodo in case EHID is not assigned yet. An Rds object is
+## read with readRDS (load() refuses it); everything else is an .rda.
+.sesameDataGet_fallback <- function(title, u1, dispatch = "Rda") {
     if (valid_url(u1)) {
-        sesameDataGet_assignEnv(title, get(load(url(u1))))
+        data <- if (identical(dispatch, "Rds")) {
+            readRDS(gzcon(url(u1)))
+        } else {
+            get(load(url(u1)))
+        }
+        sesameDataGet_assignEnv(title, data)
         TRUE
     } else {
         warning(sprintf("Resource %s cannot be retrieved.", title))
@@ -24,7 +30,8 @@
             return(get(title, envir=cacheEnv, inherits=FALSE))
         }
         
-        if (.sesameDataGet_fallback(title, paste0(pfx, "/", rdata))) {
+        if (.sesameDataGet_fallback(title, paste0(pfx, "/", rdata),
+            df_master$DispatchClass[idx])) {
             return(get(title, envir=cacheEnv, inherits=FALSE))
         } else {
             stopAndCache(title)

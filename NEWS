@@ -7,3 +7,16 @@ CHANGES IN VERSION 1.12.0
 -------------------------
 
   o sesameDataList returns a tibble with EHID and Title instead of just the Title
+
+CHANGES IN VERSION 1.31.1
+-------------------------
+
+  o Added KYCG.{HM450,EPIC,EPICv2,MSA}.Mask.20261008, built from the
+    InfiniumAnnotation v8.2 masks, so sesame's quality mask reads the same
+    M_* tracks as SeSAMe2 on all four human arrays (sesame >= 1.31.6,
+    zhou-lab/sesame#1).
+
+  o Rebuilt HM450.address, EPIC.address, EPICv2.address and MSA.address
+    from the InfiniumAnnotation v8.3 orderings, so sesame reads the same
+    probe design table as SeSAMe2. With these and the masks above, R's
+    default QCDPB betas equal SeSAMe2's to ~1e-15 on all four arrays.
