@@ -20,3 +20,21 @@ CHANGES IN VERSION 1.31.1
     from the InfiniumAnnotation v8.3 orderings, so sesame reads the same
     probe design table as SeSAMe2. With these and the masks above, R's
     default QCDPB betas equal SeSAMe2's to ~1e-15 on all four arrays.
+
+CHANGES IN VERSION 1.31.2
+-------------------------
+
+  o Documentation fixes from a review of the vignette. The setup chunk
+    also caches genomeInfo.hg38, Mammal40.address and probeIDSignature,
+    which the probe and annotation examples need. A sentence about a decoy = TRUE option in a
+    function that does not exist is removed.
+
+  o metadata.csv describes EPIC.5.SigDF.normal as its five normal SigDFs
+    (PrEC.Rep1, PrEC.Rep2, NAF.A, NAF.B, NAF.C), not an LNCaP
+    segmentation. The ExperimentHub record is unchanged.
+
+  o The Zenodo fallback in sesameDataGet() downloads the file first, with
+    a 600 s timeout. On a slow link (about 80 kB/s from HPC compute nodes)
+    R's default 60 s cut the download short, so titles without an EHID
+    (e.g. HM450.address, MSA.address) failed with "cannot read from
+    connection".

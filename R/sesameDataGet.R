@@ -3,10 +3,16 @@
 ## read with readRDS (load() refuses it); everything else is an .rda.
 .sesameDataGet_fallback <- function(title, u1, dispatch = "Rda") {
     if (valid_url(u1)) {
+        ## download first, with a longer timeout than R's default 60 s:
+        ## a slow link to Zenodo otherwise cuts the file short
+        f <- tempfile()
+        op <- options(timeout = max(600, getOption("timeout")))
+        on.exit({ options(op); unlink(f) })
+        utils::download.file(u1, f, mode = "wb", quiet = TRUE)
         data <- if (identical(dispatch, "Rds")) {
-            readRDS(gzcon(url(u1)))
+            readRDS(f)
         } else {
-            get(load(url(u1)))
+            get(load(f))
         }
         sesameDataGet_assignEnv(title, data)
         TRUE
