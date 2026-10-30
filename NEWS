@@ -38,3 +38,12 @@ CHANGES IN VERSION 1.31.2
     R's default 60 s cut the download short, so titles without an EHID
     (e.g. HM450.address, MSA.address) failed with "cannot read from
     connection".
+
+CHANGES IN VERSION 1.31.3
+-------------------------
+
+  o The eight objects added in 1.31.1 now come from ExperimentHub, which
+    assigned their ids on 2026-10-20: HM450/EPIC/EPICv2/MSA.address
+    (EH10648-EH10651) and KYCG.<platform>.Mask.20261008 (EH10652-EH10655).
+    sesameDataGet() no longer falls back to Zenodo for them, and
+    sesameDataCache() caches them with the rest.
